@@ -1,0 +1,24 @@
+@layer rr-customer {
+  .loading-state {
+    min-height: 220px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    color: var(--color-muted);
+  }
+  .loading-state > span {
+    border: 2px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

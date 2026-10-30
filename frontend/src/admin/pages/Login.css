@@ -1,0 +1,100 @@
+@layer rr-enhancements {
+  .admin-login {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse at 20% 10%, #8b5cf612, transparent 60%),
+      radial-gradient(ellipse at 80% 90%, #087bff13, transparent 60%), var(--color-background);
+    padding: 30px;
+  }
+  .login-brand {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1300px;
+    margin: auto;
+  }
+  .login-card {
+    width: 440px;
+    max-width: 100%;
+    margin: 7vh auto 25px;
+    padding: 37px;
+  }
+  .login-icon {
+    display: grid;
+    place-items: center;
+    width: 55px;
+    height: 55px;
+    background: #087bff0d;
+    border: 1px solid #087bff20;
+    color: var(--color-primary);
+    border-radius: 15px;
+    margin-bottom: 25px;
+  }
+  .login-card .eyebrow {
+    font-size: 8px;
+  }
+  .login-card h1 {
+    font-size: 36px;
+    letter-spacing: -1.2px;
+    margin: 10px 0 14px;
+  }
+  .login-card > p {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--color-muted);
+  }
+  .login-card form {
+    margin-top: 24px;
+  }
+  .login-card label {
+    font-size: 11px;
+    margin-bottom: 17px;
+  }
+  .login-card input {
+    height: 44px;
+  }
+  .login-card .form-note {
+    font-size: 9px;
+    margin-top: 20px;
+  }
+  .login-card .back-link {
+    font-size: 10px;
+    margin: 18px 0 0;
+  }
+  .login-footnote {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    color: var(--color-muted);
+    font-size: 10px;
+  }
+  @media (max-width: 430px) {
+    .login-card {
+      padding: 26px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-login {
+      padding: 23px;
+    }
+  }
+  @media (max-width: 430px) {
+    .login-card h1 {
+      font-size: 32px;
+    }
+  }
+  @media (max-width: 430px) {
+    .login-brand .brand strong {
+      font-size: 23px;
+    }
+  }
+  @media (max-width: 430px) {
+    .login-brand .brand svg {
+      width: 46px;
+    }
+  }
+  @media (max-width: 430px) {
+    .login-brand .theme-toggle {
+      padding-inline: 6px;
+    }
+  }
+}

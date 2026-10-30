@@ -1,0 +1,34 @@
+@layer rr-customer {
+  .driving-vehicle {
+    position: absolute;
+    width: 205px;
+    bottom: 27px;
+    left: 30%;
+    animation: suspension 1.5s ease-in-out infinite;
+  }
+}
+@layer rr-customer {
+  .driving-vehicle svg {
+    width: 100%;
+    filter: drop-shadow(0 7px 5px #192f4930);
+  }
+}
+@layer rr-customer {
+  .spinning-wheel {
+    animation: rr-wheel-spin 0.7s linear infinite;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .driving-vehicle {
+      width: 175px;
+    }
+  }
+}
+@layer rr-customer {
+  @keyframes rr-wheel-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

@@ -1,0 +1,37 @@
+@layer rr-customer {
+  .final-cta {
+    padding-block: 45px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .final-cta h2 {
+    margin-right: auto;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .final-cta h2 {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  @media (max-width: 750px) {
+    .final-cta {
+      gap: 12px;
+      padding-block: 30px;
+    }
+  }
+  @media (max-width: 750px) {
+    .final-cta .rr-button {
+      font-size: 11px;
+    }
+  }
+  @media (max-width: 750px) {
+    .final-cta .rr-button--outline {
+      font-size: 11px;
+    }
+  }
+}

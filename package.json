@@ -1,0 +1,26 @@
+{
+  "name": "riderent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node backend/scripts/dev.mjs",
+    "setup": "node backend/scripts/setup.mjs",
+    "build": "npm --prefix frontend run build",
+    "start": "node backend/src/server.js",
+    "test": "npm --prefix backend test",
+    "lint": "node backend/node_modules/eslint/bin/eslint.js frontend/src backend/src backend/scripts backend/tests frontend/vite.config.js eslint.config.js",
+    "format": "node backend/node_modules/prettier/bin/prettier.cjs --write frontend/src backend/src backend/scripts backend/tests backend/prisma/seed.js docs README.md eslint.config.js frontend/vite.config.js backend/prisma.config.ts backend/README.md package.json frontend/package.json backend/package.json",
+    "format:check": "node backend/node_modules/prettier/bin/prettier.cjs --check frontend/src backend/src backend/scripts backend/tests backend/prisma/seed.js docs README.md eslint.config.js frontend/vite.config.js backend/prisma.config.ts backend/README.md package.json frontend/package.json backend/package.json",
+    "db:generate": "node backend/node_modules/prisma/build/index.js generate --config backend/prisma.config.ts",
+    "db:migrate": "node backend/node_modules/prisma/build/index.js migrate deploy --config backend/prisma.config.ts",
+    "db:baseline": "node backend/scripts/baseline.mjs",
+    "test:ui": "node backend/tests/e2e/run.mjs",
+    "test:layout": "node backend/tests/e2e/run.mjs --layout",
+    "verify": "node backend/scripts/verify.mjs",
+    "install": "npm --prefix frontend ci && npm --prefix backend ci"
+  },
+  "engines": {
+    "node": ">=24.14.0"
+  }
+}

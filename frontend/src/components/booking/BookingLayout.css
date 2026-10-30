@@ -1,0 +1,22 @@
+@layer rr-customer {
+  .checkout-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 30px;
+    align-items: start;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 1000px) {
+    .checkout-layout {
+      gap: 22px;
+    }
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .checkout-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+}

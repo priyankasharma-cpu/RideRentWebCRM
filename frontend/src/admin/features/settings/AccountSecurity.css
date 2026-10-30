@@ -1,0 +1,20 @@
+@layer rr-enhancements {
+  .audit-link > svg {
+    color: var(--color-primary);
+    margin-bottom: 17px;
+  }
+}
+@layer rr-enhancements {
+  .audit-link h3 {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+}
+@layer rr-enhancements {
+  .audit-link p {
+    font-size: 11px;
+    line-height: 1.8;
+    color: var(--color-muted);
+    margin-bottom: 20px;
+  }
+}

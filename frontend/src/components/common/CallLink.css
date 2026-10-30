@@ -1,0 +1,8 @@
+@layer rr-customer {
+  .demo-label {
+    display: block;
+    font-size: 8px;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+}

@@ -1,0 +1,11 @@
+@layer rr-enhancements {
+  .chart-panel {
+    padding: 22px 22px 10px;
+    min-width: 0;
+  }
+  @media (max-width: 750px) {
+    .chart-panel {
+      padding: 20px 15px 5px;
+    }
+  }
+}

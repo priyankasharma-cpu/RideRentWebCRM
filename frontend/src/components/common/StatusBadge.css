@@ -1,0 +1,131 @@
+@layer rr-customer {
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 6px;
+    padding: 4px 7px;
+    font-size: 9px;
+    font-weight: 650;
+    text-transform: capitalize;
+    white-space: nowrap;
+    background: var(--color-surface-muted);
+    color: var(--color-muted);
+  }
+  .status:before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+    border-radius: 50%;
+  }
+  .status-available {
+    background: #19ad8b14;
+    color: #159a7c;
+  }
+  .status-completed {
+    background: #19ad8b14;
+    color: #159a7c;
+  }
+  .status-verified {
+    background: #19ad8b14;
+    color: #159a7c;
+  }
+  .status-resolved {
+    background: #19ad8b14;
+    color: #159a7c;
+  }
+  .status-rental {
+    background: #19ad8b14;
+    color: #159a7c;
+  }
+  .status-active {
+    background: #087bff14;
+    color: #087bff;
+  }
+  .status-rented {
+    background: #087bff14;
+    color: #087bff;
+  }
+  .status-confirmed {
+    background: #087bff14;
+    color: #087bff;
+  }
+  .status-reserved {
+    background: #087bff14;
+    color: #087bff;
+  }
+  .status-admin {
+    background: #087bff14;
+    color: #087bff;
+  }
+  .status-inspecting {
+    background: #edab1617;
+    color: #c88906;
+  }
+  .status-inspection {
+    background: #edab1617;
+    color: #c88906;
+  }
+  .status-maintenance {
+    background: #edab1617;
+    color: #c88906;
+  }
+  .status-unverified {
+    background: #edab1617;
+    color: #c88906;
+  }
+  .status-scheduled {
+    background: #edab1617;
+    color: #c88906;
+  }
+  .status-deposit {
+    background: #edab1617;
+    color: #c88906;
+  }
+  .status-overdue {
+    background: #e44e6812;
+    color: #df4b64;
+  }
+  .status-cancelled {
+    background: #e44e6812;
+    color: #df4b64;
+  }
+  .status-unavailable {
+    background: #e44e6812;
+    color: #df4b64;
+  }
+  .status-inactive {
+    background: #e44e6812;
+    color: #df4b64;
+  }
+  .status-staff {
+    background: #8b5cf615;
+    color: #8b5cf6;
+  }
+}
+@layer rr-enhancements {
+  .status-breakdown {
+    display: grid;
+    gap: 18px;
+    margin-top: 32px;
+  }
+  .status-breakdown > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+  .status-breakdown i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .status-breakdown span {
+    color: var(--color-muted);
+  }
+  .status-breakdown strong {
+    margin-left: auto;
+  }
+}

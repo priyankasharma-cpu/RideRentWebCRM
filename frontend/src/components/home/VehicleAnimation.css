@@ -1,0 +1,245 @@
+@layer rr-customer {
+  .road-section {
+    margin-top: 0;
+    border-bottom: 1px solid var(--color-border);
+    overflow: hidden;
+    background: linear-gradient(110deg, var(--color-surface), var(--color-surface-muted));
+  }
+  .road-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 30px;
+    padding-block: 27px;
+  }
+  .road-inner > div > p {
+    color: var(--color-muted);
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .road-tabs {
+    display: flex;
+    gap: 8px;
+    margin-top: 17px;
+  }
+  .road-tabs button {
+    font-size: 10px;
+    padding: 7px 16px;
+    border-radius: 20px;
+    background: var(--color-surface);
+    color: var(--color-muted);
+    border: 1px solid var(--color-border);
+  }
+  .road-tabs button.selected {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+  .road-stage {
+    height: 185px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    background: linear-gradient(#d9e9ff, #f2e6ff 70%);
+    isolation: isolate;
+  }
+  .road-city {
+    position: absolute;
+    inset: 20px -100% 35px 0;
+    width: 200%;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0 12px,
+      #7695d125 12px 50px,
+      transparent 50px 67px,
+      #7695d13d 67px 90px,
+      transparent 90px 130px
+    );
+    clip-path: polygon(
+      0 50%,
+      10% 50%,
+      10% 20%,
+      14% 20%,
+      14% 0,
+      20% 0,
+      20% 55%,
+      30% 55%,
+      30% 10%,
+      37% 10%,
+      37% 40%,
+      50% 40%,
+      50% 50%,
+      60% 50%,
+      60% 20%,
+      64% 20%,
+      64% 0,
+      70% 0,
+      70% 55%,
+      80% 55%,
+      80% 10%,
+      87% 10%,
+      87% 40%,
+      100% 40%,
+      100% 100%,
+      0 100%
+    );
+    animation: scenery 18s linear infinite;
+    z-index: -2;
+  }
+  .road-hills {
+    position: absolute;
+    left: 0;
+    right: -100%;
+    bottom: 31px;
+    height: 48px;
+    background: radial-gradient(ellipse at 25% 100%, #989ed652 35%, transparent 36%);
+    background-size: 300px 80px;
+    animation: scenery 10s linear infinite;
+    z-index: -1;
+  }
+  .road-surface {
+    position: absolute;
+    inset: auto 0 0;
+    height: 44px;
+    background: #c3cde1;
+    border-top: 4px solid #faffff;
+  }
+  .road-lines {
+    position: absolute;
+    top: 22px;
+    height: 3px;
+    width: 200%;
+    background: repeating-linear-gradient(90deg, #fff9 0 40px, transparent 40px 95px);
+    animation: scenery 1.2s linear infinite;
+  }
+  .road-caption {
+    position: absolute;
+    bottom: 7px;
+    left: 12px;
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: #495774;
+    font-weight: 600;
+  }
+  .paused * {
+    animation-play-state: paused !important;
+  }
+  @keyframes scenery {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes suspension {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-2px);
+    }
+  }
+  [data-theme='dark'] .road-stage {
+    background: linear-gradient(#071a2e, #112946);
+  }
+  [data-theme='dark'] .road-surface {
+    background: #082034;
+    border-color: #087bff;
+  }
+  [data-theme='dark'] .road-caption {
+    color: #81b1d9;
+  }
+  [data-theme='dark'] .road-city {
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0 12px,
+      #087bff25 12px 50px,
+      transparent 50px 67px,
+      #087bff50 67px 90px,
+      transparent 90px 130px
+    );
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .road-inner {
+      grid-template-columns: 1fr;
+      gap: 22px;
+      padding-block: 24px;
+    }
+  }
+  @media (max-width: 750px) {
+    .road-inner h2 {
+      font-size: 24px;
+    }
+  }
+  @media (max-width: 750px) {
+    .road-stage {
+      height: 180px;
+    }
+  }
+  @media (max-width: 750px) {
+    .road-tabs {
+      margin-top: 12px;
+    }
+  }
+  @media (max-width: 750px) {
+    .road-inner > div:first-child {
+      position: relative;
+    }
+  }
+  @media (max-width: 750px) {
+    .road-tabs {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
+  @media (max-width: 750px) {
+    .road-tabs button {
+      padding: 6px 10px;
+      font-size: 9px;
+    }
+  }
+  @media (max-width: 750px) {
+    .road-inner > div > p {
+      font-size: 11px;
+    }
+  }
+  @media (max-width: 750px) {
+    .road-inner .eyebrow {
+      font-size: 7px;
+    }
+  }
+  @media (max-width: 750px) {
+    .road-inner h2 {
+      font-size: 22px;
+    }
+  }
+  @media (max-width: 750px) {
+    .road-stage {
+      height: 155px;
+    }
+  }
+  @media (max-width: 750px) {
+  }
+  @media (max-width: 430px) {
+    .road-tabs {
+      position: static;
+    }
+  }
+  @media (max-width: 430px) {
+    .road-inner h2 {
+      font-size: 25px;
+    }
+  }
+  @media (max-width: 430px) {
+    .road-inner > div > p {
+      font-size: 12px;
+    }
+  }
+  @media (max-width: 430px) {
+    .road-stage {
+      height: 160px;
+    }
+  }
+}

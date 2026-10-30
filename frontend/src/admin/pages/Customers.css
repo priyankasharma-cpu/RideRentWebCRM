@@ -1,0 +1,21 @@
+@layer rr-enhancements {
+  .customer-history {
+    display: grid;
+    gap: 15px;
+  }
+  .customer-history > div {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .customer-history strong {
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  .customer-history p {
+    font-size: 11px;
+    line-height: 1.8;
+    color: var(--color-muted);
+    margin-top: 8px;
+  }
+}

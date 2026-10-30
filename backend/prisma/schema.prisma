@@ -1,0 +1,213 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model AuditLog {
+  id         String @id
+  userId    String? @map("user_id")
+  action     String
+  entityId  String @map("entity_id")
+  details    String
+  createdAt String @map("created_at")
+  users      User?  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("audit")
+  @@index([createdAt], map: "audit_created_at")
+}
+
+model BookingContact {
+  bookingId String   @id @map("booking_id")
+  name       String
+  phone      String
+  email      String    @default("")
+  verified   Int       @default(0)
+  bookings   Booking @relation(fields: [bookingId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("booking_contacts")
+}
+
+model Booking {
+  id               String           @id
+  reference        String            @unique(map: "sqlite_autoindex_bookings_2")
+  accessHash      String @map("access_hash")
+  customerId      String @map("customer_id")
+  vehicleId       String @map("vehicle_id")
+  startsAt        String @map("starts_at")
+  endsAt          String @map("ends_at")
+  hours            Float
+  rate             BigInt
+  base             BigInt
+  tax              BigInt
+  deposit          BigInt
+  extra            BigInt               @default(0)
+  status           String
+  source           String
+  notes            String            @default("")
+  createdAt       String @map("created_at")
+  contact BookingContact?
+  vehicle         Vehicle          @relation(fields: [vehicleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer        Customer         @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  payments         Payment[]       
+  rental          Rental?
+
+  @@index([customerId], map: "booking_customer")
+  @@index([vehicleId, status, startsAt, endsAt], map: "booking_availability")
+  @@map("bookings")
+  @@index([status, vehicleId, startsAt, endsAt], map: "booking_status_window")
+  @@index([createdAt], map: "booking_created_at")
+}
+
+model Customer {
+  id         String    @id
+  name       String
+  phone      String     @unique(map: "sqlite_autoindex_customers_2")
+  email      String     @default("")
+  verified   Int        @default(0)
+  createdAt String @map("created_at")
+  bookings   Booking[]
+  @@map("customers")
+}
+
+model RentalInspection {
+  id         String @id
+  rentalId  String @map("rental_id")
+  type       String
+  fuel       String
+  condition  String
+  notes      String
+  staffId   String @map("staff_id")
+  createdAt String @map("created_at")
+  users      User   @relation(fields: [staffId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rentals    Rental @relation(fields: [rentalId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("inspections")
+  @@index([rentalId, createdAt], map: "inspection_rental_created")
+}
+
+model MaintenanceBlock {
+  id         String  @id
+  vehicleId String @map("vehicle_id")
+  startsAt  String @map("starts_at")
+  endsAt    String @map("ends_at")
+  reason     String
+  resolved   Int      @default(0)
+  createdAt String @map("created_at")
+  vehicles   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([vehicleId, startsAt, endsAt], map: "maintenance_window")
+
+  @@map("maintenance")
+  @@index([resolved, vehicleId, startsAt, endsAt], map: "maintenance_status_window")
+}
+
+model Payment {
+  id         String   @id
+  bookingId String @map("booking_id")
+  amount     BigInt
+  purpose    String
+  method     String
+  note       String    @default("")
+  staffId   String @map("staff_id")
+  createdAt String @map("created_at")
+  users      User     @relation(fields: [staffId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  bookings   Booking  @relation(fields: [bookingId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  refunds    Refund[]
+
+  @@map("payments")
+  @@index([bookingId, createdAt], map: "payment_booking_created")
+}
+
+model Refund {
+  id         String  @id
+  paymentId String @map("payment_id")
+  amount     BigInt
+  reason     String
+  staffId   String @map("staff_id")
+  createdAt String @map("created_at")
+  users      User    @relation(fields: [staffId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  payments   Payment @relation(fields: [paymentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("refunds")
+  @@index([paymentId], map: "refund_payment")
+}
+
+model Rental {
+  id                                String       @id
+  bookingId                        String        @unique(map: "sqlite_autoindex_rentals_2") @map("booking_id")
+  pickupAt                         String @map("pickup_at")
+  returnAt                         String? @map("return_at")
+  pickupStaff                      String @map("pickup_staff")
+  returnStaff                      String? @map("return_staff")
+  pickupOdometer                   Int @map("pickup_odometer")
+  returnOdometer                   Int? @map("return_odometer")
+  lateMinutes                      Int           @default(0) @map("late_minutes")
+  lateCharge                       BigInt           @default(0) @map("late_charge")
+  inspections                       RentalInspection[]
+  usersRentalsReturnStaffTousers User?        @relation("rentals_return_staffTousers", fields: [returnStaff], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usersRentalsPickupStaffTousers User         @relation("rentals_pickup_staffTousers", fields: [pickupStaff], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  bookings                          Booking      @relation(fields: [bookingId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@map("rentals")
+}
+
+model Session {
+  id         String @id
+  userId    String? @map("user_id")
+  csrf       String
+  expiresAt BigInt @map("expires_at")
+  users      User?  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("sessions")
+  @@index([expiresAt], map: "session_expiration")
+}
+
+model ShopSettings {
+  id   Int    @id @default(autoincrement())
+  data String
+  @@map("settings")
+}
+
+model User {
+  id                                  String       @id
+  name                                String
+  email                               String        @unique(map: "sqlite_autoindex_users_2")
+  passwordHash                       String @map("password_hash")
+  role                                String
+  active                              Int           @default(1)
+  createdAt                          String @map("created_at")
+  audit                               AuditLog[]      
+  inspections                         RentalInspection[]
+  payments                            Payment[]   
+  refunds                             Refund[]    
+  rentalsRentalsReturnStaffTousers Rental[]     @relation("rentals_return_staffTousers")
+  rentalsRentalsPickupStaffTousers Rental[]     @relation("rentals_pickup_staffTousers")
+  sessions                            Session[]   
+  @@map("users")
+}
+
+model Vehicle {
+  id           String       @id
+  slug         String        @unique(map: "sqlite_autoindex_vehicles_2")
+  name         String
+  brand        String
+  category     String
+  registration String        @unique(map: "sqlite_autoindex_vehicles_3")
+  rate         BigInt
+  deposit      BigInt           @default(0)
+  fuel         String
+  transmission String
+  seats        Int
+  engine       String
+  image        String
+  description  String
+  odometer     Int           @default(0)
+  status       String        @default("Available")
+  createdAt   String @map("created_at")
+  bookings     Booking[]
+  maintenance  MaintenanceBlock[]
+  @@map("vehicles")
+}

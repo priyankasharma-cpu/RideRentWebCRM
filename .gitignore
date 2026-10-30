@@ -1,0 +1,12 @@
+**/node_modules/
+**/dist/
+**/.env
+**/.env.*
+!**/.env.example
+backend/data/
+backend/uploads/
+backend/generated/
+backend/.artifacts/
+backend/cleanup-backup-location.txt
+playwright-report/
+test-results/

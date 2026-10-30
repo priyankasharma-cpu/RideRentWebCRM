@@ -1,0 +1,208 @@
+@layer rr-base {
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 19px;
+  }
+  .category-card {
+    height: 180px;
+    border: 1px solid var(--color-border);
+    border-radius: 17px;
+    overflow: hidden;
+    position: relative;
+    background: #dfedfc;
+    isolation: isolate;
+  }
+  .category-card img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center 55%;
+    z-index: -3;
+    transition: transform 0.6s;
+  }
+  .category-card:hover img {
+    transform: scale(1.05);
+  }
+  .category-gradient {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: linear-gradient(90deg, #d9effffc 1%, #d9efffe0 29%, #d9efff00 83%);
+  }
+  .scooter .category-gradient {
+    background: linear-gradient(90deg, #e9dffbfc 1%, #e9dffbdf 29%, #e9dffb00 83%);
+  }
+  .car .category-gradient {
+    background: linear-gradient(90deg, #ffeae1fc 1%, #ffeae1e0 29%, #ffeae100 83%);
+  }
+  .category-content {
+    padding: 19px 21px;
+    color: #0a1638;
+  }
+  .category-content > svg {
+    color: var(--color-primary);
+    margin-bottom: 1px;
+  }
+  .category-content h3 {
+    font-family: Manrope, sans-serif;
+    font-size: 27px;
+    line-height: 1.2;
+    letter-spacing: -1px;
+  }
+  .category-content p {
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  .category-content p strong {
+    color: #007bff;
+    font-size: 16px;
+  }
+  .category-content p small {
+    font-size: 12px;
+  }
+  .category-content button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #ffffffa8;
+    border-radius: 9px;
+    background: #fffdfd;
+    color: #006eff;
+    padding: 8px 12px;
+    font-weight: 650;
+    font-size: 10px;
+    margin-top: 13px;
+  }
+  .category-arrow {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    background: linear-gradient(135deg, #b7d9ff, #1e74ff);
+    border: 1px solid #ffffff9c;
+    border-radius: 50%;
+    padding: 5px;
+    color: white;
+  }
+  .scooter .category-arrow {
+    background: linear-gradient(135deg, #e3c5ff, #a850ed);
+  }
+  .car .category-arrow {
+    background: linear-gradient(135deg, #ffd3e5, #df76c0);
+  }
+  [data-theme='dark'] .category-gradient {
+    background: linear-gradient(90deg, #001725f5, #001725ae 42%, #00172515);
+  }
+  [data-theme='dark'] .category-content {
+    color: white;
+  }
+  [data-theme='dark'] .category-content button {
+    background: #087bff;
+    color: white;
+    border-color: #1390ff;
+  }
+  [data-theme='dark'] .category-card {
+    border-color: #265577;
+  }
+  @media (max-width: 1200px) {
+    .category-card {
+      height: 175px;
+    }
+  }
+  @media (max-width: 950px) {
+    .category-card {
+      height: 170px;
+    }
+  }
+  @media (max-width: 950px) {
+    .category-content {
+      padding: 16px;
+    }
+  }
+  @media (max-width: 950px) {
+    .category-content h3 {
+      font-size: 23px;
+    }
+  }
+  @media (max-width: 950px) {
+    .category-content p {
+      font-size: 10px;
+    }
+  }
+  @media (max-width: 950px) {
+    .category-content p strong {
+      font-size: 13px;
+    }
+  }
+  @media (max-width: 950px) {
+    .category-content button {
+      font-size: 9px;
+      padding: 8px;
+    }
+  }
+  @media (max-width: 950px) {
+    .category-arrow {
+      width: 25px;
+      height: 25px;
+      right: 10px;
+      top: 12px;
+    }
+  }
+  @media (max-width: 650px) {
+    .category-grid {
+      grid-template-columns: 1fr;
+      gap: 13px;
+    }
+  }
+  @media (max-width: 650px) {
+    .category-card {
+      height: 170px;
+    }
+  }
+  @media (max-width: 650px) {
+    .category-content {
+      padding: 17px 22px;
+    }
+  }
+  @media (max-width: 650px) {
+    .category-content h3 {
+      font-size: 26px;
+    }
+  }
+  @media (max-width: 650px) {
+    .category-content p {
+      font-size: 13px;
+    }
+  }
+  @media (max-width: 650px) {
+    .category-content p strong {
+      font-size: 15px;
+    }
+  }
+  @media (max-width: 650px) {
+    .category-content button {
+      font-size: 10px;
+      margin-top: 11px;
+    }
+  }
+  @media (max-width: 650px) {
+    .category-card img {
+      object-position: center 60%;
+    }
+  }
+  @media (max-width: 650px) {
+    .category-gradient {
+      background: linear-gradient(90deg, #d9effffc, #d9efffc9 30%, #d9efff00 80%);
+    }
+  }
+  @media (max-width: 650px) {
+    .category-arrow {
+      right: 16px;
+      top: 16px;
+      width: 30px;
+      height: 30px;
+    }
+  }
+}

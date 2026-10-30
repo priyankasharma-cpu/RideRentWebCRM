@@ -1,0 +1,44 @@
+@layer rr-enhancements {
+  .maintenance-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .maintenance-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    color: var(--color-primary);
+  }
+  .maintenance-card h3 {
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+  .maintenance-card p {
+    font-size: 12px;
+    color: var(--color-muted);
+    line-height: 1.8;
+    margin-bottom: 18px;
+  }
+  .maintenance-card small {
+    display: block;
+    font-size: 10px;
+    color: var(--color-muted);
+    margin-top: 7px;
+  }
+  .maintenance-card button {
+    margin-top: 23px;
+    font-size: 10px;
+  }
+  @media (max-width: 1200px) {
+    .maintenance-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 750px) {
+    .maintenance-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+@layer rr-customer {
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .how-grid em {
+    font-size: 32px;
+    font-weight: 800;
+    opacity: 0.5;
+  }
+  .how-grid h3 {
+    margin-block: 20px 10px;
+    font-size: 16px;
+  }
+  .how-grid p {
+    font-size: 12px;
+    color: var(--color-muted);
+    line-height: 1.9;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 1000px) {
+    .how-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 750px) {
+    .how-grid .rr-panel {
+      padding: 20px;
+    }
+  }
+  @media (max-width: 750px) {
+    .how-grid h3 {
+      font-size: 14px;
+    }
+  }
+  @media (max-width: 750px) {
+    .how-grid p {
+      font-size: 11px;
+    }
+  }
+}

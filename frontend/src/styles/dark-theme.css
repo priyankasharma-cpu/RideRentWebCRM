@@ -1,0 +1,17 @@
+@layer rr-base {
+  :root[data-theme='dark'] {
+    --color-background: #030e17;
+    --color-surface: #091924;
+    --color-text: #f5f9ff;
+    --color-muted: #a2b5c9;
+    --color-border: #1c374c;
+    --color-surface-muted: #102637;
+    --shadow-card: 0 12px 35px #0003;
+    --hero-overlay:
+      linear-gradient(90deg, #020c16fa 0%, #020c16db 30%, #020c1620 73%),
+      linear-gradient(0deg, #030e17 0%, transparent 35%);
+    color-scheme: dark;
+    background: var(--color-background);
+    color: var(--color-text);
+  }
+}

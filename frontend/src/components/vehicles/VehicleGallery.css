@@ -1,0 +1,37 @@
+@layer rr-customer {
+  .detail-image {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    margin-bottom: 25px;
+  }
+  .detail-image img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+  }
+  .detail-image > span {
+    display: block;
+    padding: 9px 15px;
+    font-size: 9px;
+    color: var(--color-muted);
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 1200px) {
+    .detail-image img {
+      height: 320px;
+    }
+  }
+  @media (max-width: 750px) {
+    .detail-image img {
+      height: 310px;
+    }
+  }
+  @media (max-width: 430px) {
+    .detail-image img {
+      height: 250px;
+    }
+  }
+}

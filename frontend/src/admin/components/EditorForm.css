@@ -1,0 +1,27 @@
+@layer rr-enhancements {
+  .editor-form label {
+    font-size: 11px;
+    margin-bottom: 17px;
+  }
+}
+@layer rr-enhancements {
+  .editor-form input {
+    font-size: 12px;
+  }
+}
+@layer rr-enhancements {
+  .editor-form .form-grid {
+    gap: 0 16px;
+  }
+}
+@layer rr-enhancements {
+  .editor-form > h3 {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+}
+@layer rr-enhancements {
+  .editor-form > .rr-button {
+    font-size: 12px;
+  }
+}

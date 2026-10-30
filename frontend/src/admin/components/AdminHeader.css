@@ -1,0 +1,153 @@
+@layer rr-enhancements {
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    display: inline-block;
+    background: #1ab994;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px #1ab99414;
+    flex-shrink: 0;
+  }
+  .admin-topbar {
+    height: 78px;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 35px;
+    z-index: 20;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .admin-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-muted);
+    font-size: 10px;
+  }
+  .admin-breadcrumb strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+  .admin-top-actions {
+    display: flex;
+    gap: 13px;
+    align-items: center;
+  }
+  .demo-indicator {
+    font-size: 8px;
+    letter-spacing: 1.1px;
+    color: var(--color-muted);
+    padding-right: 10px;
+    border-right: 1px solid var(--color-border);
+  }
+  .staff-avatar {
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
+    background: linear-gradient(130deg, #dae9ff, #d8ceff);
+    color: #4a57aa;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-weight: 750;
+  }
+  .staff-name strong {
+    display: block;
+    font-size: 10px;
+  }
+  .staff-name small {
+    font-size: 9px;
+    color: var(--color-muted);
+    display: block;
+    margin-top: 4px;
+    text-transform: capitalize;
+  }
+  .admin-menu-button {
+    display: none;
+    background: transparent;
+    padding: 0;
+    color: var(--color-text);
+  }
+  .admin-menu-button {
+    display: block;
+  }
+  .admin-breadcrumb {
+    margin-right: auto;
+    margin-left: 18px;
+  }
+  @media (min-width: 1550px) {
+    .admin-topbar {
+      padding-inline: 45px;
+    }
+  }
+  @media (max-width: 1200px) {
+    .admin-topbar {
+      padding-inline: 25px;
+    }
+  }
+  @media (max-width: 1000px) {
+    .admin-menu-button {
+      display: block;
+    }
+  }
+  @media (max-width: 1000px) {
+    .admin-breadcrumb {
+      margin-right: auto;
+      margin-left: 18px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-topbar {
+      height: 68px;
+      padding-inline: 20px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-top-actions {
+      gap: 10px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-top-actions .demo-indicator {
+      display: none;
+    }
+  }
+  @media (max-width: 750px) {
+    .staff-name {
+      display: none;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-topbar {
+      padding-inline: 15px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-breadcrumb {
+      font-size: 9px;
+      margin-left: 12px;
+      gap: 7px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-top-actions {
+      gap: 8px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-top-actions .theme-toggle {
+      height: 29px;
+      padding-inline: 7px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-top-actions .staff-avatar {
+      width: 29px;
+      height: 29px;
+      font-size: 11px;
+    }
+  }
+}

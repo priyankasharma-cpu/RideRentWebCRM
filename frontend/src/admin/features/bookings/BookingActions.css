@@ -1,0 +1,43 @@
+@layer rr-enhancements {
+  .manage-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-block: 20px;
+  }
+}
+@layer rr-enhancements {
+  .manage-actions .rr-button {
+    font-size: 10px;
+    padding: 10px 12px;
+  }
+}
+@layer rr-enhancements {
+  .manage-actions .rr-button--outline {
+    font-size: 10px;
+    padding: 10px 12px;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .manage-actions {
+      gap: 8px;
+    }
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .manage-actions .rr-button {
+      font-size: 9px;
+      padding: 10px;
+    }
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .manage-actions .rr-button--outline {
+      font-size: 9px;
+      padding: 10px;
+    }
+  }
+}

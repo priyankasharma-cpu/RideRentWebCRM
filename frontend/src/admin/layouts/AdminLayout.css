@@ -1,0 +1,247 @@
+@layer rr-enhancements {
+  .admin-app {
+    display: flex;
+    min-height: 100vh;
+    background: var(--color-background);
+  }
+  .admin-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 245px;
+    background: var(--color-surface);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    padding: 25px 17px 16px;
+    z-index: 40;
+    overflow: auto;
+  }
+  .admin-sidebar > .brand {
+    padding-left: 9px;
+  }
+  .admin-sidebar .brand strong {
+    font-size: 27px;
+  }
+  .admin-sidebar .brand svg {
+    width: 52px;
+  }
+  .admin-sidebar .brand small {
+    font-size: 7px;
+  }
+  .admin-sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    height: auto;
+  }
+  .admin-sidebar nav a {
+    font-size: 11px;
+    font-weight: 550;
+    border-radius: 9px;
+    padding: 11px 13px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: var(--color-muted);
+    height: auto;
+  }
+  .admin-sidebar nav a.active {
+    background: #087bff0c;
+    color: var(--color-primary);
+  }
+  .admin-sidebar nav a:hover {
+    background: #087bff0c;
+    color: var(--color-primary);
+  }
+  .admin-sidebar nav a.active {
+    font-weight: 750;
+  }
+  .admin-sidebar nav a.active:after {
+    display: none;
+  }
+  .admin-sidebar nav a svg:last-child:not(:first-child) {
+    margin-left: auto;
+  }
+  .admin-main {
+    margin-left: 245px;
+    flex: 1;
+    min-width: 0;
+  }
+  .admin-content {
+    padding: 32px 35px 45px;
+    max-width: 1700px;
+    margin: auto;
+    min-height: calc(100vh - 130px);
+  }
+  .admin-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 35px;
+    font-size: 9px;
+    color: var(--color-muted);
+    border-top: 1px solid var(--color-border);
+  }
+  .sidebar-backdrop {
+    display: none;
+  }
+  .admin-app.collapsed .admin-sidebar {
+    width: 80px;
+    padding-inline: 12px;
+  }
+  .admin-app.collapsed .admin-main {
+    margin-left: 80px;
+  }
+  .admin-app.collapsed .brand {
+    padding-left: 0;
+  }
+  .admin-app.collapsed .brand > span {
+    display: none;
+  }
+  .admin-app.collapsed .workspace-label > div {
+    display: none;
+  }
+  .admin-app.collapsed .workspace-label > .live-dot {
+    display: none;
+  }
+  .admin-app.collapsed .sidebar-caption {
+    display: none;
+  }
+  .admin-app.collapsed .nav-label {
+    display: none;
+  }
+  .admin-app.collapsed .sidebar-help {
+    display: none;
+  }
+  .admin-app.collapsed .sidebar-bottom > button > span {
+    display: none;
+  }
+  .admin-app.collapsed .workspace-label {
+    border: 0;
+    padding: 10px;
+    background: transparent;
+    margin-top: 15px;
+  }
+  .admin-app.collapsed .admin-sidebar nav {
+    margin-top: 15px;
+  }
+  .admin-app.collapsed .admin-sidebar nav a {
+    justify-content: center;
+    padding: 13px 10px;
+  }
+  .admin-app.collapsed .admin-sidebar nav a svg:last-child:not(:first-child) {
+    display: none;
+  }
+  .admin-app.collapsed .sidebar-bottom > button {
+    justify-content: center;
+    margin: 0;
+    width: 100%;
+  }
+  @media (min-width: 1550px) {
+    .admin-content {
+      padding: 40px 45px;
+    }
+  }
+  @media (min-width: 1550px) {
+    .admin-sidebar {
+      width: 265px;
+      padding-inline: 23px;
+    }
+  }
+  @media (min-width: 1550px) {
+    .admin-main {
+      margin-left: 265px;
+    }
+  }
+  @media (min-width: 1550px) {
+    .admin-sidebar nav a {
+      font-size: 12px;
+      padding-block: 12px;
+    }
+  }
+  @media (max-width: 1200px) {
+    .admin-sidebar {
+      width: 220px;
+      padding-inline: 12px;
+    }
+  }
+  @media (max-width: 1200px) {
+    .admin-main {
+      margin-left: 220px;
+    }
+  }
+  @media (max-width: 1200px) {
+    .admin-content {
+      padding: 28px 25px;
+    }
+  }
+  @media (max-width: 1200px) {
+    .admin-sidebar .brand strong {
+      font-size: 25px;
+    }
+  }
+  @media (max-width: 1200px) {
+    .admin-sidebar .brand svg {
+      width: 47px;
+    }
+  }
+  @media (max-width: 1200px) {
+    .admin-content .rr-panel {
+      border-radius: 14px;
+    }
+  }
+  @media (max-width: 1000px) {
+    .admin-sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.2s;
+      width: 245px;
+    }
+  }
+  @media (max-width: 1000px) {
+    .admin-sidebar.open {
+      transform: none;
+    }
+  }
+  @media (max-width: 1000px) {
+    .admin-main {
+      margin-left: 0;
+    }
+  }
+  @media (max-width: 1000px) {
+    .sidebar-backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 35;
+      background: #00152977;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-content {
+      padding: 25px 20px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-footer {
+      padding: 17px 20px;
+      font-size: 8px;
+      gap: 15px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-footer span {
+      font-size: 7px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-app .rr-panel .empty-state {
+      padding: 25px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-content {
+      padding-inline: 15px;
+    }
+  }
+}

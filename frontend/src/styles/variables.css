@@ -1,0 +1,26 @@
+@layer rr-base {
+  :root {
+    font-family: 'DM Sans', sans-serif;
+    color: #0c1435;
+    background: #f6f8ff;
+    font-synthesis: none;
+    --color-background: #f6f8ff;
+    --color-surface: #fff;
+    --color-text: #0c1435;
+    --color-muted: #657294;
+    --color-border: #dfe6f8;
+    --color-primary: #087bff;
+    --color-surface-muted: #eef3ff;
+    --shadow-card: 0 12px 35px #657fc315;
+    --hero-overlay: linear-gradient(90deg, #f0f5ffeb 0%, #f3f5ffcb 26%, #f4f5ff00 58%);
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+  }
+}
+@layer rr-customer {
+  :root {
+    --success: #159a7c;
+    --danger: #e44e68;
+  }
+}

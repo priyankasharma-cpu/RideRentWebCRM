@@ -1,0 +1,24 @@
+@layer rr-customer {
+  .policy-copy {
+    max-width: 850px;
+  }
+}
+@layer rr-customer {
+  .policy-copy h3 {
+    font-size: 17px;
+    margin-block: 20px 12px;
+  }
+}
+@layer rr-customer {
+  .policy-copy h3:first-child {
+    margin-top: 0;
+  }
+}
+@layer rr-customer {
+  .policy-copy p {
+    font-size: 13px;
+    color: var(--color-muted);
+    line-height: 1.9;
+    margin-bottom: 10px;
+  }
+}

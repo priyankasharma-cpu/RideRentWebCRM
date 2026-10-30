@@ -1,0 +1,35 @@
+@layer rr-customer {
+  .confirmation-heading {
+    text-align: center;
+    margin-bottom: 35px;
+  }
+  .confirmation-check {
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 20px;
+    background: #1cbb9114;
+    color: #1cbb91;
+  }
+  .confirmation-heading > p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--color-muted);
+  }
+  .booking-reference {
+    display: block;
+    margin: 22px 0 10px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    font-family: Manrope, sans-serif;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .confirmation-heading > p {
+      font-size: 12px;
+    }
+  }
+}

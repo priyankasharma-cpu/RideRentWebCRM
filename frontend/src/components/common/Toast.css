@@ -1,0 +1,35 @@
+@layer rr-customer {
+  .toast {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    z-index: 200;
+    max-width: 450px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 16px 20px;
+    background: var(--color-text);
+    color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 13px;
+    font-size: 12px;
+    box-shadow: 0 8px 40px #0003;
+  }
+  .toast button {
+    font-size: 22px;
+    background: transparent;
+    color: inherit;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .toast {
+      bottom: 90px;
+      right: 15px;
+      left: 15px;
+      max-width: none;
+      font-size: 11px;
+    }
+  }
+}

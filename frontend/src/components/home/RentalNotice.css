@@ -1,0 +1,63 @@
+@layer rr-base {
+  .policy-section {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background: var(--color-surface-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 45px;
+  }
+  .policy-section > svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+  .policy-section h3 {
+    font-size: 14px;
+    margin-bottom: 7px;
+  }
+  .policy-section p {
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.8;
+    max-width: 750px;
+  }
+  .policy-section a {
+    margin-left: auto;
+    font-size: 12px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-primary);
+  }
+  @media (max-width: 950px) {
+    .policy-section a {
+      display: none;
+    }
+  }
+  @media (max-width: 650px) {
+    .policy-section {
+      padding: 19px;
+      gap: 13px;
+      align-items: start;
+      margin-bottom: 30px;
+    }
+  }
+  @media (max-width: 650px) {
+    .policy-section > svg {
+      width: 23px;
+    }
+  }
+  @media (max-width: 650px) {
+    .policy-section h3 {
+      font-size: 13px;
+    }
+  }
+  @media (max-width: 650px) {
+    .policy-section p {
+      font-size: 10px;
+    }
+  }
+}

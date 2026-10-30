@@ -1,0 +1,201 @@
+@layer rr-base {
+  .customer-header {
+    height: 84px;
+    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+    z-index: 10;
+  }
+  .nav-wrap {
+    height: 100%;
+    width: min(1360px, 92%);
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .nav-wrap nav {
+    display: flex;
+    align-items: center;
+    gap: 27px;
+    height: 100%;
+  }
+  .nav-wrap nav a {
+    font-size: 12px;
+    white-space: nowrap;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-weight: 550;
+  }
+  .nav-wrap nav a:hover {
+    color: var(--color-primary);
+  }
+  .nav-wrap nav a.active {
+    color: var(--color-primary);
+  }
+  .nav-wrap nav a.active:after {
+    content: '';
+    position: absolute;
+    bottom: 13px;
+    height: 2px;
+    left: 0;
+    right: 0;
+    background: var(--color-primary);
+  }
+  .nav-actions {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+  }
+  .phone {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    padding-left: 20px;
+    border-left: 1px solid var(--color-border);
+  }
+  .phone > svg {
+    width: 26px;
+    height: 26px;
+    fill: var(--color-primary);
+    color: var(--color-primary);
+  }
+  .phone small {
+    font-size: 10px;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .phone strong {
+    font-size: 13px;
+  }
+  .nav-book {
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  .mobile-menu {
+    display: none;
+    background: transparent;
+  }
+  @media (max-width: 1200px) {
+    .nav-wrap {
+      gap: 20px;
+    }
+  }
+  @media (max-width: 1200px) {
+    .nav-wrap nav {
+      gap: 18px;
+    }
+  }
+  @media (max-width: 1200px) {
+    .nav-actions {
+      gap: 14px;
+    }
+  }
+  @media (max-width: 1200px) {
+    .phone {
+      display: none;
+    }
+  }
+  @media (max-width: 950px) {
+    .customer-header {
+      height: 73px;
+    }
+  }
+  @media (max-width: 950px) {
+    .nav-wrap nav {
+      gap: 14px;
+    }
+  }
+  @media (max-width: 950px) {
+    .nav-wrap nav a {
+      font-size: 10px;
+    }
+  }
+  @media (max-width: 950px) {
+    .nav-book {
+      display: none;
+    }
+  }
+  @media (max-width: 950px) {
+    .nav-wrap {
+      gap: 18px;
+    }
+  }
+  @media (max-width: 950px) {
+    .nav-actions {
+      gap: 10px;
+    }
+  }
+  @media (max-width: 650px) {
+    .nav-wrap {
+      width: 92%;
+    }
+  }
+  @media (max-width: 650px) {
+    .mobile-menu {
+      display: block;
+      padding: 4px;
+    }
+  }
+  @media (max-width: 650px) {
+    .nav-actions {
+      gap: 15px;
+    }
+  }
+  @media (max-width: 650px) {
+    .nav-wrap nav {
+      display: none;
+      position: absolute;
+      top: 72px;
+      left: 0;
+      right: 0;
+      height: auto;
+      background: var(--color-surface);
+      padding: 15px 5%;
+      border-bottom: 1px solid var(--color-border);
+      box-shadow: var(--shadow-card);
+    }
+  }
+  @media (max-width: 650px) {
+    .nav-wrap nav.open {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+  }
+  @media (max-width: 650px) {
+    .nav-wrap nav a {
+      padding: 12px;
+      font-size: 13px;
+    }
+  }
+  @media (max-width: 650px) {
+    .nav-wrap nav a:after {
+      display: none;
+    }
+  }
+}
+@layer rr-customer {
+  .customer-header {
+    position: sticky;
+    top: 0;
+  }
+  .customer-header .phone {
+    font-size: 11px;
+    color: var(--color-primary);
+    font-weight: 650;
+    gap: 6px;
+    flex-wrap: wrap;
+    max-width: 110px;
+  }
+  .customer-header .phone > svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+  }
+}

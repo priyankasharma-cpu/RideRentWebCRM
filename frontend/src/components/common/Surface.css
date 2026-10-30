@@ -1,0 +1,9 @@
+@layer rr-customer {
+  .rr-panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 17px;
+    padding: 25px;
+    box-shadow: 0 3px 15px #39679d03;
+  }
+}

@@ -1,0 +1,60 @@
+@layer rr-enhancements {
+  .staff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .staff-card > .staff-avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .staff-card h3 {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+  .staff-card p {
+    font-size: 11px;
+    color: var(--color-muted);
+    margin-bottom: 17px;
+  }
+  .staff-card .status {
+    margin-right: 7px;
+  }
+  .staff-card button {
+    font-size: 10px;
+    margin-top: 25px;
+  }
+  @media (max-width: 1200px) {
+    .staff-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 750px) {
+    .staff-grid {
+      gap: 15px;
+    }
+  }
+  @media (max-width: 750px) {
+    .staff-card {
+      padding: 20px;
+    }
+  }
+  @media (max-width: 750px) {
+    .staff-card h3 {
+      font-size: 14px;
+    }
+  }
+  @media (max-width: 750px) {
+    .staff-card p {
+      font-size: 10px;
+      overflow-wrap: anywhere;
+    }
+  }
+  @media (max-width: 430px) {
+    .staff-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

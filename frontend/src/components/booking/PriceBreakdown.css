@@ -1,0 +1,35 @@
+@layer rr-customer {
+  .price-breakdown {
+    margin-block: 20px;
+  }
+  .price-breakdown > div {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 15px;
+    font-size: 12px;
+    margin-bottom: 13px;
+    color: var(--color-muted);
+  }
+  .price-breakdown strong {
+    color: var(--color-text);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .price-breakdown .total {
+    padding-top: 17px;
+    border-top: 1px solid var(--color-border);
+    font-weight: 700;
+    color: var(--color-text);
+    font-size: 13px;
+  }
+  .price-breakdown .total strong {
+    font-size: 19px;
+    color: var(--color-primary);
+  }
+  .price-breakdown > p {
+    font-size: 10px;
+    line-height: 1.9;
+    color: var(--color-muted);
+  }
+}

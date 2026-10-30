@@ -1,0 +1,6 @@
+@layer rr-base {
+  :root {
+    --radius-card: 17px;
+    --radius-control: 9px;
+  }
+}

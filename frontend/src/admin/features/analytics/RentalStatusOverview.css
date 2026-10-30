@@ -1,0 +1,6 @@
+@layer rr-enhancements {
+  .analytics-bottom {
+    margin-top: 24px;
+    grid-template-columns: 1.5fr 1fr;
+  }
+}

@@ -1,0 +1,30 @@
+@layer rr-base {
+  .theme-toggle {
+    height: 32px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-muted);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    color: var(--color-primary);
+  }
+  .toggle-knob {
+    width: 24px;
+    height: 24px;
+    background: #ffebce;
+    color: #d89f4e;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px #0001;
+  }
+  [data-theme='dark'] .toggle-knob {
+    background: #087bff;
+    color: white;
+  }
+  [data-theme='dark'] .theme-toggle {
+    border-color: #4094cf;
+  }
+}

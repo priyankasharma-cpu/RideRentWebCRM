@@ -1,0 +1,63 @@
+@layer rr-customer {
+  .mobile-call {
+    display: none;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .mobile-call {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 25;
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      gap: 10px;
+      padding: 9px 5%;
+      align-items: center;
+      box-shadow: 0 -5px 20px #00000008;
+    }
+  }
+  @media (max-width: 750px) {
+    .mobile-call > a {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 11px;
+      gap: 8px;
+      padding: 11px;
+    }
+  }
+  @media (max-width: 750px) {
+    .mobile-call > a:not(.rr-button) {
+      color: var(--color-primary);
+      background: var(--color-surface-muted);
+      border-radius: 9px;
+    }
+  }
+  @media (max-width: 750px) {
+    .mobile-call .demo-label {
+      font-size: 7px;
+    }
+  }
+  @media (max-width: 750px) {
+    .mobile-call .rr-button {
+      flex-wrap: wrap;
+      gap: 4px 7px;
+    }
+  }
+  @media (max-width: 750px) {
+    .mobile-call .demo-label {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  @media (max-width: 750px) {
+    body:has(.mobile-call) {
+      padding-bottom: 70px;
+    }
+  }
+}

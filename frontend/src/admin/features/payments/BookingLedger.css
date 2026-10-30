@@ -1,0 +1,53 @@
+@layer rr-enhancements {
+  .manage-history {
+    margin-top: 27px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 20px;
+  }
+}
+@layer rr-enhancements {
+  .manage-history h3 {
+    font-size: 14px;
+    margin-bottom: 13px;
+  }
+}
+@layer rr-enhancements {
+  .manage-history > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 10px;
+    border-bottom: 1px solid var(--color-border);
+    padding-block: 12px;
+    text-transform: capitalize;
+  }
+}
+@layer rr-enhancements {
+  .manage-history small {
+    display: block;
+    color: var(--color-muted);
+    font-size: 9px;
+    margin-top: 5px;
+    line-height: 1.7;
+  }
+}
+@layer rr-enhancements {
+  .manage-history .rr-button--text {
+    font-size: 10px;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .manage-history > div {
+      font-size: 9px;
+    }
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .manage-history .rr-button--text {
+      font-size: 9px;
+    }
+  }
+}

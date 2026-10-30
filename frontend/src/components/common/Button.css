@@ -1,0 +1,97 @@
+@layer rr-base {
+  .rr-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: linear-gradient(120deg, #0873ff, #008cff);
+    color: white;
+    font-weight: 700;
+    border: 1px solid #1a8aff;
+    border-radius: 11px;
+    padding: 13px 21px;
+    font-size: 13px;
+    box-shadow: 0 5px 13px #087bff19;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+  }
+  .rr-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 22px #087bff45;
+  }
+  .rr-button--outline {
+    border: 1px solid #91b9ff;
+    background: transparent;
+    color: var(--color-primary);
+    padding: 10px 17px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .rr-button--outline:hover {
+    background: var(--color-surface-muted);
+  }
+  .search-button {
+    width: 100%;
+    padding: 11px;
+    font-size: 11px;
+    border-radius: 9px;
+  }
+  @media (max-width: 650px) {
+    .search-button {
+      padding: 12px;
+      font-size: 12px;
+    }
+  }
+  @media (max-width: 650px) {
+    .section-heading .rr-button--outline {
+      font-size: 0;
+      padding: 9px;
+      border-radius: 50%;
+      gap: 0;
+    }
+  }
+  @media (max-width: 650px) {
+    .section-heading .rr-button--outline svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+@layer rr-customer {
+  .disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .full-width {
+    width: 100%;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .rr-button--text {
+    color: var(--color-primary);
+    background: transparent;
+    padding: 0;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .rr-button--danger {
+    color: var(--danger);
+    border: 1px solid #df4b6433;
+    background: #df4b6408;
+    border-radius: 9px;
+    padding: 10px 13px;
+    font-size: 11px;
+  }
+  .rr-button .demo-label {
+    color: inherit;
+  }
+}

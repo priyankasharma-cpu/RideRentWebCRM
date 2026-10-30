@@ -1,0 +1,91 @@
+@layer rr-enhancements {
+  .table-panel {
+    padding: 0;
+    overflow: hidden;
+  }
+}
+@layer rr-enhancements {
+  .table-panel > .panel-title {
+    padding: 23px 24px 0;
+    margin-bottom: 20px;
+  }
+}
+@layer rr-enhancements {
+  .table-scroll {
+    overflow: auto;
+    max-width: 100%;
+  }
+}
+@layer rr-enhancements {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    white-space: nowrap;
+  }
+}
+@layer rr-enhancements {
+  th {
+    background: var(--color-surface-muted);
+    color: var(--color-muted);
+    font-size: 9px;
+    font-weight: 600;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--color-border);
+  }
+}
+@layer rr-enhancements {
+  td {
+    font-size: 10px;
+    padding: 17px 20px;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+  }
+}
+@layer rr-enhancements {
+  tbody tr:last-child td {
+    border: 0;
+  }
+}
+@layer rr-enhancements {
+  tbody tr:hover {
+    background: color-mix(in srgb, var(--color-surface-muted) 45%, transparent);
+  }
+}
+@layer rr-enhancements {
+  td strong {
+    display: block;
+    font-size: 11px;
+    font-weight: 650;
+  }
+}
+@layer rr-enhancements {
+  td small {
+    display: block;
+    font-size: 9px;
+    color: var(--color-muted);
+    margin-top: 6px;
+    line-height: 1.6;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .table-panel > .panel-title {
+      padding: 19px 18px 0;
+    }
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .table-panel > .panel-title h3 {
+      font-size: 13px;
+    }
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .table-panel > .panel-title p {
+      font-size: 9px;
+    }
+  }
+}

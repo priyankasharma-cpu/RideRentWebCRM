@@ -1,0 +1,43 @@
+@layer rr-enhancements {
+  .fleet-chart {
+    min-width: 0;
+    padding: 22px;
+  }
+}
+@layer rr-enhancements {
+  .chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 17px;
+  }
+}
+@layer rr-enhancements {
+  .chart-legend span {
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--color-muted);
+  }
+}
+@layer rr-enhancements {
+  .chart-legend i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+}
+@layer rr-enhancements {
+  .chart-legend strong {
+    font-size: 10px;
+    color: var(--color-text);
+    margin-left: 3px;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 750px) {
+    .fleet-chart {
+      padding: 20px;
+    }
+  }
+}

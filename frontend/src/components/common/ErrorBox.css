@@ -1,0 +1,20 @@
+@layer rr-base {
+  .rr-error-text {
+    color: #ed5266;
+    font-size: 11px;
+    margin: 10px 0;
+  }
+}
+@layer rr-customer {
+  .error-box {
+    background: #e4496010;
+    border: 1px solid #e4496040;
+    color: var(--danger);
+    font-size: 12px;
+    line-height: 1.7;
+    padding: 13px 16px;
+    border-radius: 10px;
+    margin: 14px 0;
+    overflow-wrap: anywhere;
+  }
+}

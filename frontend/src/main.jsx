@@ -1,0 +1,11 @@
+import { createRoot } from 'react-dom/client';
+import './styles/globals.css';
+import './styles/variables.css';
+import './styles/light-theme.css';
+import './styles/dark-theme.css';
+import './components/common/Button.css';
+import './components/common/Surface.css';
+import './components/common/Page.css';
+import './components/common/FormControls.css';
+import App from './App';
+createRoot(document.getElementById('root')).render(<App />);

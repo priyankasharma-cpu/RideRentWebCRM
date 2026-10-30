@@ -1,0 +1,40 @@
+@layer rr-enhancements {
+  .action-form {
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    border-radius: 13px;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  .action-form > h3 {
+    font-size: 15px;
+    margin-bottom: 18px;
+  }
+  .action-form > .rr-button {
+    margin-top: 18px;
+    font-size: 11px;
+  }
+  .action-form .period-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 750px) {
+    .action-form {
+      padding: 16px;
+    }
+  }
+  @media (max-width: 750px) {
+    .action-form .form-grid {
+      gap: 12px;
+    }
+  }
+  @media (max-width: 750px) {
+    .action-form .form-grid label {
+      font-size: 10px;
+    }
+  }
+  @media (max-width: 750px) {
+    .action-form .period-fields {
+      grid-template-columns: 1fr;
+    }
+  }
+}

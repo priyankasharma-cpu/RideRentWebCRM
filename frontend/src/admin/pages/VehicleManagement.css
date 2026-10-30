@@ -1,0 +1,128 @@
+@layer rr-enhancements {
+  .admin-vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .admin-vehicle {
+    padding: 0;
+    overflow: hidden;
+  }
+  .admin-vehicle > img {
+    height: 175px;
+    object-fit: cover;
+    width: 100%;
+  }
+  .admin-vehicle > div {
+    padding: 20px;
+  }
+  .admin-vehicle .eyebrow {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+  .admin-vehicle h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .vehicle-admin-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 15px;
+    margin-top: 17px;
+  }
+  .vehicle-admin-stats span {
+    font-size: 8px;
+    color: var(--color-muted);
+  }
+  .vehicle-admin-stats strong {
+    font-size: 11px;
+    color: var(--color-text);
+    display: block;
+    margin-top: 7px;
+  }
+  @media (max-width: 1200px) {
+    .admin-vehicle-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-vehicle-grid {
+      gap: 15px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-vehicle > img {
+      height: 140px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-vehicle > div {
+      padding: 16px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-vehicle .eyebrow {
+      font-size: 7px;
+      letter-spacing: 0.5px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-vehicle h3 {
+      font-size: 13px;
+    }
+  }
+  @media (max-width: 750px) {
+    .vehicle-admin-stats {
+      flex-wrap: wrap;
+      gap: 13px;
+    }
+  }
+  @media (max-width: 750px) {
+    .vehicle-admin-stats span {
+      font-size: 8px;
+    }
+  }
+  @media (max-width: 750px) {
+    .vehicle-admin-stats strong {
+      font-size: 10px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-vehicle .rr-button--outline {
+      font-size: 9px;
+      padding: 9px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-vehicle-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-vehicle > img {
+      height: 190px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-vehicle h3 {
+      font-size: 17px;
+    }
+  }
+  @media (max-width: 430px) {
+    .vehicle-admin-stats {
+      flex-wrap: nowrap;
+    }
+  }
+  @media (max-width: 430px) {
+    .vehicle-admin-stats strong {
+      font-size: 12px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-vehicle .rr-button--outline {
+      font-size: 11px;
+    }
+  }
+}

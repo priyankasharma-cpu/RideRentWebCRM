@@ -1,0 +1,129 @@
+@layer rr-base {
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: #001023b8;
+    backdrop-filter: blur(7px);
+    display: grid;
+    place-items: center;
+    padding: 20px;
+  }
+  .booking-modal {
+    position: relative;
+    width: 520px;
+    max-width: 100%;
+    max-height: 90vh;
+    overflow: auto;
+    border-radius: 24px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 32px;
+    box-shadow: 0 20px 100px #0004;
+  }
+  .booking-modal h2 {
+    font-size: 26px;
+    padding-right: 15px;
+  }
+  .close-modal {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    background: var(--color-surface-muted);
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--color-muted);
+  }
+  .close-modal svg {
+    width: 17px;
+  }
+  .booking-modal form > label {
+    margin-bottom: 12px;
+    font-size: 11px;
+  }
+  .booking-modal form > label input {
+    height: 42px;
+    font-size: 12px;
+    padding: 12px;
+  }
+  .booking-modal .date-grid {
+    grid-template-columns: 1fr 1fr;
+    margin-top: 17px;
+  }
+  .booking-modal .date-grid label {
+    font-size: 10px;
+  }
+  .booking-modal .date-grid input {
+    font-size: 12px;
+  }
+  @media (max-width: 650px) {
+    .booking-modal {
+      padding: 26px 20px;
+      border-radius: 19px;
+    }
+  }
+  @media (max-width: 650px) {
+    .booking-modal h2 {
+      font-size: 23px;
+    }
+  }
+  @media (max-width: 650px) {
+    .booking-modal .date-grid input {
+      font-size: 11px;
+    }
+  }
+}
+@layer rr-enhancements {
+  .admin-modal {
+    width: 690px;
+    padding: 30px;
+  }
+  .admin-modal > h2 {
+    font-size: 22px;
+    margin-bottom: 22px;
+    overflow-wrap: anywhere;
+    padding-right: 10px;
+  }
+  .admin-modal .close-modal {
+    right: 14px;
+    top: 14px;
+  }
+  @media (max-width: 750px) {
+    .admin-modal {
+      padding: 24px 20px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-modal > h2 {
+      font-size: 20px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-modal .form-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-modal .form-grid label {
+      font-size: 10px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-modal .form-grid input {
+      font-size: 11px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-modal .form-grid select {
+      font-size: 11px;
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-modal .period-fields {
+      grid-template-columns: 1fr;
+    }
+  }
+}
