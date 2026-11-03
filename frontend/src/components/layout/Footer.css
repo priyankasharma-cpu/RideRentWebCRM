@@ -1,152 +1,571 @@
-@layer rr-base {
-  .customer-footer {
-    background: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    padding: 25px 0;
-  }
-  .footer-inner {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .footer-inner .brand strong {
-    font-size: 23px;
-  }
-  .footer-inner .brand svg {
-    width: 48px;
-  }
-  .footer-inner p {
-    color: var(--color-muted);
-    font-size: 10px;
-  }
-  .footer-inner > span {
-    color: var(--color-muted);
-    font-size: 10px;
-  }
-  .footer-inner > a:not(.brand) {
-    display: flex;
-    gap: 9px;
-    align-items: center;
-    font-size: 12px;
-  }
-  @media (max-width: 950px) {
-    .footer-inner {
-      gap: 15px;
-    }
-  }
-  @media (max-width: 950px) {
-    .footer-inner p {
-      display: none;
-    }
-  }
-  @media (max-width: 650px) {
-    .footer-inner {
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-  }
-  @media (max-width: 650px) {
-    .footer-inner .brand {
-      width: 100%;
-    }
-  }
-  @media (max-width: 650px) {
-    .footer-inner > a:not(.brand) {
-      font-size: 11px;
-    }
-  }
-  @media (max-width: 650px) {
-    .footer-inner > span {
-      margin-left: auto;
-      font-size: 9px;
-    }
-  }
-}
+/* ==========================================
+   RIDERENT — PREMIUM FOOTER
+   Light / Dark / Responsive
+   ========================================== */
+
 @layer rr-customer {
-  .footer-top {
+
+  /* 1. FOOTER THEME VARIABLES */
+
+  .rr-footer {
+    --rf-bg: #f1f6ff;
+    --rf-card: #ffffff;
+    --rf-heading: #102545;
+    --rf-text: #536782;
+    --rf-border: #d9e4f3;
+    --rf-accent: #0877f9;
+    --rf-soft: #e5f0ff;
+    --rf-bottom: rgba(255, 255, 255, 0.55);
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-top: 1px solid var(--rf-border);
+    color: var(--rf-text);
+
+    background:
+      radial-gradient(ellipse at 5% 20%,
+        rgba(109, 183, 255, 0.16),
+        transparent 40%),
+      radial-gradient(ellipse at 95% 5%,
+        rgba(176, 157, 255, 0.17),
+        transparent 42%),
+      var(--rf-bg);
+  }
+
+  [data-theme="dark"] .rr-footer {
+    --rf-bg: #081522;
+    --rf-card: #10283f;
+    --rf-heading: #f2f7ff;
+    --rf-text: #afc0d4;
+    --rf-border: #254059;
+    --rf-accent: #79baff;
+    --rf-soft: #132e48;
+    --rf-bottom: rgba(2, 12, 24, 0.45);
+  }
+
+  .rr-footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent,
+        #1687ff,
+        #9c8aff,
+        transparent);
+    opacity: 0.65;
+    pointer-events: none;
+  }
+
+  /* 2. MAIN FOUR-COLUMN LAYOUT */
+
+  .rr-footer__main {
+    display: grid;
+    grid-template-columns:
+      minmax(290px, 1.7fr) repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: clamp(28px, 3.2vw, 55px);
+    padding-block: 72px 64px;
+  }
+
+  /* 3. BRAND AREA */
+
+  .rr-footer__brand {
+    min-width: 0;
+  }
+
+  .rr-footer__brand-logo {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .rr-footer__brand-logo .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--rf-heading);
+  }
+
+  .rr-footer__brand-logo .brand svg {
+    width: 76px;
+    height: 55px;
+  }
+
+  .rr-footer__brand-logo .brand strong {
+    font-size: 34px;
+    letter-spacing: -1.5px;
+  }
+
+  .rr-footer__brand-logo .brand small {
+    font-size: 8px;
+    letter-spacing: 1.3px;
+  }
+
+  .rr-footer__tagline {
+    margin: 20px 0 10px;
+    color: var(--rf-heading);
+    font-size: clamp(20px, 2vw, 24px);
+    font-weight: 750;
+    line-height: 1.35;
+    letter-spacing: -0.5px;
+  }
+
+  .rr-footer__description {
+    max-width: 370px;
+    margin: 0;
+    color: var(--rf-text);
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  /* 4. SOCIAL MEDIA ICONS */
+
+  .rr-footer__socials {
     display: flex;
     align-items: center;
-    gap: 30px;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 11px;
+    margin-top: 24px;
   }
-  .footer-top p {
-    color: var(--color-muted);
+
+  .rr-footer__socials a {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border: 1px solid var(--rf-border);
+    border-radius: 14px;
+    background: var(--rf-card);
+    color: var(--rf-heading);
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(18, 53, 108, 0.05);
+    transition:
+      transform 0.25s ease,
+      color 0.25s ease,
+      background 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .rr-footer__socials a:hover {
+    transform: translateY(-4px);
+    background: #0877f9;
+    color: #ffffff;
+    border-color: #0877f9;
+    box-shadow: 0 10px 22px rgba(8, 119, 249, 0.2);
+  }
+
+  /* 5. PHONE CONTACT CARD */
+
+  .rr-footer__contact {
+    max-width: 390px;
+    margin-top: 30px;
+  }
+
+  .rr-footer__contact-heading {
+    margin: 0 0 12px;
+    color: var(--rf-heading);
+    font-size: 14px;
+    font-weight: 650;
+  }
+
+  .rr-footer__phone-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 96px;
+    padding: 17px;
+    border: 1px solid #258cff;
+    border-radius: 18px;
+    background: linear-gradient(125deg,
+        #0764dd,
+        #087cff 55%,
+        #1556c5);
+    color: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 14px 34px rgba(8, 105, 225, 0.19);
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .rr-footer__phone-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 19px 42px rgba(8, 105, 225, 0.29);
+  }
+
+  .rr-footer__phone-icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    flex: 0 0 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.13);
+  }
+
+  .rr-footer__phone-icon svg {
+    position: relative;
+    z-index: 2;
+    transform-origin: 50% 55%;
+    animation: rr-footer-ring 3.5s ease-in-out infinite;
+  }
+
+  .rr-footer__phone-icon::before,
+  .rr-footer__phone-icon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 50%;
+    opacity: 0;
+    animation: rr-footer-wave 3s ease-out infinite;
+    pointer-events: none;
+  }
+
+  .rr-footer__phone-icon::after {
+    animation-delay: 1.5s;
+  }
+
+  .rr-footer__phone-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .rr-footer__phone-label {
+    color: #e4f2ff;
+    font-size: 12px;
+    font-weight: 650;
+  }
+
+  .rr-footer__phone-info strong {
+    color: #ffffff;
+    font-size: clamp(18px, 1.7vw, 23px);
+    font-weight: 750;
+    line-height: 1.3;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+
+  .rr-footer__demo-label {
+    align-self: flex-start;
+    padding: 3px 7px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-size: 10px;
+  }
+
+  .rr-footer__phone-arrow {
+    margin-left: auto;
+    flex-shrink: 0;
+    color: #ffffff;
+    transition: transform 0.2s ease;
+  }
+
+  .rr-footer__phone-card:hover .rr-footer__phone-arrow {
+    transform: translate(3px, -3px);
+  }
+
+  /* 6. FOOTER NAVIGATION */
+
+  .rr-footer__nav-column {
+    min-width: 0;
+  }
+
+  .rr-footer__nav-column h2 {
+    position: relative;
+    margin: 12px 0 24px;
+    padding-bottom: 15px;
+    color: var(--rf-heading);
+    font-size: 17px;
+    font-weight: 750;
+    line-height: 1.5;
+  }
+
+  .rr-footer__nav-column h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 36px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--rf-accent);
+  }
+
+  .rr-footer__nav-column ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rr-footer__nav-column a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 26px;
+    color: var(--rf-text);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.6;
+    text-decoration: none;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .rr-footer__nav-column a svg {
+    opacity: 0;
+    transform: translate(-4px, 4px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .rr-footer__nav-column a:hover {
+    color: var(--rf-accent);
+    transform: translateX(3px);
+  }
+
+  .rr-footer__nav-column a:hover svg {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  /* 7. TRUST STRIP */
+
+  .rr-footer__trust {
+    border-top: 1px solid var(--rf-border);
+    border-bottom: 1px solid var(--rf-border);
+    background: color-mix(in srgb,
+        var(--rf-card) 55%,
+        transparent);
+  }
+
+  .rr-footer__trust-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-block: 23px;
+  }
+
+  .rr-footer__trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    color: var(--rf-heading);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .rr-footer__trust-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--rf-border);
+    border-radius: 12px;
+    background: var(--rf-soft);
+    color: var(--rf-accent);
+  }
+
+  /* 8. COPYRIGHT BAR */
+
+  .rr-footer__bottom {
+    background: var(--rf-bottom);
+  }
+
+  .rr-footer__bottom-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px 25px;
+    min-height: 78px;
+    padding-block: 20px;
+  }
+
+  .rr-footer__bottom-inner p {
+    margin: 0;
+    color: var(--rf-text);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .rr-footer__bottom-inner strong {
+    color: var(--rf-heading);
+  }
+
+  .rr-footer__bottom-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 22px;
+    color: var(--rf-text);
     font-size: 12px;
   }
-  .footer-links {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    font-size: 10px;
-    color: var(--color-muted);
-    border-top: 1px solid var(--color-border);
-    margin-top: 25px;
-    padding-top: 20px;
+
+  .rr-footer__bottom-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--rf-text);
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
-  .footer-links span {
-    margin-left: auto;
+
+  .rr-footer__bottom-links a:hover {
+    color: var(--rf-accent);
   }
-}
-@layer rr-enhancements {
-  @media (max-width: 1000px) {
-    .footer-links {
-      gap: 15px;
+
+  /* 9. PHONE ANIMATION */
+
+  @keyframes rr-footer-ring {
+
+    0%,
+    30%,
+    100% {
+      transform: rotate(0deg);
+    }
+
+    5%,
+    15% {
+      transform: rotate(-12deg);
+    }
+
+    10%,
+    20% {
+      transform: rotate(12deg);
+    }
+
+    25% {
+      transform: rotate(-4deg);
     }
   }
-  @media (max-width: 1000px) {
-    .footer-links span {
-      width: 100%;
-      margin-left: 0;
+
+  @keyframes rr-footer-wave {
+    0% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+
+    80%,
+    100% {
+      opacity: 0;
+      transform: scale(1.55);
     }
   }
-  @media (max-width: 750px) {
-    .footer-top {
-      gap: 20px;
-      flex-wrap: wrap;
+
+  /* 10. TABLET */
+
+  @media (max-width: 1100px) {
+    .rr-footer__main {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px;
+      padding-block: 55px 45px;
     }
   }
-  @media (max-width: 750px) {
-    .footer-top p {
-      display: none;
+
+  /* 11. MOBILE */
+
+  @media (max-width: 700px) {
+    .rr-footer__main {
+      grid-template-columns: 1fr;
+      gap: 30px;
+      padding-block: 40px;
+    }
+
+    .rr-footer__tagline {
+      font-size: 21px;
+    }
+
+    .rr-footer__description {
+      font-size: 14px;
+    }
+
+    .rr-footer__contact {
+      max-width: 100%;
+    }
+
+    .rr-footer__nav-column {
+      padding-top: 22px;
+      border-top: 1px solid var(--rf-border);
+    }
+
+    .rr-footer__nav-column h2 {
+      margin: 0 0 18px;
+    }
+
+    .rr-footer__nav-column a {
+      min-height: 38px;
+    }
+
+    .rr-footer__trust-inner {
+      justify-content: flex-start;
+      gap: 16px;
+    }
+
+    .rr-footer__trust-item {
+      font-size: 13px;
+    }
+
+    .rr-footer__bottom-inner {
+      align-items: flex-start;
+      flex-direction: column;
     }
   }
-  @media (max-width: 750px) {
-    .footer-top > .rr-button {
-      padding: 10px 14px;
-      font-size: 10px;
+
+  @media (max-width: 380px) {
+    .rr-footer__phone-card {
+      padding: 14px;
+      gap: 10px;
+    }
+
+    .rr-footer__phone-icon {
+      width: 42px;
+      height: 42px;
+      flex-basis: 42px;
+    }
+
+    .rr-footer__phone-info strong {
+      font-size: 17px;
     }
   }
-  @media (max-width: 750px) {
-    .footer-top .brand strong {
-      font-size: 23px;
-    }
+
+  /* 12. ACCESSIBILITY */
+
+  .rr-footer a:focus-visible {
+    outline: 2px solid var(--rf-accent);
+    outline-offset: 4px;
   }
-  @media (max-width: 750px) {
-    .footer-top .brand svg {
-      width: 50px;
-    }
+
+  .rr-footer__phone-card:focus-visible {
+    outline-color: #ffffff;
   }
-  @media (max-width: 750px) {
-    .footer-links {
-      font-size: 9px;
-      gap: 15px;
-    }
-  }
-  @media (max-width: 430px) {
-    .footer-top > .rr-button {
-      font-size: 9px;
-      padding: 9px 12px;
-    }
-  }
-  @media (max-width: 430px) {
-    .footer-top .brand svg {
-      width: 44px;
-    }
-  }
-  @media (max-width: 430px) {
-    .footer-top .brand strong {
-      font-size: 22px;
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .rr-footer *,
+    .rr-footer *::before,
+    .rr-footer *::after {
+      animation: none !important;
+      transition: none !important;
     }
   }
 }

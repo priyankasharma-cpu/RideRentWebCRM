@@ -15,6 +15,7 @@ const VEHICLES = [
       { x: 1201, y: 830, rx: 195, ry: 182 },
     ],
     hardware: [
+      'M130 414 L235 407 L438 463 L453 493 L402 636 L370 660 L146 604 L126 566 Z',
       'M348 682 L398 688 L610 824 L628 844 L598 866 L550 867 L346 756 Z',
       'M326 801 L456 781 L592 801 L585 838 L380 860 L326 846 Z',
       'M1063 599 L1125 608 L1153 705 L1183 765 L1231 816 L1227 847 L1181 856 L1102 835 L1086 803 L1111 774 L1085 711 Z',
@@ -33,6 +34,7 @@ const VEHICLES = [
       { x: 1370, y: 769, rx: 176, ry: 159 },
     ],
     hardware: [
+      'M150 420 L800 540 L890 640 L870 700 L596 714 Q478 636 317 642 L236 666 L177 623 Z',
       'M324 689 L481 722 L540 774 L527 811 L465 811 L321 756 Z',
       'M1255 573 L1294 590 L1386 757 L1385 780 L1360 791 L1343 775 L1280 653 Z',
     ],
@@ -46,11 +48,12 @@ const VEHICLES = [
     icon: CarFront,
   },
 ];
+const WHEEL_MASK_CLEARANCE = 30;
 const IMAGE_ROOT = '/images/animations/';
 // These coordinates belong to the supplied photographic cutouts, not generic vehicle geometry.
 // The body mask removes tyres while restoring stationary fork/exhaust pixels above the wheel layers.
 function bodyMask(vehicle) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${vehicle.width}" height="${vehicle.height}" viewBox="0 0 ${vehicle.width} ${vehicle.height}"><defs><mask id="body" maskUnits="userSpaceOnUse" x="0" y="0" width="${vehicle.width}" height="${vehicle.height}"><rect width="100%" height="100%" fill="white"/>${vehicle.wheels.map(({ x, y, rx, ry }) => `<ellipse cx="${x}" cy="${y}" rx="${rx + 10}" ry="${ry + 10}" fill="black"/>`).join('')}${vehicle.hardware.map((path) => `<path d="${path}" fill="white"/>`).join('')}</mask></defs><rect width="100%" height="100%" fill="white" mask="url(#body)"/></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${vehicle.width}" height="${vehicle.height}" viewBox="0 0 ${vehicle.width} ${vehicle.height}"><defs><mask id="body" maskUnits="userSpaceOnUse" x="0" y="0" width="${vehicle.width}" height="${vehicle.height}"><rect width="100%" height="100%" fill="white"/>${vehicle.wheels.map(({ x, y, rx, ry }) => `<ellipse cx="${x}" cy="${y}" rx="${rx + WHEEL_MASK_CLEARANCE}" ry="${ry + WHEEL_MASK_CLEARANCE}" fill="black"/>`).join('')}${vehicle.hardware.map((path) => `<path d="${path}" fill="white"/>`).join('')}</mask></defs><rect width="100%" height="100%" fill="white" mask="url(#body)"/></svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }
 const BODY_MASKS = Object.fromEntries(

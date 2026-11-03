@@ -1,201 +1,675 @@
-@layer rr-base {
+@layer rr-customer {
+  /* =========================================
+     1. HEADER SETTINGS
+     Edit these variables for quick changes.
+  ========================================= */
+
   .customer-header {
-    height: 84px;
-    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
-    border-bottom: 1px solid var(--color-border);
-    position: relative;
-    z-index: 10;
+    --header-height: 82px;
+    --header-gutter: 28px;
+    --header-max-width: 1600px;
+
+    --header-logo-mark: 61px;
+    --header-logo-word: 29px;
+
+    --header-nav-gap: 28px;
+    --header-main-gap: 32px;
+    --header-action-gap: 18px;
+
+    --header-border: var(--color-border);
+    --header-bg: var(--color-surface);
+    --header-text: var(--color-text);
+    --header-muted: var(--color-muted);
+    --header-blue: var(--color-primary);
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    height: var(--header-height);
+
+    border-bottom: 1px solid var(--header-border);
+    background: var(--header-bg);
+    box-shadow: 0 4px 20px rgba(14, 42, 80, 0.05);
   }
-  .nav-wrap {
+
+  [data-theme='dark'] .customer-header {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  /* =========================================
+     2. DESKTOP LAYOUT
+     No oversized empty grid columns.
+  ========================================= */
+
+  .customer-header__inner {
+    width: min(calc(100% - var(--header-gutter) * 2), var(--header-max-width));
     height: 100%;
-    width: min(1360px, 92%);
-    margin: auto;
+    margin-inline: auto;
+
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
+
+    align-items: center;
+    column-gap: var(--header-main-gap);
+  }
+
+  /* =========================================
+     3. LOGO
+  ========================================= */
+
+  .customer-header__logo {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 30px;
+    justify-self: start;
+    min-width: 0;
   }
-  .nav-wrap nav {
-    display: flex;
+
+  .customer-header__logo .brand {
+    display: inline-flex;
     align-items: center;
-    gap: 27px;
-    height: 100%;
-  }
-  .nav-wrap nav a {
-    font-size: 12px;
+    gap: 6px;
     white-space: nowrap;
+  }
+
+  .customer-header__logo .brand svg {
+    width: var(--header-logo-mark);
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  .customer-header__logo .brand strong {
+    font-size: var(--header-logo-word);
+    font-weight: 750;
+    letter-spacing: -1.3px;
+  }
+
+  .customer-header__logo .brand small {
+    margin-top: 2px;
+    font-size: 7px;
+    letter-spacing: 1.1px;
+  }
+
+  /* =========================================
+     4. CENTER NAVIGATION
+  ========================================= */
+
+  .customer-header__panel {
+    min-width: 0;
     height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
+  }
+
+  .customer-header__navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--header-nav-gap);
+    height: 100%;
+    min-width: 0;
+  }
+
+  .customer-header__navigation > a {
     position: relative;
-    font-weight: 550;
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    min-height: 44px;
+
+    color: var(--header-text);
+    font-size: 16px;
+    font-weight: 650;
+    line-height: 1.4;
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition: color 0.2s ease;
   }
-  .nav-wrap nav a:hover {
-    color: var(--color-primary);
+
+  .customer-header__navigation > a:hover,
+  .customer-header__navigation > a.active,
+  .customer-header__navigation > a.customer-header__nav-active {
+    color: var(--header-blue);
   }
-  .nav-wrap nav a.active {
-    color: var(--color-primary);
-  }
-  .nav-wrap nav a.active:after {
+
+  .customer-header__navigation > a::after {
     content: '';
     position: absolute;
-    bottom: 13px;
-    height: 2px;
+    bottom: 17px;
     left: 0;
-    right: 0;
-    background: var(--color-primary);
+    width: 100%;
+    height: 2px;
+    border-radius: 3px;
+    background: var(--header-blue);
+
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.2s ease;
   }
-  .nav-actions {
-    display: flex;
-    gap: 22px;
-    align-items: center;
+
+  .customer-header__navigation > a:hover::after,
+  .customer-header__navigation > a.active::after,
+  .customer-header__navigation > a.customer-header__nav-active::after {
+    transform: scaleX(1);
   }
-  .phone {
+
+  /* =========================================
+     5. RIGHT ACTIONS
+  ========================================= */
+
+  .customer-header__actions {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-self: end;
+    gap: var(--header-action-gap);
+    min-width: 0;
+  }
+
+  .customer-header__theme {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+
+  /* ThemeToggle keeps its own functionality.
+     This wrapper only controls placement. */
+
+  /* =========================================
+     6. INCOMING CALL BUTTON
+  ========================================= */
+
+  .customer-header__call {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 50px;
+    padding: 6px 12px;
+
+    border: 1px solid color-mix(in srgb, var(--header-blue) 22%, var(--header-border));
+    border-radius: 14px;
+
+    background: color-mix(in srgb, var(--header-blue) 5%, var(--header-bg));
+
+    color: var(--header-text);
+    text-decoration: none;
     white-space: nowrap;
-    padding-left: 20px;
-    border-left: 1px solid var(--color-border);
+
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      transform 0.2s ease;
   }
-  .phone > svg {
-    width: 26px;
-    height: 26px;
-    fill: var(--color-primary);
-    color: var(--color-primary);
+
+  .customer-header__call:hover {
+    border-color: var(--header-blue);
+    background: color-mix(in srgb, var(--header-blue) 9%, var(--header-bg));
+    transform: translateY(-1px);
   }
-  .phone small {
+
+  .customer-header__call-icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+
+    width: 37px;
+    height: 37px;
+    flex: 0 0 37px;
+
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--header-blue) 12%, transparent);
+    color: var(--header-blue);
+  }
+
+  .customer-header__call-icon svg {
+    position: relative;
+    z-index: 1;
+    transform-origin: 50% 55%;
+    animation: rr-header-ring 3.6s ease-in-out infinite;
+  }
+
+  .customer-header__call-icon::before,
+  .customer-header__call-icon::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--header-blue);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    animation: rr-header-wave 3s ease-out infinite;
+  }
+
+  .customer-header__call-icon::after {
+    animation-delay: 1.5s;
+  }
+
+  .customer-header__call-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .customer-header__call-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--header-muted);
     font-size: 10px;
-    display: block;
-    margin-bottom: 3px;
+    font-weight: 600;
   }
-  .phone strong {
-    font-size: 13px;
+
+  .customer-header__placeholder {
+    font-size: 9px;
+    font-weight: 500;
   }
-  .nav-book {
+
+  .customer-header__placeholder::before {
+    content: '·';
+    margin-right: 5px;
+  }
+
+  .customer-header__call strong {
+    font-size: 16px;
+    font-weight: 750;
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* =========================================
+     7. BOOK A RIDE BUTTON
+  ========================================= */
+
+  .customer-header__booking {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    min-height: 48px;
+    padding: 12px 18px;
+
+    border: 1px solid #167eff;
+    border-radius: 13px;
+
+    background: linear-gradient(115deg, #0879f9, #075bd4);
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 750;
+    line-height: 1.3;
+    text-decoration: none;
     white-space: nowrap;
-    font-size: 12px;
+
+    box-shadow: 0 6px 18px rgba(8, 115, 245, 0.18);
+
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
   }
-  .mobile-menu {
+
+  .customer-header__booking:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(8, 115, 245, 0.27);
+  }
+
+  .customer-header__booking svg {
+    transition: transform 0.2s ease;
+  }
+
+  .customer-header__booking:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* =========================================
+     8. ELEMENTS HIDDEN ON DESKTOP
+  ========================================= */
+
+  .customer-header__menu-toggle,
+  .customer-header__drawer-heading,
+  .customer-header__drawer-booking,
+  .customer-header__backdrop {
     display: none;
-    background: transparent;
   }
-  @media (max-width: 1200px) {
-    .nav-wrap {
-      gap: 20px;
-    }
-  }
-  @media (max-width: 1200px) {
-    .nav-wrap nav {
-      gap: 18px;
-    }
-  }
-  @media (max-width: 1200px) {
-    .nav-actions {
-      gap: 14px;
-    }
-  }
-  @media (max-width: 1200px) {
-    .phone {
-      display: none;
-    }
-  }
-  @media (max-width: 950px) {
+
+  /* =========================================
+     9. DESKTOP TIGHT SPACING
+  ========================================= */
+
+  @media (min-width: 1240px) and (max-width: 1359px) {
     .customer-header {
-      height: 73px;
+      --header-gutter: 20px;
+      --header-main-gap: 24px;
+      --header-nav-gap: 22px;
+      --header-action-gap: 14px;
+      --header-logo-mark: 54px;
+      --header-logo-word: 27px;
+    }
+    .customer-header__call {
+      padding-inline: 8px;
+      gap: 6px;
+    }
+    .customer-header__call-icon {
+      width: 30px;
+      height: 30px;
+      flex-basis: 30px;
+    }
+    .customer-header__booking {
+      padding-inline: 12px;
     }
   }
-  @media (max-width: 950px) {
-    .nav-wrap nav {
-      gap: 14px;
+
+  /* =========================================
+     10. TABLET / MOBILE DRAWER
+  ========================================= */
+
+  @media (max-width: 1239px) {
+    .customer-header__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 14px;
     }
-  }
-  @media (max-width: 950px) {
-    .nav-wrap nav a {
-      font-size: 10px;
+
+    .customer-header__menu-toggle {
+      display: grid;
+      place-items: center;
+
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+
+      border: 1px solid var(--header-border);
+      border-radius: 12px;
+
+      background: var(--color-surface-muted);
+      color: var(--header-text);
+      cursor: pointer;
     }
-  }
-  @media (max-width: 950px) {
-    .nav-book {
-      display: none;
-    }
-  }
-  @media (max-width: 950px) {
-    .nav-wrap {
-      gap: 18px;
-    }
-  }
-  @media (max-width: 950px) {
-    .nav-actions {
-      gap: 10px;
-    }
-  }
-  @media (max-width: 650px) {
-    .nav-wrap {
-      width: 92%;
-    }
-  }
-  @media (max-width: 650px) {
-    .mobile-menu {
+
+    .customer-header__backdrop {
       display: block;
-      padding: 4px;
+      position: fixed;
+      inset: var(--header-height) 0 0;
+      z-index: 1;
+
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: rgba(3, 14, 33, 0.58);
+
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+
+      transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
     }
-  }
-  @media (max-width: 650px) {
-    .nav-actions {
-      gap: 15px;
-    }
-  }
-  @media (max-width: 650px) {
-    .nav-wrap nav {
-      display: none;
-      position: absolute;
-      top: 72px;
-      left: 0;
+
+    .customer-header__panel {
+      position: fixed;
+      z-index: 2;
+
+      top: var(--header-height);
       right: 0;
+      bottom: 0;
+
+      width: min(380px, 100%);
       height: auto;
-      background: var(--color-surface);
-      padding: 15px 5%;
-      border-bottom: 1px solid var(--color-border);
-      box-shadow: var(--shadow-card);
-    }
-  }
-  @media (max-width: 650px) {
-    .nav-wrap nav.open {
+
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      gap: 0;
+      justify-content: flex-start;
+      gap: 20px;
+
+      padding: 24px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+
+      border-left: 1px solid var(--header-border);
+      background: var(--header-bg);
+      box-shadow: -12px 0 36px rgba(0, 0, 0, 0.13);
+
+      transform: translateX(100%);
+      visibility: hidden;
+      pointer-events: none;
+
+      transition:
+        transform 0.28s ease,
+        visibility 0.28s ease;
+    }
+
+    .customer-header[data-menu-open='true'] .customer-header__backdrop {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition:
+        opacity 0.25s ease,
+        transform 0.28s ease,
+        visibility 0s;
+    }
+
+    .customer-header[data-menu-open='true'] .customer-header__panel {
+      transform: translateX(0);
+      visibility: visible;
+      pointer-events: auto;
+      transition:
+        opacity 0.25s ease,
+        transform 0.28s ease,
+        visibility 0s;
+    }
+
+    .customer-header__drawer-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      color: var(--header-muted);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    .customer-header__drawer-close {
+      display: grid;
+      place-items: center;
+
+      width: 42px;
+      height: 42px;
+
+      border: 1px solid var(--header-border);
+      border-radius: 11px;
+
+      background: var(--color-surface-muted);
+      color: var(--header-text);
+      cursor: pointer;
+    }
+
+    .customer-header__navigation {
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 5px;
+    }
+
+    .customer-header__navigation > a {
+      display: flex;
+      align-items: center;
+
+      width: 100%;
+      height: auto;
+      min-height: 48px;
+      padding: 12px 15px;
+
+      border-radius: 11px;
+      font-size: 16px;
+    }
+
+    .customer-header__navigation > a.active,
+    .customer-header__navigation > a.customer-header__nav-active {
+      background: color-mix(in srgb, var(--header-blue) 9%, var(--header-bg));
+    }
+
+    .customer-header__navigation > a::after {
+      bottom: 7px;
+      left: 15px;
+      width: 26px;
+    }
+
+    .customer-header__drawer-booking {
+      display: inline-flex;
+      width: 100%;
+      margin-top: auto;
+      flex-shrink: 0;
     }
   }
-  @media (max-width: 650px) {
-    .nav-wrap nav a {
-      padding: 12px;
-      font-size: 13px;
-    }
-  }
-  @media (max-width: 650px) {
-    .nav-wrap nav a:after {
+
+  /* =========================================
+     11. TABLET
+  ========================================= */
+
+  @media (max-width: 1000px) {
+    .customer-header__desktop-booking {
       display: none;
     }
   }
-}
-@layer rr-customer {
-  .customer-header {
-    position: sticky;
-    top: 0;
+
+  /* =========================================
+     12. MOBILE
+  ========================================= */
+
+  @media (max-width: 767px) {
+    .customer-header {
+      --header-height: 72px;
+      --header-gutter: 12px;
+      --header-logo-mark: 43px;
+      --header-logo-word: 23px;
+      --header-action-gap: 6px;
+    }
+
+    .customer-header__inner {
+      column-gap: 8px;
+    }
+
+    .customer-header__logo .brand {
+      gap: 3px;
+    }
+
+    .customer-header__logo .brand small {
+      font-size: 6px;
+      letter-spacing: 0.7px;
+    }
+
+    .customer-header__call {
+      width: 43px;
+      height: 43px;
+      min-height: 43px;
+      padding: 0;
+      justify-content: center;
+      border: 0;
+      background: transparent;
+    }
+
+    .customer-header__call-copy {
+      display: none;
+    }
+
+    .customer-header__call-icon {
+      width: 37px;
+      height: 37px;
+      flex-basis: 37px;
+    }
+
+    .customer-header__menu-toggle {
+      width: 42px;
+      height: 42px;
+      flex-basis: 42px;
+    }
+
+    .customer-header__panel {
+      padding: 20px;
+    }
   }
-  .customer-header .phone {
-    font-size: 11px;
-    color: var(--color-primary);
-    font-weight: 650;
-    gap: 6px;
-    flex-wrap: wrap;
-    max-width: 110px;
+
+  /* =========================================
+     13. VERY SMALL SCREENS
+  ========================================= */
+
+  @media (max-width: 380px) {
+    .customer-header {
+      --header-logo-mark: 35px;
+      --header-logo-word: 20px;
+      --header-action-gap: 4px;
+    }
+
+    .customer-header__logo .brand small {
+      font-size: 5.5px;
+    }
+
+    .customer-header__inner {
+      column-gap: 5px;
+    }
   }
-  .customer-header .phone > svg {
-    width: 20px;
-    height: 20px;
-    fill: none;
+
+  /* =========================================
+     14. ACCESSIBILITY
+  ========================================= */
+
+  .customer-header :is(a, button):focus-visible {
+    outline: 2px solid var(--header-blue);
+    outline-offset: 3px;
+  }
+
+  @keyframes rr-header-ring {
+    0%,
+    30%,
+    100% {
+      transform: rotate(0);
+    }
+
+    5%,
+    15% {
+      transform: rotate(-12deg);
+    }
+
+    10%,
+    20% {
+      transform: rotate(12deg);
+    }
+
+    25% {
+      transform: rotate(-4deg);
+    }
+  }
+
+  @keyframes rr-header-wave {
+    0% {
+      opacity: 0.35;
+      transform: scale(1);
+    }
+
+    80%,
+    100% {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .customer-header *,
+    .customer-header *::before,
+    .customer-header *::after {
+      animation: none !important;
+      transition: none !important;
+    }
   }
 }

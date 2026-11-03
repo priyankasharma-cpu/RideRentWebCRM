@@ -5,10 +5,12 @@
     flex-shrink: 0;
     gap: 4px;
   }
+
   .brand svg {
     width: 67px;
     height: 47px;
   }
+
   .brand strong {
     font-family: Manrope, sans-serif;
     font-size: 29px;
@@ -18,9 +20,11 @@
     line-height: 1.1;
     display: block;
   }
+
   .brand-dot {
     color: var(--color-primary);
   }
+
   .brand small {
     font-size: 8px;
     letter-spacing: 1.5px;
@@ -28,27 +32,32 @@
     margin-top: 4px;
     font-weight: 700;
   }
+
   @media (max-width: 950px) {
     .brand strong {
       font-size: 25px;
     }
   }
+
   @media (max-width: 950px) {
     .brand svg {
       width: 53px;
     }
   }
+
   @media (max-width: 650px) {
     .brand strong {
       font-size: 25px;
     }
   }
+
   @media (max-width: 650px) {
     .brand small {
       font-size: 7px;
       letter-spacing: 1.2px;
     }
   }
+
   @media (max-width: 650px) {
     .brand svg {
       width: 52px;

@@ -1,8 +1,7 @@
-export const customerNavigation = [
-  ['Home', '/'],
-  ['Vehicles', '/vehicles'],
-  ['About', '/about'],
-  ['How It Works', '/how-it-works'],
-  ['Rental Policy', '/rental-policy'],
-  ['Contact', '/contact'],
+export const navigationLinks = [
+  { label: 'Home', path: '/' },
+  { label: 'Vehicles', path: '/vehicles' },
+  { label: 'About', path: '/about' },
+  { label: 'Rental Policy', path: '/rental-policy' },
+  { label: 'Contact', path: '/contact' },
 ];

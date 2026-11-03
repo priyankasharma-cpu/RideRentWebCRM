@@ -28,3 +28,74 @@
     border-color: #4094cf;
   }
 }
+
+@layer rr-customer {
+  .theme-toggle--capsule {
+    width: var(--theme-capsule-width, 88px);
+    height: 44px;
+    min-width: var(--theme-capsule-width, 88px);
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    display: grid;
+    place-items: center;
+  }
+  .theme-toggle__track {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    width: var(--theme-capsule-width, 88px);
+    height: var(--theme-capsule-height, 40px);
+    padding: 3px;
+    border: 1px solid var(--color-border);
+    border-radius: 30px;
+    background: var(--color-surface-muted);
+    color: var(--color-muted);
+  }
+  .theme-toggle__indicator {
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: calc((var(--theme-capsule-width, 88px) - 8px) / 2);
+    height: calc(var(--theme-capsule-height, 40px) - 8px);
+    border-radius: 20px;
+    background: var(--color-surface);
+    box-shadow: 0 1px 5px #12274715;
+    transition:
+      transform 0.25s ease,
+      background 0.25s ease;
+  }
+  .theme-toggle__track > svg {
+    position: relative;
+    z-index: 1;
+    transition: color 0.2s;
+  }
+  .theme-toggle--capsule[data-theme='light'] .theme-toggle__sun {
+    color: var(--color-primary);
+  }
+  .theme-toggle--capsule[data-theme='dark'] .theme-toggle__indicator {
+    transform: translateX(100%);
+    background: var(--color-primary);
+  }
+  .theme-toggle--capsule[data-theme='dark'] .theme-toggle__moon {
+    color: #fff;
+  }
+  .theme-toggle--capsule:hover .theme-toggle__track {
+    border-color: var(--color-primary);
+  }
+  .theme-toggle--capsule:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .theme-toggle--capsule *,
+    .theme-toggle--capsule *::before,
+    .theme-toggle--capsule *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}
