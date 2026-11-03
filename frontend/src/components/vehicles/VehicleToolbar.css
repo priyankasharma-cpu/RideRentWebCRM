@@ -1,0 +1,396 @@
+@layer rr-customer {
+
+  /* =====================================
+     RIDERENT — VEHICLE TOOLBAR
+     ===================================== */
+
+  .vehicle-toolbar {
+    width: 100%;
+    margin-bottom: 22px;
+    padding: 18px 20px;
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    background: var(--color-surface);
+    box-shadow: 0 5px 24px rgba(22, 46, 95, 0.035);
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .vehicle-toolbar:hover {
+    border-color: color-mix(in srgb,
+        var(--color-primary) 20%,
+        var(--color-border));
+    box-shadow: 0 9px 30px rgba(22, 46, 95, 0.055);
+  }
+
+  /* TOP ROW */
+
+  .vehicle-toolbar__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  /* RESULTS */
+
+  .vehicle-toolbar__results {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .vehicle-toolbar__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+    color: var(--color-primary);
+    background: color-mix(in srgb,
+        var(--color-primary) 9%,
+        var(--color-surface));
+    border: 1px solid color-mix(in srgb,
+        var(--color-primary) 12%,
+        transparent);
+    transition:
+      transform 0.25s ease,
+      background 0.25s ease;
+  }
+
+  .vehicle-toolbar__results:hover .vehicle-toolbar__icon {
+    transform: translateY(-2px);
+    background: color-mix(in srgb,
+        var(--color-primary) 14%,
+        var(--color-surface));
+  }
+
+  .vehicle-toolbar__count {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .vehicle-toolbar__heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .vehicle-toolbar__heading strong {
+    color: var(--color-text);
+    font-size: clamp(15px, 1.4vw, 19px);
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: -0.025em;
+  }
+
+  .vehicle-toolbar__live-dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #18b98d;
+    box-shadow: 0 0 0 4px rgba(24, 185, 141, 0.11);
+  }
+
+  .vehicle-toolbar__subtitle {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .vehicle-toolbar__subtitle svg {
+    flex-shrink: 0;
+    color: var(--color-primary);
+  }
+
+  /* SORTING */
+
+  .vehicle-toolbar__sort-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .vehicle-toolbar__sort-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-muted);
+  }
+
+  .vehicle-toolbar__sort-label svg {
+    color: var(--color-primary);
+  }
+
+  .vehicle-toolbar__select-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 205px;
+    height: 45px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface-muted);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .vehicle-toolbar__select-wrap:hover {
+    border-color: var(--color-primary);
+    background: var(--color-surface);
+  }
+
+  .vehicle-toolbar__select-wrap:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb,
+        var(--color-primary) 12%,
+        transparent);
+  }
+
+  .vehicle-toolbar__select-wrap select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0 35px 0 40px;
+    border: none;
+    border-radius: inherit;
+    outline: none;
+    background: transparent;
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+  }
+
+  .vehicle-toolbar__select-wrap select:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  .vehicle-toolbar__select-icon {
+    position: absolute;
+    left: 13px;
+    color: var(--color-primary);
+    pointer-events: none;
+  }
+
+  .vehicle-toolbar__chevron {
+    position: absolute;
+    right: 12px;
+    color: var(--color-muted);
+    pointer-events: none;
+    transition: transform 0.2s ease;
+  }
+
+  .vehicle-toolbar__select-wrap:hover .vehicle-toolbar__chevron {
+    transform: translateY(2px);
+  }
+
+  /* ACTIVE FILTERS */
+
+  .vehicle-toolbar__filter-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-top: 17px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .vehicle-toolbar__filter-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+    min-height: 34px;
+    color: var(--color-muted);
+    font-size: 12px;
+    font-weight: 650;
+  }
+
+  .vehicle-toolbar__filter-label svg {
+    color: var(--color-primary);
+  }
+
+  .vehicle-toolbar__filter-count {
+    display: grid;
+    place-items: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 6px;
+    background: color-mix(in srgb,
+        var(--color-primary) 12%,
+        var(--color-surface));
+    color: var(--color-primary);
+    font-size: 10px;
+    font-weight: 800;
+  }
+
+  .vehicle-toolbar__chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .vehicle-toolbar__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 34px;
+    max-width: 100%;
+    padding: 7px 10px 7px 12px;
+    border: 1px solid color-mix(in srgb,
+        var(--color-primary) 17%,
+        var(--color-border));
+    border-radius: 9px;
+    background: color-mix(in srgb,
+        var(--color-primary) 7%,
+        var(--color-surface));
+    color: var(--color-text);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .vehicle-toolbar__chip:hover {
+    transform: translateY(-1px);
+    border-color: var(--color-primary);
+    background: color-mix(in srgb,
+        var(--color-primary) 12%,
+        var(--color-surface));
+  }
+
+  .vehicle-toolbar__chip svg {
+    flex-shrink: 0;
+    color: var(--color-primary);
+  }
+
+  .vehicle-toolbar__clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 7px 10px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--color-muted);
+    font-size: 11px;
+    font-weight: 650;
+    cursor: pointer;
+    transition:
+      color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .vehicle-toolbar__clear:hover {
+    color: var(--color-primary);
+    background: color-mix(in srgb,
+        var(--color-primary) 7%,
+        transparent);
+  }
+
+  .vehicle-toolbar__chip:focus-visible,
+  .vehicle-toolbar__clear:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  /* RESPONSIVE */
+
+  @media (max-width: 900px) {
+    .vehicle-toolbar {
+      padding: 16px;
+    }
+
+    .vehicle-toolbar__sort-area {
+      gap: 8px;
+    }
+
+    .vehicle-toolbar__select-wrap {
+      width: 185px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .vehicle-toolbar {
+      padding: 15px;
+      border-radius: 15px;
+    }
+
+    .vehicle-toolbar__top {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 17px;
+    }
+
+    .vehicle-toolbar__results {
+      gap: 11px;
+    }
+
+    .vehicle-toolbar__icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 12px;
+    }
+
+    .vehicle-toolbar__heading strong {
+      font-size: 16px;
+    }
+
+    .vehicle-toolbar__sort-area {
+      justify-content: space-between;
+    }
+
+    .vehicle-toolbar__select-wrap {
+      width: min(65%, 230px);
+    }
+
+    .vehicle-toolbar__filter-row {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .vehicle-toolbar__chips {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .vehicle-toolbar,
+    .vehicle-toolbar__icon,
+    .vehicle-toolbar__select-wrap,
+    .vehicle-toolbar__chevron,
+    .vehicle-toolbar__chip,
+    .vehicle-toolbar__clear {
+      transition: none;
+    }
+  }
+}
