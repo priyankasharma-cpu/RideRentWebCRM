@@ -13,7 +13,14 @@ import './Vehicles.css';
 
 export function Vehicles() {
   const listing = useVehicleListing();
-  const { data, error, loading } = useVehicles(listing.apiQuery);
+  const { data, error, loading, checking, retry } = useVehicles(listing.apiQuery);
+  const availabilityState = error
+    ? 'error'
+    : checking || listing.periodChanged
+      ? 'checking'
+      : listing.appliedPeriod
+        ? 'verified'
+        : 'unknown';
   const vehicles = sortVehicles(
     filterVehicles(data || [], listing.filters, Boolean(listing.appliedPeriod)),
     listing.sort,
@@ -41,6 +48,11 @@ export function Vehicles() {
         </button>
       </form>
       <ErrorBox>{listing.searchError || error}</ErrorBox>
+      {error && (
+        <button type="button" className="rr-button--outline" onClick={() => retry()}>
+          Retry availability
+        </button>
+      )}
       <div className="listing-layout">
         <VehicleFilters
           filters={listing.filters}
@@ -67,7 +79,12 @@ export function Vehicles() {
           ) : (
             <div className="vehicle-grid listing-grid">
               {vehicles.map((v) => (
-                <VehicleCard key={v.id} vehicle={v} period={listing.appliedPeriod} />
+                <VehicleCard
+                  key={v.id}
+                  vehicle={v}
+                  period={listing.appliedPeriod}
+                  availabilityState={availabilityState}
+                />
               ))}
             </div>
           )}

@@ -1,0 +1,104 @@
+@layer rr-customer {
+  .group-booking {
+    width: min(1320px, calc(100% - 48px));
+  }
+  .group-booking__heading {
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+  .group-booking__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 40px;
+    color: var(--color-muted);
+    font-size: 12px;
+    margin-bottom: 18px;
+  }
+  .group-booking__heading > p:last-child {
+    font-size: 15px;
+    color: var(--color-muted);
+    line-height: 1.8;
+  }
+  .group-booking__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 24px;
+    align-items: start;
+  }
+  .group-booking__main {
+    display: grid;
+    gap: 24px;
+    min-width: 0;
+  }
+  .group-booking__panel {
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    background: var(--color-surface);
+    padding: 26px;
+    min-width: 0;
+  }
+  .group-booking__panel > h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 19px;
+    line-height: 1.5;
+    letter-spacing: -0.5px;
+  }
+  .group-booking__panel > h2 svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+  .group-booking__summary {
+    position: sticky;
+    top: 104px;
+  }
+  .group-booking input,
+  .group-booking select {
+    min-width: 0;
+  }
+  .group-booking button:disabled {
+    cursor: not-allowed;
+  }
+  .group-booking :is(a, button, input):focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  @media (max-width: 1050px) {
+    .group-booking__layout {
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 18px;
+    }
+    .group-booking__panel {
+      padding: 22px;
+    }
+  }
+  @media (max-width: 850px) {
+    .group-booking__layout {
+      grid-template-columns: 1fr;
+    }
+    .group-booking__summary {
+      position: static;
+    }
+  }
+  @media (max-width: 500px) {
+    .group-booking {
+      width: calc(100% - 32px);
+    }
+    .group-booking__panel {
+      padding: 18px;
+    }
+    .group-booking .group-booking__heading h1 {
+      font-size: 36px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .group-booking *,
+    .group-booking *::before,
+    .group-booking *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}

@@ -1,0 +1,56 @@
+@layer rr-customer {
+  .booking-customer > p {
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.8;
+    margin: 12px 0 20px;
+  }
+  .booking-customer__fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .booking-customer__fields label {
+    font-size: 12px;
+    color: var(--color-text);
+    margin: 0;
+  }
+  .booking-customer__fields input {
+    margin-top: 8px;
+    min-height: 46px;
+    font-size: 14px;
+  }
+  .booking-customer__email {
+    grid-column: 1/-1;
+  }
+  .booking-customer__agreement {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 12px;
+    line-height: 1.8;
+    margin: 22px 0;
+  }
+  .booking-customer__agreement input {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    margin: 3px 0 0;
+    accent-color: var(--color-primary);
+  }
+  .booking-customer__agreement a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .booking-customer__hint {
+    font-size: 11px;
+    color: var(--color-muted);
+    margin-top: 12px;
+    line-height: 1.8;
+  }
+  @media (max-width: 500px) {
+    .booking-customer__fields {
+      grid-template-columns: 1fr;
+    }
+  }
+}

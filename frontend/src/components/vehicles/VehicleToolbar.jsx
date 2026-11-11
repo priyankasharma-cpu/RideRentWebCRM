@@ -1,4 +1,3 @@
-
 import {
   ArrowDownUp,
   CheckCircle2,
@@ -9,10 +8,10 @@ import {
   SlidersHorizontal,
   Sparkles,
   X,
-} from "lucide-react";
+} from 'lucide-react';
 
-import { vehicleSortOptions } from "../../config/vehicleFilterConfig.js";
-import "./VehicleToolbar.css";
+import { vehicleSortOptions } from '../../config/vehicleFilterConfig.js';
+import './VehicleToolbar.css';
 
 export function VehicleToolbar({
   count,
@@ -37,13 +36,11 @@ export function VehicleToolbar({
             <div className="vehicle-toolbar__heading">
               <strong aria-live="polite" aria-atomic="true">
                 {loading
-                  ? "Finding your ride..."
-                  : `${count} ${count === 1 ? "Ride" : "Rides"} to Explore`}
+                  ? 'Finding your ride...'
+                  : `${count} ${count === 1 ? 'Ride' : 'Rides'} to Explore`}
               </strong>
 
-              {!loading && (
-                <span className="vehicle-toolbar__live-dot" aria-hidden="true" />
-              )}
+              {!loading && <span className="vehicle-toolbar__live-dot" aria-hidden="true" />}
             </div>
 
             <div className="vehicle-toolbar__subtitle">
@@ -70,11 +67,7 @@ export function VehicleToolbar({
           </div>
 
           <div className="vehicle-toolbar__select-wrap">
-            <Sparkles
-              className="vehicle-toolbar__select-icon"
-              size={17}
-              aria-hidden="true"
-            />
+            <Sparkles className="vehicle-toolbar__select-icon" size={17} aria-hidden="true" />
 
             <select
               id="vehicle-sort"
@@ -89,11 +82,7 @@ export function VehicleToolbar({
               ))}
             </select>
 
-            <ChevronDown
-              className="vehicle-toolbar__chevron"
-              size={16}
-              aria-hidden="true"
-            />
+            <ChevronDown className="vehicle-toolbar__chevron" size={16} aria-hidden="true" />
           </div>
         </div>
       </div>
@@ -104,9 +93,7 @@ export function VehicleToolbar({
           <div className="vehicle-toolbar__filter-label">
             <SlidersHorizontal size={15} />
             <span>Active Filters</span>
-            <span className="vehicle-toolbar__filter-count">
-              {chips.length}
-            </span>
+            <span className="vehicle-toolbar__filter-count">{chips.length}</span>
           </div>
 
           <div className="vehicle-toolbar__chips" aria-label="Active filters">
@@ -123,11 +110,7 @@ export function VehicleToolbar({
               </button>
             ))}
 
-            <button
-              type="button"
-              className="vehicle-toolbar__clear"
-              onClick={onReset}
-            >
+            <button type="button" className="vehicle-toolbar__clear" onClick={onReset}>
               <RotateCcw size={14} />
               <span>Clear All</span>
             </button>

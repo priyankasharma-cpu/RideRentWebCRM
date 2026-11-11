@@ -1,0 +1,100 @@
+@layer rr-customer {
+  .contact-success {
+    width: min(440px, calc(100% - 32px));
+    max-width: none;
+    max-height: calc(100dvh - 32px);
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 22px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: var(--shadow-card);
+  }
+  .contact-success::backdrop {
+    background: #03101db8;
+    backdrop-filter: blur(6px);
+  }
+  .contact-success__content {
+    position: relative;
+    padding: 38px 28px 28px;
+    text-align: center;
+  }
+  .contact-success__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--color-muted);
+  }
+  .contact-success__icon {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    margin: 4px auto 22px;
+    border-radius: 50%;
+    color: var(--color-primary);
+    background: var(--color-surface-muted);
+  }
+  .contact-success h2 {
+    font-size: 30px;
+    margin-bottom: 14px;
+    letter-spacing: -0.8px;
+  }
+  .contact-success__content > p {
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .contact-success__reference {
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+    margin: 22px 0;
+    background: var(--color-surface-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+  }
+  .contact-success__reference span {
+    font-size: 11px;
+    color: var(--color-muted);
+  }
+  .contact-success__reference strong {
+    font-size: 12px;
+    overflow-wrap: anywhere;
+    font-weight: 600;
+  }
+  .contact-success__done {
+    width: 100%;
+    min-height: 46px;
+    border-radius: 10px;
+    background: #076be8;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .contact-success button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .contact-success[open] {
+      animation: contact-success-arrive 0.18s ease-out;
+    }
+  }
+  @keyframes contact-success-arrive {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

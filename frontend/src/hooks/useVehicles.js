@@ -6,6 +6,8 @@ function result(query) {
     data: query.data ?? null,
     error: query.error?.message || '',
     loading: query.isPending,
+    checking: query.isFetching,
+    retry: query.refetch,
   };
 }
 export function useVehicles(query = '') {

@@ -1,36 +1,10 @@
 @layer rr-enhancements {
-  .warning-note {
-    font-size: 11px;
-    color: #c88906;
+  .admin-app .warning-note {
+    font-size: var(--admin-text-small);
+    color: var(--admin-warning);
     padding: 12px;
-    border: 1px solid #e5a03244;
+    border: 1px solid color-mix(in srgb, var(--admin-warning) 30%, var(--color-border));
     border-radius: 9px;
-    background: #e5a03208;
-  }
-  @media (max-width: 750px) {
-  }
-  @media (max-width: 750px) {
-  }
-  @media (max-width: 750px) {
-  }
-  @media (max-width: 750px) {
-  }
-  @media (max-width: 750px) {
-  }
-  @media (max-width: 750px) {
-  }
-  @media (max-width: 750px) {
-  }
-  @media (max-width: 750px) {
-  }
-  @media (max-width: 750px) {
-  }
-  @media (max-width: 750px) {
-  }
-  @media (max-width: 750px) {
-  }
-  @media (max-width: 430px) {
-  }
-  @media (max-width: 430px) {
+    background: color-mix(in srgb, var(--admin-warning) 8%, var(--color-surface));
   }
 }

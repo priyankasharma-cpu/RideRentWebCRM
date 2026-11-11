@@ -1,0 +1,115 @@
+@layer rr-customer {
+  .vehicle-selector > p {
+    font-size: 13px;
+    color: var(--color-muted);
+    line-height: 1.8;
+    margin: 12px 0 20px;
+  }
+  .vehicle-selector__filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .vehicle-selector__filters > div {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  .vehicle-selector__filters button {
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 9px;
+    background: var(--color-surface-muted);
+    font-size: 12px;
+    color: var(--color-text);
+  }
+  .vehicle-selector__filters button[aria-pressed='true'] {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .vehicle-selector__filters label {
+    position: relative;
+    flex: 1 1 180px;
+    max-width: 260px;
+    margin: 0;
+  }
+  .vehicle-selector__filters label svg {
+    position: absolute;
+    left: 12px;
+    top: 13px;
+    color: var(--color-muted);
+  }
+  .vehicle-selector__filters input {
+    margin: 0;
+    height: 42px;
+    padding-left: 36px;
+    font-size: 12px;
+  }
+  .vehicle-selector__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .vehicle-selector__vehicle {
+    display: grid;
+    grid-template-columns: 90px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    min-width: 0;
+    background: var(--color-surface);
+  }
+  .vehicle-selector__vehicle > img {
+    width: 90px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 9px;
+    background: var(--color-surface-muted);
+  }
+  .vehicle-selector__vehicle h3 {
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 4px 0 8px;
+    overflow-wrap: anywhere;
+  }
+  .vehicle-selector__vehicle-copy > span {
+    font-size: 10px;
+    color: var(--color-muted);
+  }
+  .vehicle-selector__vehicle-copy > p {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 7px;
+  }
+  .vehicle-selector__vehicle small {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+  .vehicle-selector__vehicle .booking-quantity {
+    grid-column: 1/-1;
+    justify-self: end;
+  }
+  .vehicle-selector__empty {
+    padding-block: 20px;
+  }
+  @media (max-width: 1100px) {
+    .vehicle-selector__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 850px) and (min-width: 650px) {
+    .vehicle-selector__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 500px) {
+    .vehicle-selector__filters label {
+      max-width: none;
+    }
+  }
+}

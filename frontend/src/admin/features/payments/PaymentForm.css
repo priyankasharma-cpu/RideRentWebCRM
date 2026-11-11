@@ -1,39 +1,39 @@
 @layer rr-enhancements {
-  .action-form {
+  .admin-app .action-form {
     border: 1px solid var(--color-border);
     background: var(--color-background);
     border-radius: 13px;
     padding: 20px;
     margin-top: 20px;
   }
-  .action-form > h3 {
-    font-size: 15px;
+  .admin-app .action-form > h3 {
+    font-size: var(--admin-text-card);
     margin-bottom: 18px;
   }
-  .action-form > .rr-button {
+  .admin-app .action-form > .rr-button {
     margin-top: 18px;
-    font-size: 11px;
+    font-size: var(--admin-text-label);
   }
-  .action-form .period-fields {
+  .admin-app .action-form .period-fields {
     grid-template-columns: 1fr 1fr;
   }
   @media (max-width: 750px) {
-    .action-form {
+    .admin-app .action-form {
       padding: 16px;
     }
   }
   @media (max-width: 750px) {
-    .action-form .form-grid {
+    .admin-app .action-form .form-grid {
       gap: 12px;
     }
   }
   @media (max-width: 750px) {
-    .action-form .form-grid label {
-      font-size: 10px;
+    .admin-app .action-form .form-grid label {
+      font-size: var(--admin-text-label);
     }
   }
   @media (max-width: 750px) {
-    .action-form .period-fields {
+    .admin-app .action-form .period-fields {
       grid-template-columns: 1fr;
     }
   }

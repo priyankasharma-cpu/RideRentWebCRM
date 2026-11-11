@@ -1,27 +1,19 @@
 @layer rr-enhancements {
-  .editor-form label {
-    font-size: 11px;
+  .admin-app .editor-form label {
+    font-size: var(--admin-text-label);
     margin-bottom: 17px;
   }
-}
-@layer rr-enhancements {
-  .editor-form input {
-    font-size: 12px;
+  .admin-app .editor-form input {
+    font-size: var(--admin-text-body);
   }
-}
-@layer rr-enhancements {
-  .editor-form .form-grid {
+  .admin-app .editor-form .form-grid {
     gap: 0 16px;
   }
-}
-@layer rr-enhancements {
-  .editor-form > h3 {
-    font-size: 16px;
+  .admin-app .editor-form > h3 {
+    font-size: var(--admin-text-card);
     margin-bottom: 20px;
   }
-}
-@layer rr-enhancements {
-  .editor-form > .rr-button {
-    font-size: 12px;
+  .admin-app .editor-form > .rr-button {
+    font-size: var(--admin-text-label);
   }
 }

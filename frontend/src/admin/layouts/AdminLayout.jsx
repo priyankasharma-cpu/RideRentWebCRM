@@ -10,6 +10,7 @@ import { useLocation, Outlet } from 'react-router-dom';
 import { AdminSidebar } from '../components/AdminSidebar.jsx';
 import { AdminHeader } from '../components/AdminHeader.jsx';
 import './AdminLayout.css';
+import '../styles/AdminTypography.css';
 export function AdminLayout() {
   const { user, logout } = useApp(),
     [open, setOpen] = useState(false),

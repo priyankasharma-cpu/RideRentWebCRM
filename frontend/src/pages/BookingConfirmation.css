@@ -2,6 +2,34 @@
   .confirmation-page {
     max-width: 1050px;
   }
+  .confirmation-order {
+    margin-bottom: 24px;
+  }
+  .confirmation-order h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  .confirmation-order ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .confirmation-order li {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .confirmation-order li a {
+    color: var(--color-primary);
+    overflow-wrap: anywhere;
+  }
+  .confirmation-order li span {
+    color: var(--color-muted);
+  }
   .booking-summary-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;

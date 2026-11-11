@@ -1,0 +1,76 @@
+@layer rr-enhancements {
+  .booking-status-summary {
+    --booking-positive: #08785d;
+    --booking-warning: #875600;
+    --booking-danger: #bc304c;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 8px;
+    white-space: normal;
+  }
+  [data-theme='dark'] .booking-status-summary {
+    --booking-positive: #62d9b7;
+    --booking-warning: #f4c96d;
+    --booking-danger: #ff9cae;
+  }
+  .booking-status-summary__pill,
+  .booking-status-summary .status {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 20px;
+    padding: 5px 9px;
+    font-size: 12px;
+    line-height: 1.45;
+    font-weight: 650;
+  }
+  .booking-status-summary__pill {
+    color: var(--color-muted);
+    background: var(--color-surface-muted);
+  }
+  .booking-status-summary__pill[data-tone='success'],
+  .booking-status-summary .status-confirmed,
+  .booking-status-summary .status-completed {
+    color: var(--booking-positive);
+    background: color-mix(in srgb, var(--booking-positive) 10%, var(--color-surface));
+  }
+  .booking-status-summary__pill[data-tone='warning'] {
+    color: var(--booking-warning);
+    background: color-mix(in srgb, var(--booking-warning) 10%, var(--color-surface));
+  }
+  .booking-status-summary__pill[data-tone='danger'] {
+    color: var(--booking-danger);
+    background: color-mix(in srgb, var(--booking-danger) 10%, var(--color-surface));
+  }
+  .booking-timing-notice {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
+    background: var(--color-surface-muted);
+    color: var(--color-text);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 16px 0;
+    white-space: normal;
+  }
+  .booking-timing-notice[data-overdue='true'] {
+    color: #bc304c;
+    background: color-mix(in srgb, #bc304c 8%, var(--color-surface));
+    border-color: color-mix(in srgb, #bc304c 30%, var(--color-border));
+  }
+  [data-theme='dark'] .booking-timing-notice[data-overdue='true'] {
+    color: #ff9cae;
+    background: color-mix(in srgb, #ff9cae 8%, var(--color-surface));
+  }
+  .confirmation-heading .booking-status-summary {
+    justify-content: center;
+  }
+  .admin-app td .booking-status-summary {
+    min-width: 230px;
+    max-width: 290px;
+  }
+  .admin-app td .booking-status-summary__pill {
+    white-space: nowrap;
+  }
+}

@@ -15,14 +15,14 @@ export function BookingTrendChart({ daily }) {
           dataKey="date"
           tickFormatter={(v) => v.slice(5)}
           tick={{
-            fontSize: 10,
+            fontSize: 'var(--admin-text-small)',
             fill: 'var(--color-muted)',
           }}
         />
         <YAxis
           allowDecimals={false}
           tick={{
-            fontSize: 10,
+            fontSize: 'var(--admin-text-small)',
             fill: 'var(--color-muted)',
           }}
         />

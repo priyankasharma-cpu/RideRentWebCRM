@@ -23,6 +23,17 @@ export function PriceBreakdown({ quote: q }) {
           <strong>{money(q.extra)}</strong>
         </div>
       )}
+      {q.status !== 'cancelled' &&
+        q.addons?.map((addon) => (
+          <div key={addon.id || addon.booking_id}>
+            <span>
+              {addon.name || 'Extra helmets'} × {addon.quantity}
+              {addon.included_quantity ? ` (${addon.included_quantity} included)` : ''} (including
+              tax)
+            </span>
+            <strong>{money(addon.base + addon.tax)}</strong>
+          </div>
+        ))}
       <div className="total">
         <span>Total payable at shop</span>
         <strong>{money(q.total)}</strong>

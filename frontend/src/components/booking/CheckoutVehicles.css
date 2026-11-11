@@ -1,0 +1,133 @@
+@layer rr-customer {
+  .checkout-vehicles {
+    min-width: 0;
+  }
+  .checkout-vehicles__intro {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: var(--color-muted);
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+  .checkout-vehicles__list {
+    display: grid;
+    gap: 10px;
+  }
+  .checkout-vehicles__row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface-muted);
+  }
+  .checkout-vehicles__name {
+    flex: 1;
+    min-width: 0;
+  }
+  .checkout-vehicles__name strong {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+  }
+  .checkout-vehicles__name small {
+    display: block;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--color-muted);
+    margin-top: 4px;
+  }
+  .checkout-vehicles__name .checkout-vehicles__limit {
+    color: var(--color-text);
+  }
+  .checkout-vehicles__note a {
+    color: var(--color-primary);
+  }
+  .checkout-vehicles__remove {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 36px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-muted);
+    cursor: pointer;
+  }
+  .checkout-vehicles__remove:hover {
+    color: var(--color-primary);
+    background: var(--color-surface);
+  }
+  .checkout-vehicles__add {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .checkout-vehicles__add select {
+    min-width: 0;
+    flex: 1;
+    font-size: 12px;
+  }
+  .checkout-vehicles__add button {
+    flex-shrink: 0;
+    padding: 10px 12px;
+  }
+  .checkout-vehicles__note {
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.7;
+    margin-top: 10px;
+  }
+  .checkout-totals {
+    min-height: 260px;
+    margin: 20px 0;
+    display: grid;
+    gap: 12px;
+    font-size: 12px;
+  }
+  .checkout-totals__line {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 14px;
+    color: var(--color-muted);
+  }
+  .checkout-totals__line strong {
+    flex-shrink: 0;
+    color: var(--color-text);
+  }
+  .checkout-totals__grand {
+    border-top: 1px solid var(--color-border);
+    padding-top: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .checkout-totals__grand strong {
+    font-size: 22px;
+    color: var(--color-primary);
+  }
+  .checkout-totals__note {
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.7;
+  }
+  .checkout-totals__status {
+    min-height: 2.5em;
+    margin: 0;
+  }
+}
+@layer rr-enhancements {
+  @media (max-width: 430px) {
+    .checkout-vehicles__row {
+      flex-wrap: wrap;
+    }
+    .checkout-vehicles__row .checkout-vehicles__name {
+      flex-basis: 100%;
+    }
+  }
+}

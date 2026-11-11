@@ -1,5 +1,4 @@
 @layer rr-customer {
-
   /* =====================================
      RIDERENT — VEHICLE TOOLBAR
      ===================================== */
@@ -18,9 +17,7 @@
   }
 
   .vehicle-toolbar:hover {
-    border-color: color-mix(in srgb,
-        var(--color-primary) 20%,
-        var(--color-border));
+    border-color: color-mix(in srgb, var(--color-primary) 20%, var(--color-border));
     box-shadow: 0 9px 30px rgba(22, 46, 95, 0.055);
   }
 
@@ -51,12 +48,8 @@
     height: 48px;
     border-radius: 15px;
     color: var(--color-primary);
-    background: color-mix(in srgb,
-        var(--color-primary) 9%,
-        var(--color-surface));
-    border: 1px solid color-mix(in srgb,
-        var(--color-primary) 12%,
-        transparent);
+    background: color-mix(in srgb, var(--color-primary) 9%, var(--color-surface));
+    border: 1px solid color-mix(in srgb, var(--color-primary) 12%, transparent);
     transition:
       transform 0.25s ease,
       background 0.25s ease;
@@ -64,9 +57,7 @@
 
   .vehicle-toolbar__results:hover .vehicle-toolbar__icon {
     transform: translateY(-2px);
-    background: color-mix(in srgb,
-        var(--color-primary) 14%,
-        var(--color-surface));
+    background: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface));
   }
 
   .vehicle-toolbar__count {
@@ -158,9 +149,7 @@
 
   .vehicle-toolbar__select-wrap:focus-within {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px color-mix(in srgb,
-        var(--color-primary) 12%,
-        transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 12%, transparent);
   }
 
   .vehicle-toolbar__select-wrap select {
@@ -238,9 +227,7 @@
     height: 20px;
     padding: 0 5px;
     border-radius: 6px;
-    background: color-mix(in srgb,
-        var(--color-primary) 12%,
-        var(--color-surface));
+    background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
     color: var(--color-primary);
     font-size: 10px;
     font-weight: 800;
@@ -261,13 +248,9 @@
     min-height: 34px;
     max-width: 100%;
     padding: 7px 10px 7px 12px;
-    border: 1px solid color-mix(in srgb,
-        var(--color-primary) 17%,
-        var(--color-border));
+    border: 1px solid color-mix(in srgb, var(--color-primary) 17%, var(--color-border));
     border-radius: 9px;
-    background: color-mix(in srgb,
-        var(--color-primary) 7%,
-        var(--color-surface));
+    background: color-mix(in srgb, var(--color-primary) 7%, var(--color-surface));
     color: var(--color-text);
     font-size: 11px;
     font-weight: 600;
@@ -281,9 +264,7 @@
   .vehicle-toolbar__chip:hover {
     transform: translateY(-1px);
     border-color: var(--color-primary);
-    background: color-mix(in srgb,
-        var(--color-primary) 12%,
-        var(--color-surface));
+    background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
   }
 
   .vehicle-toolbar__chip svg {
@@ -311,9 +292,7 @@
 
   .vehicle-toolbar__clear:hover {
     color: var(--color-primary);
-    background: color-mix(in srgb,
-        var(--color-primary) 7%,
-        transparent);
+    background: color-mix(in srgb, var(--color-primary) 7%, transparent);
   }
 
   .vehicle-toolbar__chip:focus-visible,
@@ -383,7 +362,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-
     .vehicle-toolbar,
     .vehicle-toolbar__icon,
     .vehicle-toolbar__select-wrap,

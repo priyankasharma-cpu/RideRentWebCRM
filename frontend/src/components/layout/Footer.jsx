@@ -1,6 +1,5 @@
-
-import { useId } from "react";
-import { Link } from "react-router-dom";
+import { useId } from 'react';
+import { Link } from 'react-router-dom';
 import {
   ArrowUpRight,
   LockKeyhole,
@@ -8,18 +7,15 @@ import {
   ShieldCheck,
   Clock3,
   MapPin,
-} from "lucide-react";
+} from 'lucide-react';
 
-import { Logo } from "../common/Logo.jsx";
-import { useShop } from "../../context/ShopContext.jsx";
-import { getShopPhone, siteConfig } from "../../config/siteConfig.js";
-import {
-  footerNavigation,
-  footerUtilityLinks,
-} from "../../config/footerNavigation.js";
-import { getConfiguredSocialLinks } from "../../config/socialLinks.js";
+import { Logo } from '../common/Logo.jsx';
+import { useShop } from '../../context/ShopContext.jsx';
+import { getShopPhone, siteConfig } from '../../config/siteConfig.js';
+import { footerNavigation, footerUtilityLinks } from '../../config/footerNavigation.js';
+import { getConfiguredSocialLinks } from '../../config/socialLinks.js';
 
-import "./Footer.css";
+import './Footer.css';
 
 // ============================================
 // SOCIAL MEDIA
@@ -32,10 +28,7 @@ function FooterSocialLinks() {
   if (links.length === 0) return null;
 
   return (
-    <nav
-      className="rr-footer__socials"
-      aria-label={siteConfig.footer.socialLabel}
-    >
+    <nav className="rr-footer__socials" aria-label={siteConfig.footer.socialLabel}>
       {links.map(({ id, label, icon: Icon, url }) => (
         <a
           key={id}
@@ -63,39 +56,26 @@ function FooterPhoneCard({ phone }) {
 
   return (
     <div className="rr-footer__contact">
-      <p className="rr-footer__contact-heading">
-        {contactPrompt}
-      </p>
+      <p className="rr-footer__contact-heading">{contactPrompt}</p>
 
       <a
         className="rr-footer__phone-card"
         href={`tel:${phone.tel}`}
-        aria-label={`${callLabel} ${phone.display}${phone.placeholder ? ` — ${demoLabel}` : ""
-          }`}
+        aria-label={`${callLabel} ${phone.display}${phone.placeholder ? ` — ${demoLabel}` : ''}`}
       >
         <span className="rr-footer__phone-icon" aria-hidden="true">
           <PhoneIncoming size={24} />
         </span>
 
         <span className="rr-footer__phone-info">
-          <span className="rr-footer__phone-label">
-            {callLabel}
-          </span>
+          <span className="rr-footer__phone-label">{callLabel}</span>
 
           <strong>{phone.display}</strong>
 
-          {phone.placeholder && (
-            <span className="rr-footer__demo-label">
-              {demoLabel}
-            </span>
-          )}
+          {phone.placeholder && <span className="rr-footer__demo-label">{demoLabel}</span>}
         </span>
 
-        <ArrowUpRight
-          className="rr-footer__phone-arrow"
-          size={20}
-          aria-hidden="true"
-        />
+        <ArrowUpRight className="rr-footer__phone-arrow" size={20} aria-hidden="true" />
       </a>
     </div>
   );
@@ -110,23 +90,18 @@ function FooterNavigation({ phone }) {
   const id = useId();
 
   return footerNavigation.map((group) => (
-    <nav
-      className="rr-footer__nav-column"
-      key={group.id}
-      aria-labelledby={`${id}-${group.id}`}
-    >
+    <nav className="rr-footer__nav-column" key={group.id} aria-labelledby={`${id}-${group.id}`}>
       <h2 id={`${id}-${group.id}`}>{group.title}</h2>
 
       <ul>
         {group.links.map((item) => (
           <li key={item.path || item.type}>
-            {item.type === "phone" ? (
+            {item.type === 'phone' ? (
               <a
                 href={`tel:${phone.tel}`}
-                aria-label={`${item.label} ${phone.display}${phone.placeholder
-                    ? ` — ${siteConfig.footer.demoLabel}`
-                    : ""
-                  }`}
+                aria-label={`${item.label} ${phone.display}${
+                  phone.placeholder ? ` — ${siteConfig.footer.demoLabel}` : ''
+                }`}
               >
                 {item.label}
                 <ArrowUpRight size={14} aria-hidden="true" />
@@ -149,9 +124,9 @@ function FooterNavigation({ phone }) {
 // ============================================
 
 const trustItems = [
-  { label: "Transparent Rentals", Icon: ShieldCheck },
-  { label: "Flexible Booking", Icon: Clock3 },
-  { label: "Explore Your Way", Icon: MapPin },
+  { label: 'Transparent Rentals', Icon: ShieldCheck },
+  { label: 'Flexible Booking', Icon: Clock3 },
+  { label: 'Explore Your Way', Icon: MapPin },
 ];
 
 function FooterTrustStrip() {
@@ -181,11 +156,7 @@ export function Footer() {
   const content = siteConfig.footer;
 
   return (
-    <footer
-      id="site-footer"
-      className="rr-footer"
-      aria-label={`${siteConfig.name} footer`}
-    >
+    <footer id="site-footer" className="rr-footer" aria-label={`${siteConfig.name} footer`}>
       {/* MAIN FOOTER — No top CTA banner */}
       <div className="container rr-footer__main">
         <div className="rr-footer__brand">
@@ -194,13 +165,9 @@ export function Footer() {
             <Logo />
           </div>
 
-          <h2 className="rr-footer__tagline">
-            {content.tagline}
-          </h2>
+          <h2 className="rr-footer__tagline">{content.tagline}</h2>
 
-          <p className="rr-footer__description">
-            {content.description}
-          </p>
+          <p className="rr-footer__description">{content.description}</p>
 
           <FooterSocialLinks />
 
@@ -216,9 +183,7 @@ export function Footer() {
       <div className="rr-footer__bottom">
         <div className="container rr-footer__bottom-inner">
           <p>
-            © {new Date().getFullYear()}{" "}
-            <strong>{siteConfig.name}</strong>.{" "}
-            {content.copyright}
+            © {new Date().getFullYear()} <strong>{siteConfig.name}</strong>. {content.copyright}
           </p>
 
           <div className="rr-footer__bottom-links">

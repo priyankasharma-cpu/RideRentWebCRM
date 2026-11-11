@@ -1,0 +1,74 @@
+@layer rr-customer {
+  #booking-review-title {
+    scroll-margin-top: 110px;
+  }
+  .booking-review > p {
+    font-size: 13px;
+    color: var(--color-muted);
+    line-height: 1.8;
+    margin-top: 16px;
+  }
+  .booking-review dl {
+    display: grid;
+    gap: 16px;
+    margin-block: 24px;
+    font-size: 13px;
+  }
+  .booking-review dl > div {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 16px;
+  }
+  .booking-review dt {
+    color: var(--color-muted);
+  }
+  .booking-review dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+  .booking-review h3 {
+    font-size: 15px;
+  }
+  .booking-review ul {
+    font-size: 13px;
+    line-height: 2;
+    padding-left: 18px;
+  }
+  .booking-review__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .booking-review__pending {
+    padding: 20px;
+    background: var(--color-surface-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    margin-top: 24px;
+  }
+  .booking-review__pending p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--color-muted);
+    margin-bottom: 16px;
+  }
+  .booking-review__pending > button {
+    display: block;
+    background: var(--color-surface);
+    color: var(--color-muted);
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    margin-top: 12px;
+    cursor: not-allowed;
+    font-size: 12px;
+  }
+  @media (max-width: 500px) {
+    .booking-review dl > div {
+      grid-template-columns: 1fr;
+      gap: 5px;
+    }
+  }
+}

@@ -4,7 +4,6 @@
    ========================================== */
 
 @layer rr-customer {
-
   /* 1. FOOTER THEME VARIABLES */
 
   .rr-footer {
@@ -24,16 +23,11 @@
     color: var(--rf-text);
 
     background:
-      radial-gradient(ellipse at 5% 20%,
-        rgba(109, 183, 255, 0.16),
-        transparent 40%),
-      radial-gradient(ellipse at 95% 5%,
-        rgba(176, 157, 255, 0.17),
-        transparent 42%),
-      var(--rf-bg);
+      radial-gradient(ellipse at 5% 20%, rgba(109, 183, 255, 0.16), transparent 40%),
+      radial-gradient(ellipse at 95% 5%, rgba(176, 157, 255, 0.17), transparent 42%), var(--rf-bg);
   }
 
-  [data-theme="dark"] .rr-footer {
+  [data-theme='dark'] .rr-footer {
     --rf-bg: #081522;
     --rf-card: #10283f;
     --rf-heading: #f2f7ff;
@@ -45,17 +39,13 @@
   }
 
   .rr-footer::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg,
-        transparent,
-        #1687ff,
-        #9c8aff,
-        transparent);
+    background: linear-gradient(90deg, transparent, #1687ff, #9c8aff, transparent);
     opacity: 0.65;
     pointer-events: none;
   }
@@ -64,8 +54,7 @@
 
   .rr-footer__main {
     display: grid;
-    grid-template-columns:
-      minmax(290px, 1.7fr) repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(290px, 1.7fr) repeat(3, minmax(0, 1fr));
     align-items: start;
     gap: clamp(28px, 3.2vw, 55px);
     padding-block: 72px 64px;
@@ -182,10 +171,7 @@
     padding: 17px;
     border: 1px solid #258cff;
     border-radius: 18px;
-    background: linear-gradient(125deg,
-        #0764dd,
-        #087cff 55%,
-        #1556c5);
+    background: linear-gradient(125deg, #0764dd, #087cff 55%, #1556c5);
     color: #ffffff;
     text-decoration: none;
     box-shadow: 0 14px 34px rgba(8, 105, 225, 0.19);
@@ -220,7 +206,7 @@
 
   .rr-footer__phone-icon::before,
   .rr-footer__phone-icon::after {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     border: 1px solid rgba(255, 255, 255, 0.65);
@@ -294,7 +280,7 @@
   }
 
   .rr-footer__nav-column h2::after {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     bottom: 0;
@@ -351,9 +337,7 @@
   .rr-footer__trust {
     border-top: 1px solid var(--rf-border);
     border-bottom: 1px solid var(--rf-border);
-    background: color-mix(in srgb,
-        var(--rf-card) 55%,
-        transparent);
+    background: color-mix(in srgb, var(--rf-card) 55%, transparent);
   }
 
   .rr-footer__trust-inner {
@@ -437,7 +421,6 @@
   /* 9. PHONE ANIMATION */
 
   @keyframes rr-footer-ring {
-
     0%,
     30%,
     100% {
@@ -560,7 +543,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-
     .rr-footer *,
     .rr-footer *::before,
     .rr-footer *::after {

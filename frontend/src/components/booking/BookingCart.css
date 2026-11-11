@@ -1,0 +1,55 @@
+@layer rr-customer {
+  .booking-cart h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    letter-spacing: -0.4px;
+  }
+  .booking-cart h2 > span {
+    margin-left: auto;
+    font-size: 12px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: var(--color-surface-muted);
+  }
+  .booking-cart ul {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 0;
+  }
+  .booking-cart li {
+    border-top: 1px solid var(--color-border);
+    padding-block: 16px;
+  }
+  .booking-cart__line-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .booking-cart__line-heading h3 {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .booking-cart__line-heading > button {
+    flex: 0 0 40px;
+    height: 40px;
+    border-radius: 9px;
+    background: var(--color-surface-muted);
+    color: var(--color-muted);
+    display: grid;
+    place-items: center;
+  }
+  .booking-cart__empty,
+  .booking-cart__unavailable {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--color-muted);
+    margin-top: 16px;
+  }
+  .booking-cart__unavailable {
+    color: var(--danger);
+  }
+}

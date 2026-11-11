@@ -1,11 +1,17 @@
 import { formatTime, money } from '../../utils/formatters.js';
-import { Status } from '../../components/common/StatusBadge.jsx';
+import { BookingStatusSummary } from '../../components/booking/BookingStatusSummary.jsx';
+import { rentalDuration } from '../../utils/bookingStatus.js';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './BookingTable.css';
 export function BookingTable({ bookings, onSelect }) {
   return (
-    <div className="table-scroll">
+    <div
+      className="table-scroll"
+      role="region"
+      aria-label="Bookings table; scroll horizontally for more columns"
+      tabIndex={0}
+    >
       <table>
         <thead>
           <tr>
@@ -32,12 +38,13 @@ export function BookingTable({ bookings, onSelect }) {
               <td>
                 <span>{formatTime(b.starts_at)}</span>
                 <small>to {formatTime(b.ends_at)}</small>
+                <small>Duration: {rentalDuration(b.starts_at, b.ends_at)}</small>
               </td>
               <td>
                 <span className="source-badge">{b.source}</span>
               </td>
               <td>
-                <Status value={b.overdue ? 'Overdue' : b.status} />
+                <BookingStatusSummary booking={b} />
               </td>
               <td>
                 <strong>{money(b.outstanding)}</strong>

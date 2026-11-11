@@ -1,31 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { bookingService } from '../services/bookingService';
-import { toUTC } from '../utils/rentalTime';
-import { siteConfig } from '../config/siteConfig';
+import { bookingService } from '../services/bookingService.js';
+import { validateRentalPeriod } from '../utils/rentalTime.js';
+import { useFreshQuote } from './useFreshQuote.js';
+
 export function useQuote(vehicleId, period) {
-  const [debounced, setDebounced] = useState(period);
-  useEffect(() => {
-    const timer = setTimeout(() => setDebounced(period), siteConfig.quoteDebounceMs);
-    return () => clearTimeout(timer);
-  }, [period]);
-  const settling = period.startsAt !== debounced.startsAt || period.endsAt !== debounced.endsAt;
-  const query = useQuery({
-    queryKey: ['quote', vehicleId, debounced.startsAt, debounced.endsAt],
-    enabled: Boolean(vehicleId),
-    staleTime: 0,
-    queryFn: ({ signal }) =>
-      bookingService.quote(
-        {
-          vehicleId,
-          startsAt: toUTC(debounced.startsAt),
-          endsAt: toUTC(debounced.endsAt),
-        },
-        signal,
-      ),
-  });
+  const { window, error } = validateRentalPeriod(period);
+  const result = useFreshQuote(
+    'quote',
+    { vehicleId, ...window },
+    Boolean(vehicleId && window),
+    bookingService.quote,
+  );
   return {
-    quote: settling ? null : query.data || null,
-    quoteError: settling ? '' : query.error?.message || '',
+    quote: result.quote,
+    quoteError: error || result.error,
+    quoteLoading: result.loading,
+    retryQuote: result.retry,
+    canRetryQuote: Boolean(vehicleId && window),
   };
 }

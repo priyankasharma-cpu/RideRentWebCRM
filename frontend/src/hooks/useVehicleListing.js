@@ -1,24 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { defaultVehicleFilters } from '../config/vehicleFilterConfig.js';
-import { periodFromParams, toUTC } from '../utils/rentalTime.js';
+import { periodFromParams, validateRentalPeriod } from '../utils/rentalTime.js';
 
 function rentalSearch(params) {
   if (!params.has('startsAt') && !params.has('endsAt'))
     return { query: '', period: undefined, error: '' };
-  const period = { startsAt: params.get('startsAt'), endsAt: params.get('endsAt') };
-  try {
-    const startsAt = toUTC(period.startsAt),
-      endsAt = toUTC(period.endsAt);
-    if (new Date(endsAt) <= new Date(startsAt)) throw Error('Return time must be after pickup.');
-    return { query: '?' + new URLSearchParams({ startsAt, endsAt }), period, error: '' };
-  } catch {
+  const period = periodFromParams(params);
+  const { window, error } = validateRentalPeriod(period);
+  if (error) {
     return {
       query: '',
       period: undefined,
-      error: 'Invalid date range. Choose pickup and return times.',
+      error,
     };
   }
+  return { query: '?' + new URLSearchParams(window), period, error: '' };
 }
 
 export function useVehicleListing() {
@@ -67,9 +64,8 @@ export function useVehicleListing() {
   function search(event) {
     event.preventDefault();
     try {
-      const start = toUTC(period.startsAt),
-        end = toUTC(period.endsAt);
-      if (new Date(end) <= new Date(start)) throw Error('Return time must be after pickup.');
+      const { error } = validateRentalPeriod(period);
+      if (error) throw Error(error);
       const next = new URLSearchParams(params);
       next.set('startsAt', period.startsAt);
       next.set('endsAt', period.endsAt);
@@ -92,5 +88,9 @@ export function useVehicleListing() {
     searchError: searchError || applied.error,
     apiQuery: applied.query,
     appliedPeriod: applied.period,
+    periodChanged: Boolean(
+      applied.period &&
+      (period.startsAt !== applied.period.startsAt || period.endsAt !== applied.period.endsAt),
+    ),
   };
 }

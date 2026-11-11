@@ -1,17 +1,10 @@
+import { Link } from 'react-router-dom';
+import { ArrowRight, Sparkles, ShieldCheck, Clock3, PhoneIncoming } from 'lucide-react';
 
-import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  Sparkles,
-  ShieldCheck,
-  Clock3,
-  PhoneIncoming,
-} from "lucide-react";
+import { homeContent } from '../../config/homeContent';
+import { CallLink } from '../common/CallLink.jsx';
 
-import { homeContent } from "../../config/homeContent";
-import { CallLink } from "../common/CallLink.jsx";
-
-import "./FinalCTA.css";
+import './FinalCTA.css';
 
 export function FinalCTA({
   titleLead = homeContent.final.titleLead,
@@ -21,8 +14,7 @@ export function FinalCTA({
 }) {
   return (
     <section
-      className={`final-cta-section ${contained ? "final-cta-section--contained" : ""
-        }`}
+      className={`final-cta-section ${contained ? 'final-cta-section--contained' : ''}`}
       aria-label="Explore RideRent vehicles"
     >
       <div className="final-cta">
@@ -38,30 +30,22 @@ export function FinalCTA({
           </span>
 
           <h2 className="final-cta__title">
-            {titleLead}{" "}
-            <em>{titleAccent}</em>
+            {titleLead} <em>{titleAccent}</em>
           </h2>
 
           <p className="final-cta__description">
-            Discover your perfect ride from our collection
-            of bikes, scooters and cars. Flexible rentals,
-            easy booking and endless possibilities.
+            Discover your perfect ride from our collection of bikes, scooters and cars. Flexible
+            rentals, easy booking and endless possibilities.
           </p>
 
           <div className="final-cta__actions">
-            <Link
-              className="final-cta__primary"
-              to="/vehicles"
-            >
+            <Link className="final-cta__primary" to="/vehicles">
               {ctaLabel}
               <ArrowRight size={19} aria-hidden="true" />
             </Link>
 
             <div className="final-cta__call">
-              <span
-                className="final-cta__call-icon"
-                aria-hidden="true"
-              >
+              <span className="final-cta__call-icon" aria-hidden="true">
                 <PhoneIncoming size={19} />
               </span>
 

@@ -1,43 +1,43 @@
 @layer rr-enhancements {
-  .maintenance-grid {
+  .admin-app .maintenance-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
-  .maintenance-card-icon {
+  .admin-app .maintenance-card-icon {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 25px;
-    color: var(--color-primary);
+    color: var(--admin-accent);
   }
-  .maintenance-card h3 {
-    font-size: 17px;
+  .admin-app .maintenance-card h3 {
+    font-size: var(--admin-text-card);
     margin-bottom: 12px;
   }
-  .maintenance-card p {
-    font-size: 12px;
-    color: var(--color-muted);
+  .admin-app .maintenance-card p {
+    font-size: var(--admin-text-small);
+    color: var(--admin-color-muted);
     line-height: 1.8;
     margin-bottom: 18px;
   }
-  .maintenance-card small {
+  .admin-app .maintenance-card small {
     display: block;
-    font-size: 10px;
-    color: var(--color-muted);
+    font-size: var(--admin-text-small);
+    color: var(--admin-color-muted);
     margin-top: 7px;
   }
-  .maintenance-card button {
+  .admin-app .maintenance-card button {
     margin-top: 23px;
-    font-size: 10px;
+    font-size: var(--admin-text-label);
   }
   @media (max-width: 1200px) {
-    .maintenance-grid {
+    .admin-app .maintenance-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
   @media (max-width: 750px) {
-    .maintenance-grid {
+    .admin-app .maintenance-grid {
       grid-template-columns: 1fr;
     }
   }

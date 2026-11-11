@@ -1,3 +1,4 @@
+import { updateVehicleGallery } from './vehicleGallery.service.js';
 import {
   listPublicVehicles,
   getPublicVehicle,
@@ -77,6 +78,18 @@ export function editVehicleController(db) {
       file: req.file,
     };
     const result = await editVehicle(db, input);
+    res.status(200).json(result);
+  };
+}
+
+export function updateVehicleGalleryController(db) {
+  return async function updateVehicleGalleryHandler(req, res) {
+    const result = await updateVehicleGallery(
+      db,
+      req.params.id,
+      req.validated.body.images,
+      req.user.id,
+    );
     res.status(200).json(result);
   };
 }

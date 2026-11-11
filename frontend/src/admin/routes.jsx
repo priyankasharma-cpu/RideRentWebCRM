@@ -3,6 +3,8 @@ import { useApp } from '../hooks/useApp.js';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AdminLayout } from './layouts/AdminLayout.jsx';
 import { Loading } from '../components/common/Loader.jsx';
+const Inquiries = lazy(() => import('./pages/Inquiries.jsx'));
+const AddOnManagement = lazy(() => import('./pages/AddOnManagement.jsx'));
 const ActiveRentals = lazy(() => import('./pages/ActiveRentals'));
 const Returns = lazy(() => import('./pages/Returns'));
 const Dashboard = lazy(() =>
@@ -73,6 +75,20 @@ export default function AdminRoutes() {
         <Route element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
           <Route
+            path="addons"
+            element={user?.role === 'admin' ? <AddOnManagement /> : <Navigate to="/admin" />}
+          />
+          <Route
+            path="helmets"
+            element={
+              user?.role === 'admin' ? (
+                <Navigate to="/admin/addons" replace />
+              ) : (
+                <Navigate to="/admin" />
+              )
+            }
+          />
+          <Route
             path="vehicles"
             element={user?.role === 'admin' ? <VehicleManagement /> : <Navigate to="/admin" />}
           />
@@ -82,6 +98,10 @@ export default function AdminRoutes() {
           <Route path="returns" element={<Returns />} />
           <Route path="create-booking" element={<CreateBooking />} />
           <Route path="customers" element={<Customers />} />
+          <Route
+            path="inquiries"
+            element={user?.role === 'admin' ? <Inquiries /> : <Navigate to="/admin" />}
+          />
           <Route path="payments" element={<Payments />} />
           <Route
             path="maintenance"

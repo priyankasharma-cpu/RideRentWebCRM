@@ -1,38 +1,42 @@
 @layer rr-enhancements {
-  .admin-checkout {
+  .admin-app .admin-checkout {
     grid-template-columns: 1.5fr 1fr;
   }
-  .admin-checkout .checkout-summary h2 {
-    font-size: 26px;
+  .admin-app .admin-checkout .checkout-summary h2 {
+    font-size: var(--admin-text-title);
   }
-  .quote-availability {
+  .admin-app .quote-availability {
     display: flex;
     gap: 10px;
     align-items: start;
     margin-top: 23px;
   }
-  .quote-availability p {
-    font-size: 11px;
-    color: var(--color-muted);
+  .admin-app .quote-availability p {
+    font-size: var(--admin-text-small);
+    color: var(--admin-color-muted);
     line-height: 1.7;
   }
   @media (max-width: 1200px) {
-    .admin-checkout {
-      grid-template-columns: 1.4fr 1fr;
+    .admin-app .admin-checkout .checkout-summary {
+      position: static;
+      grid-row: auto;
+    }
+    .admin-app .admin-checkout {
+      grid-template-columns: 1fr;
     }
   }
   @media (max-width: 750px) {
-    .admin-checkout .checkout-summary {
+    .admin-app .admin-checkout .checkout-summary {
       grid-row: auto;
     }
   }
   @media (max-width: 750px) {
-    .admin-checkout .checkout-form .form-grid {
-      grid-template-columns: 1fr 1fr;
+    .admin-app .admin-checkout .checkout-form .form-grid {
+      grid-template-columns: 1fr;
     }
   }
   @media (max-width: 750px) {
-    .admin-checkout .checkout-form .span-2 {
+    .admin-app .admin-checkout .checkout-form .span-2 {
       grid-column: 1/-1;
     }
   }

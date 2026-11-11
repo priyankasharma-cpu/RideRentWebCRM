@@ -1,20 +1,20 @@
 @layer rr-enhancements {
-  .audit-list > div {
+  .admin-app .audit-list > div {
     padding-block: 15px;
     border-bottom: 1px solid var(--color-border);
   }
-  .audit-list strong {
-    font-size: 12px;
+  .admin-app .audit-list strong {
+    font-size: var(--admin-text-small);
   }
-  .audit-list small {
+  .admin-app .audit-list small {
     display: block;
-    color: var(--color-muted);
-    font-size: 10px;
+    color: var(--admin-color-muted);
+    font-size: var(--admin-text-small);
     margin-top: 8px;
   }
-  .audit-list code {
-    font-size: 9px;
-    color: var(--color-muted);
+  .admin-app .audit-list code {
+    font-size: var(--admin-text-small);
+    color: var(--admin-color-muted);
     display: block;
     margin-top: 7px;
     overflow-wrap: anywhere;

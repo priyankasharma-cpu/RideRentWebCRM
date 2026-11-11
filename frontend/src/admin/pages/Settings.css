@@ -1,25 +1,25 @@
 @layer rr-enhancements {
-  .settings-grid {
+  .admin-app .settings-grid {
     display: grid;
     grid-template-columns: 1.6fr 1fr;
     gap: 25px;
     align-items: start;
   }
-  .settings-grid > aside > .rr-panel {
+  .admin-app .settings-grid > aside > .rr-panel {
     margin-bottom: 20px;
   }
   @media (max-width: 1200px) {
-    .settings-grid {
-      grid-template-columns: 1.4fr 1fr;
-    }
-  }
-  @media (max-width: 750px) {
-    .settings-grid {
+    .admin-app .settings-grid {
       grid-template-columns: 1fr;
     }
   }
   @media (max-width: 750px) {
-    .settings-grid .editor-form {
+    .admin-app .settings-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-app .settings-grid .editor-form {
       padding: 20px;
     }
   }

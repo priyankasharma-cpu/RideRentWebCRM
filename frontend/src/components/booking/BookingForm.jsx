@@ -3,12 +3,18 @@ import { Link } from 'react-router-dom';
 import { ShieldCheck, ArrowRight } from 'lucide-react';
 import { ErrorBox } from '../common/ErrorBox.jsx';
 import './BookingForm.css';
-export function BookingForm({ submit, period, setPeriod, error, quote, busy }) {
+export function BookingForm({ submit, period, setPeriod, error, quote, busy, selection }) {
   return (
     <form className="rr-panel checkout-form" onSubmit={submit}>
       <h3>01 · Your rental time</h3>
       <PeriodFields value={period} onChange={setPeriod} />
-      <h3>02 · A little about you</h3>
+      {selection && (
+        <>
+          <h3>02 · Vehicles & add-ons</h3>
+          {selection}
+        </>
+      )}
+      <h3>{selection ? '03' : '02'} · A little about you</h3>
       <div className="form-grid">
         <label>
           Full name

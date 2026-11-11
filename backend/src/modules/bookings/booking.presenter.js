@@ -1,4 +1,4 @@
-import { now } from '../../utils/dateTime.js';
+import { bookingStates } from './booking.status.js';
 
 export function presentBooking(graph, { privateData = true } = {}) {
   const {
@@ -18,7 +18,12 @@ export function presentBooking(graph, { privateData = true } = {}) {
       .filter((payment) => payment.purpose === purpose)
       .reduce((sum, payment) => sum + payment.amount - payment.refunded, 0);
   const rentalTotal =
-    booking.status === 'cancelled' ? 0 : booking.base + booking.tax + booking.extra;
+    booking.status === 'cancelled'
+      ? 0
+      : booking.base +
+        booking.tax +
+        booking.extra +
+        (booking.addons || []).reduce((sum, addon) => sum + addon.base + addon.tax, 0);
   const closed = ['cancelled', 'completed'].includes(booking.status);
   const depositDue = closed ? 0 : booking.deposit;
   const rentalPaid = netPaid('rental');
@@ -38,7 +43,15 @@ export function presentBooking(graph, { privateData = true } = {}) {
     depositPaid,
     outstanding: Math.max(0, rentalTotal - rentalPaid) + Math.max(0, depositDue - depositPaid),
     refundableDeposit: closed ? depositPaid : 0,
-    overdue: booking.status === 'active' && booking.ends_at < now(),
+    ...bookingStates({
+      status: booking.status,
+      rentalTotal,
+      rentalPaid,
+      depositPaid,
+      depositDue,
+      endsAt: booking.ends_at,
+      returnAt: rental.return_at,
+    }),
     access_hash: undefined,
   };
 }

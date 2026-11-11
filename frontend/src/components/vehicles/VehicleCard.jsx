@@ -1,65 +1,42 @@
+import { Link } from 'react-router-dom';
+import { Heart, Fuel, Gauge, Users, ArrowRight, ArrowUpRight, Sparkles } from 'lucide-react';
 
-import { Link } from "react-router-dom";
-import {
-  Heart,
-  Fuel,
-  Gauge,
-  Users,
-  ArrowRight,
-  ArrowUpRight,
-  Sparkles,
-} from "lucide-react";
+import { applyImageFallback } from '../../config/imageConfig.js';
+import { useSavedVehicles } from '../../hooks/useSavedVehicles';
+import { Status } from '../common/StatusBadge.jsx';
+import { money } from '../../utils/formatters.js';
 
-import { applyImageFallback } from "../../config/imageConfig.js";
-import { useSavedVehicles } from "../../hooks/useSavedVehicles";
-import { Status } from "../common/StatusBadge.jsx";
-import { money } from "../../utils/formatters.js";
+import './VehicleCard.css';
+import { periodSearch } from '../../utils/rentalTime.js';
 
-import "./VehicleCard.css";
-
-export function VehicleCard({ vehicle: v, period }) {
+export function VehicleCard({ vehicle: v, period, availabilityState }) {
   const { saved: storedIds, toggleSaved } = useSavedVehicles();
 
   const saved = storedIds.includes(v.id);
 
-  const detailUrl = `/vehicles/${v.slug}`;
+  const detailUrl = `/vehicles/${v.slug}` + periodSearch(period);
 
   const params = new URLSearchParams({
     vehicle: v.id,
     ...period,
   });
 
-  const unavailable =
-    v.available === false ||
-    (!period &&
-      [
-        "Maintenance",
-        "Inactive",
-        "Rented",
-        "Overdue",
-        "Inspection",
-      ].includes(v.physicalStatus));
-
-  const statusValue = unavailable
-    ? v.physicalStatus === "Available"
-      ? "Reserved"
-      : v.physicalStatus
-    : "Available";
-
-  const bookingUrl = unavailable
-    ? detailUrl
-    : `/checkout?${params.toString()}`;
+  const verified =
+    availabilityState === 'verified' ||
+    (!availabilityState && Boolean(period) && typeof v.available === 'boolean');
+  const canBook = verified && v.available === true;
+  let statusValue = 'Select Dates to Check Availability';
+  if (availabilityState === 'error') statusValue = 'Availability check failed';
+  else if (availabilityState === 'checking') statusValue = 'Checking availability…';
+  else if (verified)
+    statusValue = canBook ? 'Available for selected dates' : 'Currently Unavailable';
+  const bookingUrl = canBook ? `/checkout?${params.toString()}` : detailUrl;
 
   return (
     <article className="vehicle-card">
-
       {/* IMAGE SECTION */}
       <div className="vehicle-image">
-        <Link
-          to={detailUrl}
-          className="vehicle-image__link"
-          aria-label={`View ${v.name} details`}
-        >
+        <Link to={detailUrl} className="vehicle-image__link" aria-label={`View ${v.name} details`}>
           <img
             src={v.image}
             alt={`${v.name} — illustrative image`}
@@ -70,10 +47,7 @@ export function VehicleCard({ vehicle: v, period }) {
         </Link>
 
         {/* Subtle glass overlay */}
-        <div
-          className="vehicle-image__glass"
-          aria-hidden="true"
-        />
+        <div className="vehicle-image__glass" aria-hidden="true" />
 
         {/* Category badge */}
         <span className="vehicle-tag">
@@ -84,33 +58,21 @@ export function VehicleCard({ vehicle: v, period }) {
         {/* Favorite */}
         <button
           type="button"
-          className={`favorite ${saved ? "saved" : ""}`}
+          className={`favorite ${saved ? 'saved' : ''}`}
           onClick={() => toggleSaved(v.id)}
-          aria-label={`${saved ? "Unsave" : "Save"} ${v.name}`}
+          aria-label={`${saved ? 'Unsave' : 'Save'} ${v.name}`}
           aria-pressed={saved}
         >
-          <Heart
-            size={18}
-            strokeWidth={2}
-            fill={saved ? "currentColor" : "none"}
-          />
+          <Heart size={18} strokeWidth={2} fill={saved ? 'currentColor' : 'none'} />
         </button>
       </div>
 
       {/* CARD CONTENT */}
       <div className="vehicle-info">
-
         {/* Vehicle name */}
-        <Link
-          to={detailUrl}
-          className="vehicle-title-link"
-        >
+        <Link to={detailUrl} className="vehicle-title-link">
           <h3>{v.name}</h3>
-          <ArrowUpRight
-            className="vehicle-title-arrow"
-            size={16}
-            aria-hidden="true"
-          />
+          <ArrowUpRight className="vehicle-title-arrow" size={16} aria-hidden="true" />
         </Link>
 
         {/* Specifications */}
@@ -143,27 +105,18 @@ export function VehicleCard({ vehicle: v, period }) {
             <span> / hour</span>
           </p>
 
-          <Link
-            className="rr-button vehicle-book-button"
-            to={bookingUrl}
-          >
-            <span>
-              {unavailable ? "View Details" : "Book Now"}
-            </span>
+          <Link className="rr-button vehicle-book-button" to={bookingUrl}>
+            <span>{canBook ? 'Book Now' : 'View Details'}</span>
 
             <ArrowRight size={15} />
           </Link>
         </div>
 
         {/* Details link */}
-        <Link
-          className="vehicle-detail-link"
-          to={detailUrl}
-        >
+        <Link className="vehicle-detail-link" to={detailUrl}>
           View specifications
           <ArrowUpRight size={13} />
         </Link>
-
       </div>
     </article>
   );

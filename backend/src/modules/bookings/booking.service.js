@@ -26,6 +26,8 @@ import { settings } from '../settings/settings.service.js';
 import { audit } from '../audit/audit.service.js';
 import { bookingSchema } from './booking.validation.js';
 import { now } from '../../utils/dateTime.js';
+import { checkoutInstalled, orderBookingIds } from './checkout.repository.js';
+import { get } from '../../config/database.js';
 export async function quoteBooking(db, request) {
   const w = await rentalWindow(db, request.body),
     v = await findVehicleByIdVariant2(db, z.string().uuid().parse(request.body.vehicleId));
@@ -51,7 +53,16 @@ export async function lookupBooking(db, request) {
   );
   if (!b) fail(404, 'No booking matches those details.');
   const token = randomBytes(32).toString('hex');
-  await updateBookingByAccessHashAndId(db, hash(token), b.id);
+  await transaction(db, async () => {
+    const membership = (await checkoutInstalled(db))
+      ? await get(db, 'SELECT order_id FROM checkout_items WHERE booking_id=?', b.id)
+      : null;
+    const entries = membership
+      ? await orderBookingIds(db, membership.order_id)
+      : [{ booking_id: b.id }];
+    for (const entry of entries)
+      await updateBookingByAccessHashAndId(db, hash(token), entry.booking_id);
+  });
   return {
     booking: await bookingView(db, b),
     token,
@@ -177,6 +188,12 @@ export async function reschedule(db, booking, input, user) {
     const b = await findBookingById(db, booking);
     if (!b) fail(404, 'Booking not found.');
     if (b.status !== 'confirmed') fail(409, 'Only confirmed bookings can be rescheduled.');
+    const view = await bookingView(db, b);
+    if (view.checkout?.bookings.length > 1 || view.addons?.length)
+      fail(
+        409,
+        'For multi-vehicle or helmet bookings, please contact the shop to cancel and rebook the required dates together.',
+      );
     const w = await rentalWindow(db, input);
     const a = await availability(db, b.vehicle_id, w.start, w.end, b.id);
     if (!a.available) fail(409, a.reason);

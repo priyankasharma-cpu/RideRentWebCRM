@@ -31,7 +31,7 @@ export function RevenueChart({ data }) {
           dataKey="date"
           tickFormatter={(v) => v.slice(5)}
           tick={{
-            fontSize: 10,
+            fontSize: 'var(--admin-text-small)',
             fill: 'var(--color-muted)',
           }}
           axisLine={false}
@@ -40,13 +40,13 @@ export function RevenueChart({ data }) {
         />
         <YAxis
           tick={{
-            fontSize: 10,
+            fontSize: 'var(--admin-text-small)',
             fill: 'var(--color-muted)',
           }}
           tickFormatter={(v) => '₹' + v}
           axisLine={false}
           tickLine={false}
-          width={55}
+          width={76}
         />
         <Tooltip
           contentStyle={{
@@ -54,7 +54,7 @@ export function RevenueChart({ data }) {
             border: '1px solid var(--color-border)',
             borderRadius: 12,
             color: 'var(--color-text)',
-            fontSize: 12,
+            fontSize: 'var(--admin-text-body)',
           }}
           formatter={(v) => ['₹' + Number(v).toLocaleString('en-IN'), 'Rental receipts']}
         />

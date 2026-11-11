@@ -1,4 +1,3 @@
-
 import {
   Search,
   SlidersHorizontal,
@@ -13,10 +12,10 @@ import {
   X,
   Bike,
   Zap,
-} from "lucide-react";
+} from 'lucide-react';
 
-import { vehicleFilterConfig } from "../../config/vehicleFilterConfig.js";
-import "./VehicleFilters.css";
+import { vehicleFilterConfig } from '../../config/vehicleFilterConfig.js';
+import './VehicleFilters.css';
 
 const categoryIcons = {
   All: CarFront,
@@ -29,9 +28,7 @@ export function VehicleFilters({ filters, onChange, onReset }) {
   const priceConfig = vehicleFilterConfig.price;
 
   const priceProgress =
-    ((filters.max - priceConfig.min) /
-      (priceConfig.max - priceConfig.min || 1)) *
-    100;
+    ((filters.max - priceConfig.min) / (priceConfig.max - priceConfig.min || 1)) * 100;
 
   return (
     <aside className="vehicle-filters" aria-label="Vehicle filters">
@@ -47,37 +44,26 @@ export function VehicleFilters({ filters, onChange, onReset }) {
             <small>Personalize your search</small>
           </span>
 
-          <ChevronDown
-            className="vehicle-filters__chevron"
-            size={18}
-            aria-hidden="true"
-          />
+          <ChevronDown className="vehicle-filters__chevron" size={18} aria-hidden="true" />
         </summary>
 
         <div className="vehicle-filters__body">
           {/* Search */}
           <div className="vehicle-filters__group">
-            <label
-              className="vehicle-filters__label"
-              htmlFor="vehicle-model-search"
-            >
+            <label className="vehicle-filters__label" htmlFor="vehicle-model-search">
               <Search size={15} />
               Search by model
             </label>
 
             <div className="vehicle-filters__input-wrap">
-              <Search
-                className="vehicle-filters__input-icon"
-                size={17}
-                aria-hidden="true"
-              />
+              <Search className="vehicle-filters__input-icon" size={17} aria-hidden="true" />
 
               <input
                 id="vehicle-model-search"
                 type="search"
                 placeholder="Honda, Yamaha, Toyota..."
                 value={filters.query}
-                onChange={(e) => onChange("query", e.target.value)}
+                onChange={(e) => onChange('query', e.target.value)}
               />
 
               {filters.query && (
@@ -85,7 +71,7 @@ export function VehicleFilters({ filters, onChange, onReset }) {
                   type="button"
                   className="vehicle-filters__input-clear"
                   aria-label="Clear search"
-                  onClick={() => onChange("query", "")}
+                  onClick={() => onChange('query', '')}
                 >
                   <X size={15} />
                 </button>
@@ -100,11 +86,7 @@ export function VehicleFilters({ filters, onChange, onReset }) {
               Vehicle Category
             </div>
 
-            <div
-              className="vehicle-filters__categories"
-              role="group"
-              aria-label="Vehicle category"
-            >
+            <div className="vehicle-filters__categories" role="group" aria-label="Vehicle category">
               {vehicleFilterConfig.categories.map((category) => {
                 const Icon = categoryIcons[category] || CarFront;
 
@@ -112,10 +94,11 @@ export function VehicleFilters({ filters, onChange, onReset }) {
                   <button
                     key={category}
                     type="button"
-                    className={`vehicle-filters__category ${filters.category === category ? "is-active" : ""
-                      }`}
+                    className={`vehicle-filters__category ${
+                      filters.category === category ? 'is-active' : ''
+                    }`}
                     aria-pressed={filters.category === category}
-                    onClick={() => onChange("category", category)}
+                    onClick={() => onChange('category', category)}
                   >
                     <Icon size={16} strokeWidth={1.8} />
                     <span>{category}</span>
@@ -127,10 +110,7 @@ export function VehicleFilters({ filters, onChange, onReset }) {
 
           {/* Transmission */}
           <div className="vehicle-filters__group">
-            <label
-              className="vehicle-filters__label"
-              htmlFor="vehicle-transmission"
-            >
+            <label className="vehicle-filters__label" htmlFor="vehicle-transmission">
               <Gauge size={15} />
               Transmission
             </label>
@@ -141,19 +121,16 @@ export function VehicleFilters({ filters, onChange, onReset }) {
               <select
                 id="vehicle-transmission"
                 value={filters.trans}
-                onChange={(e) => onChange("trans", e.target.value)}
+                onChange={(e) => onChange('trans', e.target.value)}
               >
                 {vehicleFilterConfig.transmissions.map((item) => (
                   <option key={item} value={item}>
-                    {item === "All" ? "All Transmissions" : item}
+                    {item === 'All' ? 'All Transmissions' : item}
                   </option>
                 ))}
               </select>
 
-              <ChevronDown
-                size={16}
-                className="vehicle-filters__select-chevron"
-              />
+              <ChevronDown size={16} className="vehicle-filters__select-chevron" />
             </div>
           </div>
 
@@ -170,36 +147,28 @@ export function VehicleFilters({ filters, onChange, onReset }) {
               <select
                 id="vehicle-fuel"
                 value={filters.fuel}
-                onChange={(e) => onChange("fuel", e.target.value)}
+                onChange={(e) => onChange('fuel', e.target.value)}
               >
                 {vehicleFilterConfig.fuels.map((item) => (
                   <option key={item} value={item}>
-                    {item === "All" ? "All Fuel Types" : item}
+                    {item === 'All' ? 'All Fuel Types' : item}
                   </option>
                 ))}
               </select>
 
-              <ChevronDown
-                size={16}
-                className="vehicle-filters__select-chevron"
-              />
+              <ChevronDown size={16} className="vehicle-filters__select-chevron" />
             </div>
           </div>
 
           {/* Price */}
           <div className="vehicle-filters__group vehicle-filters__price">
             <div className="vehicle-filters__price-heading">
-              <label
-                className="vehicle-filters__label"
-                htmlFor="vehicle-price"
-              >
+              <label className="vehicle-filters__label" htmlFor="vehicle-price">
                 <IndianRupee size={15} />
                 Maximum Hourly Price
               </label>
 
-              <span className="vehicle-filters__price-value">
-                ₹{filters.max}
-              </span>
+              <span className="vehicle-filters__price-value">₹{filters.max}</span>
             </div>
 
             <input
@@ -209,8 +178,8 @@ export function VehicleFilters({ filters, onChange, onReset }) {
               max={priceConfig.max}
               step={priceConfig.step}
               value={filters.max}
-              onChange={(e) => onChange("max", Number(e.target.value))}
-              style={{ "--range-progress": `${priceProgress}%` }}
+              onChange={(e) => onChange('max', Number(e.target.value))}
+              style={{ '--range-progress': `${priceProgress}%` }}
             />
 
             <div className="vehicle-filters__price-limits">
@@ -235,20 +204,14 @@ export function VehicleFilters({ filters, onChange, onReset }) {
             <input
               type="checkbox"
               checked={filters.onlyAvailable}
-              onChange={(e) =>
-                onChange("onlyAvailable", e.target.checked)
-              }
+              onChange={(e) => onChange('onlyAvailable', e.target.checked)}
             />
 
             <span className="vehicle-filters__switch" aria-hidden="true" />
           </label>
 
           {/* Reset */}
-          <button
-            type="button"
-            className="vehicle-filters__reset"
-            onClick={onReset}
-          >
+          <button type="button" className="vehicle-filters__reset" onClick={onReset}>
             <RotateCcw size={16} />
             <span>Reset All Filters</span>
           </button>

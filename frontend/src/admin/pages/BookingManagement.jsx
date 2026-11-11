@@ -9,6 +9,7 @@ import { ErrorBox } from '../../components/common/ErrorBox.jsx';
 import { Loading } from '../../components/common/Loader.jsx';
 import { BookingTable } from '../components/BookingTable.jsx';
 import { BookingManager } from '../features/bookings/BookingManager.jsx';
+import { RentalDeadlineAlert } from '../features/bookings/RentalDeadlineAlert.jsx';
 export function BookingManagement({ mode }) {
   const { data, error, loading, reload } = useResource('/admin/bookings', 10000);
   const [query, setQuery] = useState(''),
@@ -20,7 +21,10 @@ export function BookingManagement({ mode }) {
       (!mode ||
         (mode === 'active' && b.status === 'active') ||
         (mode === 'returns' && ['active', 'inspecting'].includes(b.status))) &&
-      (status === 'All' || (status === 'Overdue' && b.overdue) || b.status === status) &&
+      (status === 'All' ||
+        (status === 'Overdue' && b.overdue) ||
+        (status === 'Expired' && b.rentalState === 'expired') ||
+        b.status === status) &&
       (source === 'All' || b.source === source) &&
       `${b.reference} ${b.customer.name} ${b.customer.phone} ${b.vehicle.name}`
         .toLowerCase()
@@ -43,6 +47,7 @@ export function BookingManagement({ mode }) {
         </Link>
       </PageTitle>
       <ErrorBox>{error}</ErrorBox>
+      <RentalDeadlineAlert bookings={data || []} onShow={() => setStatus('Overdue')} />
       <Filters>
         <SearchField
           aria-label="Search bookings"
@@ -56,11 +61,18 @@ export function BookingManagement({ mode }) {
           value={status}
           onChange={(e) => setStatus(e.target.value)}
         >
-          {['All', 'confirmed', 'active', 'Overdue', 'inspecting', 'completed', 'cancelled'].map(
-            (s) => (
-              <option key={s}>{s}</option>
-            ),
-          )}
+          {[
+            'All',
+            'confirmed',
+            'active',
+            'Overdue',
+            'Expired',
+            'inspecting',
+            'completed',
+            'cancelled',
+          ].map((s) => (
+            <option key={s}>{s}</option>
+          ))}
         </select>
         <select
           aria-label="Filter booking source"

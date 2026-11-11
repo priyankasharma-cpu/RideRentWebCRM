@@ -54,6 +54,9 @@ model Booking {
   customer        Customer         @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   payments         Payment[]       
   rental          Rental?
+  checkoutItem CheckoutItem?
+  addon BookingAddon?
+  addonAllocations AddOnAllocation[]
 
   @@index([customerId], map: "booking_customer")
   @@index([vehicleId, status, startsAt, endsAt], map: "booking_availability")
@@ -209,5 +212,115 @@ model Vehicle {
   createdAt   String @map("created_at")
   bookings     Booking[]
   maintenance  MaintenanceBlock[]
+  images       VehicleImage[]
   @@map("vehicles")
+}
+
+model VehicleImage {
+  vehicleId String @map("vehicle_id")
+  id String
+  label String
+  url String
+  position Int
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@id([vehicleId, id])
+  @@unique([vehicleId, position], map: "vehicle_images_position")
+  @@unique([vehicleId, url], map: "vehicle_images_url")
+  @@map("vehicle_images")
+}
+
+model ContactInquiry {
+ id String @id
+ submissionKey String @unique @map("submission_key")
+ name String
+ email String
+ phone String @default("")
+ inquiryType String @map("inquiry_type")
+ message String
+ status String @default("new")
+ createdAt String @map("created_at")
+ updatedAt String @map("updated_at")
+ @@index([status, createdAt], map: "contact_inquiries_status_created")
+ @@index([createdAt], map: "contact_inquiries_created")
+ @@map("contact_inquiries")
+}
+
+model CheckoutOrder {
+  id String @id
+  submissionKey String @unique @map("submission_key")
+  inputHash String @map("input_hash")
+  accessHash String @map("access_hash")
+  createdAt String @map("created_at")
+  items CheckoutItem[]
+  @@map("checkout_orders")
+}
+
+model CheckoutItem {
+  bookingId String @id @map("booking_id")
+  orderId String @map("order_id")
+  booking Booking @relation(fields:[bookingId],references:[id],onDelete:NoAction,onUpdate:NoAction)
+  order CheckoutOrder @relation(fields:[orderId],references:[id],onDelete:NoAction,onUpdate:NoAction)
+  @@index([orderId],map:"checkout_items_order")
+  @@map("checkout_items")
+}
+
+model BookingAddon {
+  bookingId String @id @map("booking_id")
+  quantity Int
+  rate BigInt
+  billing String
+  base BigInt
+  tax BigInt
+  booking Booking @relation(fields:[bookingId],references:[id],onDelete:NoAction,onUpdate:NoAction)
+  @@map("booking_addons")
+}
+
+model AddOn {
+  id String @id
+  code String @unique
+  name String
+  description String @default("")
+  image String @default("")
+  rate BigInt
+  billing String
+  stock Int
+  unserviceable Int
+  maxQuantity Int @map("max_quantity")
+  enabled Int
+  archivedAt String? @map("archived_at")
+  version Int @default(1)
+  createdAt String @map("created_at")
+  updatedAt String @map("updated_at")
+  categories AddOnCategory[]
+  allocations AddOnAllocation[]
+  @@map("addons")
+}
+
+model AddOnCategory {
+  addonId String @map("addon_id")
+  category String
+  includedQuantity Int @map("included_quantity")
+  addon AddOn @relation(fields:[addonId],references:[id],onDelete:NoAction,onUpdate:NoAction)
+  @@id([addonId,category])
+  @@map("addon_categories")
+}
+
+model AddOnAllocation {
+  id String @id
+  addonId String @map("addon_id")
+  bookingId String @map("booking_id")
+  quantity Int
+  includedQuantity Int @map("included_quantity")
+  name String
+  rate BigInt
+  billing String
+  base BigInt
+  tax BigInt
+  version Int
+  addon AddOn @relation(fields:[addonId],references:[id],onDelete:NoAction,onUpdate:NoAction)
+  booking Booking @relation(fields:[bookingId],references:[id],onDelete:NoAction,onUpdate:NoAction)
+  @@unique([addonId,bookingId])
+  @@index([bookingId],map:"addon_allocations_booking")
+  @@index([addonId,bookingId],map:"addon_allocations_stock")
+  @@map("addon_allocations")
 }

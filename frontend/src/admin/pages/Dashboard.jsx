@@ -25,13 +25,16 @@ export function Dashboard() {
           <Plus size={16} /> New Booking
         </Link>
       </PageTitle>
-      <div className="overview-callout">
+      <div
+        className={'overview-callout' + (k.overdue ? ' overview-callout--overdue' : '')}
+        role="status"
+      >
         <div>
           <span className="live-dot" /> LIVE OPERATIONS
         </div>
         <p>
           {k.overdue
-            ? `${k.overdue} overdue rental${k.overdue > 1 ? 's' : ''} need your attention.`
+            ? `Rental time ended: ${k.overdue} vehicle${k.overdue > 1 ? 's' : ''} not returned to the shop.`
             : 'Your workspace is up to date.'}{' '}
           {k.inspection ? `${k.inspection} return inspections pending.` : ''}
         </p>

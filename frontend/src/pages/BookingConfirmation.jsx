@@ -5,10 +5,12 @@ import { useParams, Link } from 'react-router-dom';
 import { useApp } from '../hooks/useApp.js';
 import { useState, useEffect } from 'react';
 import { defaultPeriod, shopInput, toUTC } from '../utils/rentalTime.js';
-import { bookingToken } from '../services/bookingTokens.js';
+import { bookingToken, saveBookingToken } from '../services/bookingTokens.js';
 import { api } from '../services/apiClient.js';
 import { Loading } from '../components/common/Loader.jsx';
 import { ErrorBox } from '../components/common/ErrorBox.jsx';
+import { BookingTimingNotice } from '../components/booking/BookingStatusSummary.jsx';
+import { rentalDuration } from '../utils/bookingStatus.js';
 import { BookingSuccess } from '../components/booking/BookingSuccess.jsx';
 import { formatTime, money } from '../utils/formatters.js';
 import { MapPin, ArrowRight } from 'lucide-react';
@@ -26,12 +28,16 @@ export function BookingConfirmation() {
   const token = bookingToken(id);
   const { booking, fetchError, setBooking } = useBooking(id, token);
   useEffect(() => {
-    if (booking)
-      setPeriod({
-        startsAt: shopInput(booking.starts_at),
-        endsAt: shopInput(booking.ends_at),
-      });
-  }, [booking]);
+    if (booking) {
+      for (const member of booking.checkout?.bookings || []) saveBookingToken(member.id, token);
+    }
+  }, [booking, token]);
+  const scheduledStart = booking?.starts_at,
+    scheduledEnd = booking?.ends_at;
+  useEffect(() => {
+    if (scheduledStart && scheduledEnd)
+      setPeriod({ startsAt: shopInput(scheduledStart), endsAt: shopInput(scheduledEnd) });
+  }, [scheduledStart, scheduledEnd]);
   const action = async (path, body) => {
     setBusy(true);
     try {
@@ -60,6 +66,36 @@ export function BookingConfirmation() {
           {booking ? (
             <>
               <BookingSuccess booking={booking} />
+              <BookingTimingNotice booking={booking} />
+              {booking.checkout?.bookings.length > 1 && (
+                <section
+                  className="rr-panel confirmation-order"
+                  aria-label="All vehicles in this booking"
+                >
+                  <h2>{booking.checkout.bookings.length} vehicles reserved together</h2>
+                  <p>
+                    Total for this checkout: <strong>{money(booking.checkout.total)}</strong> · Pay
+                    at shop
+                  </p>
+                  <p className="subtle-note">
+                    Each vehicle has its own reference, pickup, return and payment record. The
+                    summary below is for the selected vehicle.
+                  </p>
+                  <ul>
+                    {booking.checkout.bookings.map((member) => (
+                      <li key={member.id}>
+                        <Link
+                          to={'/booking/confirmation/' + member.id}
+                          aria-current={member.id === id ? 'page' : undefined}
+                        >
+                          {member.name} · {member.reference}
+                        </Link>
+                        <span>{member.status}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
               <div className="booking-summary-layout">
                 <div className="rr-panel">
                   <img
@@ -85,7 +121,7 @@ export function BookingConfirmation() {
                     </div>
                     <div>
                       <small>Rental period</small>
-                      <strong>{booking.hours} hours</strong>
+                      <strong>{rentalDuration(booking.starts_at, booking.ends_at)}</strong>
                     </div>
                     {booking.rental && (
                       <>
@@ -130,7 +166,11 @@ export function BookingConfirmation() {
                     <strong>{money(booking.outstanding)}</strong>
                   </p>
                   <p className="subtle-note">
-                    Pay at shop · Bring your original driving license and government ID.
+                    {booking.status === 'confirmed'
+                      ? 'Payment is collected at the shop. Bring your original driving license and government ID.'
+                      : booking.rentalState === 'returned'
+                        ? 'Vehicle return recorded by the shop. Inspection and any deposit refund are tracked separately.'
+                        : 'Payment reflects receipts recorded by the shop.'}
                   </p>
                   <CallLink className="rr-button full-width" />
                   {booking.status === 'confirmed' && (

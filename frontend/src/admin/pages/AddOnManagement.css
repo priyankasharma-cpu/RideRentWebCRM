@@ -1,0 +1,90 @@
+@layer rr-enhancements {
+  .admin-app .admin-addons {
+    min-width: 0;
+  }
+  .admin-app .admin-addons__section-title {
+    font-size: var(--admin-text-section);
+    margin: 20px 0 14px;
+  }
+  .admin-app .admin-addons__helmet {
+    margin-bottom: 24px;
+  }
+  .admin-app .admin-addons__helmet p {
+    margin-bottom: 14px;
+  }
+  .admin-app .admin-addons__toolbar {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 18px;
+    padding: 16px;
+  }
+  .admin-app .admin-addons__toolbar .admin-search-field {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .admin-app .admin-addons__toolbar input {
+    margin: 0;
+  }
+  .admin-app .admin-addons__toolbar label {
+    font-size: var(--admin-text-label);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .admin-app .admin-addons__toolbar select {
+    width: 130px;
+    margin: 0;
+  }
+  .admin-app .admin-addons__toolbar > span {
+    font-size: var(--admin-text-small);
+    white-space: nowrap;
+    color: var(--admin-color-muted);
+  }
+  .admin-app .admin-addons__notice {
+    font-size: var(--admin-text-small);
+    line-height: 1.8;
+    color: var(--admin-color-muted);
+    margin: 16px 0;
+  }
+  .admin-app .admin-addons__notice a {
+    color: var(--admin-accent);
+    margin-right: 12px;
+  }
+  .admin-app .admin-addons__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .admin-app .admin-addons__empty {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: 14px;
+    padding: 44px 24px;
+  }
+  .admin-app .admin-addons__empty h2 {
+    font-size: var(--admin-text-section);
+  }
+  .admin-app .admin-addons__empty p {
+    color: var(--admin-color-muted);
+    font-size: var(--admin-text-body);
+    line-height: 1.8;
+  }
+  @media (max-width: 1200px) {
+    .admin-app .admin-addons__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 500px) {
+    .admin-app .admin-addons__toolbar {
+      flex-wrap: wrap;
+    }
+    .admin-app .admin-addons__toolbar .admin-search-field {
+      flex-basis: 100%;
+    }
+  }
+}

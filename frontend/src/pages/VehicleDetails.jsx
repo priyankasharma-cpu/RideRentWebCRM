@@ -1,8 +1,8 @@
 import { useVehicle } from '../hooks/useVehicles';
 import { useQuote } from '../hooks/useQuote';
 import { useParams, Link } from 'react-router-dom';
-import { useState } from 'react';
-import { defaultPeriod } from '../utils/rentalTime.js';
+import { periodSearch } from '../utils/rentalTime.js';
+import { useRentalPeriod } from '../hooks/useRentalPeriod.js';
 import { useApp } from '../hooks/useApp.js';
 import { Loading } from '../components/common/Loader.jsx';
 import { ErrorBox } from '../components/common/ErrorBox.jsx';
@@ -17,20 +17,20 @@ import './VehicleDetails.css';
 export function VehicleDetails() {
   const { slug } = useParams(),
     { data: v, error, loading } = useVehicle(slug);
-  const [period, setPeriod] = useState(defaultPeriod);
+  const { period, setPeriod } = useRentalPeriod();
   const { config } = useApp();
-  const { quote, quoteError } = useQuote(v?.id, period);
+  const { quote, quoteError, quoteLoading, retryQuote, canRetryQuote } = useQuote(v?.id, period);
   if (loading) return <Loading />;
   if (error)
     return (
       <main className="container page">
         <ErrorBox>{error}</ErrorBox>
-        <Link to="/vehicles">Back to vehicles</Link>
+        <Link to={'/vehicles' + periodSearch(period)}>Back to vehicles</Link>
       </main>
     );
   return (
     <main className="container page">
-      <Link className="back-link" to="/vehicles">
+      <Link className="back-link" to={'/vehicles' + periodSearch(period)}>
         ← All vehicles
       </Link>
       <div className="detail-layout">
@@ -40,7 +40,7 @@ export function VehicleDetails() {
             {v.brand} · {v.category}
           </div>
           <h1>{v.name}</h1>
-          <Status value={v.physicalStatus} />
+          <Status value={'Current vehicle status: ' + v.physicalStatus} />
           <p className="detail-description">{v.description}</p>
           <div className="spec-grid">
             {[
@@ -78,9 +78,21 @@ export function VehicleDetails() {
           <p>Refundable deposit: {money(v.deposit)}</p>
           <PeriodFields value={period} onChange={setPeriod} />
           <ErrorBox>{quoteError}</ErrorBox>
+          {quoteError && canRetryQuote && (
+            <button type="button" className="rr-button--outline" onClick={retryQuote}>
+              Retry availability
+            </button>
+          )}
+          {quoteLoading && (
+            <p className="subtle-note" role="status">
+              Checking your selected dates…
+            </p>
+          )}
           {quote && (
             <>
-              <Status value={quote.available ? 'Available' : 'Unavailable'} />
+              <Status
+                value={quote.available ? 'Available for selected dates' : 'Currently Unavailable'}
+              />
               {!quote.available && <p className="rr-error-text">{quote.reason}</p>}
               <PriceBreakdown quote={quote} />
             </>

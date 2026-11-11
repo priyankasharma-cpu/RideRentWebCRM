@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { CustomerLayout } from './components/layout/CustomerLayout';
 import { Loading } from './components/common/Loader';
+const Booking = lazy(() => import('./pages/Booking.jsx'));
 const Home = lazy(() =>
   import('./pages/Home').then((m) => ({
     default: m.default,
@@ -92,6 +93,7 @@ export function AppRoutes() {
           <Route path="vehicles" element={<Vehicles />} />
           <Route path="vehicles/:slug" element={<VehicleDetails />} />
           <Route path="checkout" element={<Checkout />} />
+          <Route path="booking" element={<Booking />} />
           <Route path="booking/confirmation/:id" element={<BookingConfirmation />} />
           <Route path="my-bookings" element={<MyBookings />} />
           <Route path="my-bookings/:id" element={<BookingConfirmation />} />

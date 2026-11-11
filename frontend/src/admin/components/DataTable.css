@@ -1,91 +1,71 @@
 @layer rr-enhancements {
-  .table-panel {
+  .admin-app .table-panel {
     padding: 0;
     overflow: hidden;
+    min-width: 0;
   }
-}
-@layer rr-enhancements {
-  .table-panel > .panel-title {
-    padding: 23px 24px 0;
+  .admin-app .table-panel > .panel-title {
+    padding: 22px 24px 0;
     margin-bottom: 20px;
   }
-}
-@layer rr-enhancements {
-  .table-scroll {
-    overflow: auto;
+  .admin-app .table-scroll {
+    overflow-x: auto;
     max-width: 100%;
+    min-width: 0;
+    overscroll-behavior-inline: contain;
   }
-}
-@layer rr-enhancements {
-  table {
+  .admin-app table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
-}
-@layer rr-enhancements {
-  th {
+  .admin-app th {
     background: var(--color-surface-muted);
-    color: var(--color-muted);
-    font-size: 9px;
-    font-weight: 600;
-    padding: 13px 20px;
+    color: var(--admin-color-muted);
+    font-size: 13px;
+    font-weight: 650;
+    padding: 15px 20px;
     border-bottom: 1px solid var(--color-border);
+    line-height: 1.5;
   }
-}
-@layer rr-enhancements {
-  td {
-    font-size: 10px;
-    padding: 17px 20px;
+  .admin-app td {
+    font-size: 14px;
+    padding: 16px 20px;
     border-bottom: 1px solid var(--color-border);
     vertical-align: middle;
+    height: 80px;
+    line-height: 1.5;
   }
-}
-@layer rr-enhancements {
-  tbody tr:last-child td {
-    border: 0;
+  .admin-app tbody tr:last-child td {
+    border-bottom: 0;
   }
-}
-@layer rr-enhancements {
-  tbody tr:hover {
-    background: color-mix(in srgb, var(--color-surface-muted) 45%, transparent);
+  .admin-app tbody tr:hover {
+    background: color-mix(in srgb, var(--color-surface-muted) 55%, transparent);
   }
-}
-@layer rr-enhancements {
-  td strong {
+  .admin-app td strong {
     display: block;
-    font-size: 11px;
+    font-size: 15px;
     font-weight: 650;
   }
-}
-@layer rr-enhancements {
-  td small {
+  .admin-app td small {
     display: block;
-    font-size: 9px;
-    color: var(--color-muted);
-    margin-top: 6px;
-    line-height: 1.6;
+    font-size: 13px;
+    color: var(--admin-color-muted);
+    margin-top: 5px;
+    line-height: 1.5;
   }
-}
-@layer rr-enhancements {
+  .admin-app td:first-child small {
+    user-select: all;
+  }
   @media (max-width: 750px) {
-    .table-panel > .panel-title {
-      padding: 19px 18px 0;
+    .admin-app th,
+    .admin-app td {
+      padding-inline: 16px;
     }
-  }
-}
-@layer rr-enhancements {
-  @media (max-width: 750px) {
-    .table-panel > .panel-title h3 {
-      font-size: 13px;
-    }
-  }
-}
-@layer rr-enhancements {
-  @media (max-width: 750px) {
-    .table-panel > .panel-title p {
-      font-size: 9px;
+    .admin-app .table-panel > .panel-title {
+      padding-inline: 18px;
     }
   }
 }

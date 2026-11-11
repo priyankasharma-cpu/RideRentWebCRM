@@ -28,9 +28,10 @@ const shop = (value) =>
 const period = { start: shop(Date.now() + 15 * 60000), end: shop(Date.now() + 195 * 60000) };
 const phone = '98' + String(Date.now()).slice(-8);
 try {
-  await page.addInitScript(() => {
+  await page.addInitScript((origin) => {
+    if (globalThis.top !== globalThis || globalThis.location.origin !== origin) return;
     if (!localStorage.getItem('riderent-theme')) localStorage.setItem('riderent-theme', 'light');
-  });
+  }, new URL(base).origin);
   await page.goto(base, { waitUntil: 'networkidle' });
   await expect(page.locator('.vehicle-card')).toHaveCount(5);
   await page.screenshot({
@@ -174,7 +175,10 @@ try {
     fullPage: true,
   });
   await page.getByRole('button', { name: 'Toggle admin navigation' }).click();
-  await page.locator('.admin-sidebar').getByRole('link', { name: 'Vehicles', exact: true }).click();
+  await page
+    .locator('.admin-sidebar')
+    .getByRole('link', { name: 'Physical Fleet & Pricing', exact: true })
+    .click();
   await expect(page.locator('.admin-sidebar')).not.toHaveClass(/open/);
   await page.goto(base + '/my-bookings', { waitUntil: 'networkidle' });
   await page.getByLabel('Booking reference').fill(reference);
@@ -193,7 +197,7 @@ try {
   );
   await page.getByRole('button', { name: 'Switch to dark theme' }).click();
   await page.screenshot({ path: 'backend/.artifacts/screenshots/dark-mobile.png', fullPage: true });
-  await page.getByRole('button', { name: 'Toggle navigation', exact: true }).click();
+  await page.getByRole('button', { name: 'Open navigation', exact: true }).click();
   await page.locator('header nav').getByRole('link', { name: 'Vehicles', exact: true }).click();
   await expect(page.locator('header nav')).not.toBeVisible();
   for (const path of [

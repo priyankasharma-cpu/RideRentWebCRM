@@ -1,3 +1,6 @@
+import { createContactRouter } from './modules/contact/contact.routes.js';
+import { createCheckoutRouter } from './modules/bookings/checkout.routes.js';
+import { createAddOnsRouter } from './modules/addons/addOn.routes.js';
 import { requestId } from './middleware/requestId.js';
 import express from 'express';
 import helmet from 'helmet';
@@ -57,6 +60,9 @@ export function createApp(db, { origins } = {}) {
     next();
   });
   app.use(createAuthRouter(db));
+  app.use(createContactRouter(db));
+  app.use(createCheckoutRouter(db));
+  app.use(createAddOnsRouter(db));
   app.use(moduleRouter0(db));
   app.use(moduleRouter1(db));
   app.use(moduleRouter2(db));

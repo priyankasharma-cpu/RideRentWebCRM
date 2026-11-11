@@ -1,5 +1,4 @@
 @layer rr-customer {
-
   /* =====================================
      RIDERENT — PREMIUM FILTER SIDEBAR
      ===================================== */
@@ -29,9 +28,11 @@
     border-bottom: 1px solid var(--color-border);
     list-style: none;
     cursor: pointer;
-    background: linear-gradient(135deg,
-        color-mix(in srgb, var(--color-primary) 7%, var(--color-surface)),
-        var(--color-surface));
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-primary) 7%, var(--color-surface)),
+      var(--color-surface)
+    );
   }
 
   .vehicle-filters__heading::-webkit-details-marker {
@@ -46,9 +47,7 @@
     height: 38px;
     border-radius: 12px;
     color: var(--color-primary);
-    background: color-mix(in srgb,
-        var(--color-primary) 12%,
-        var(--color-surface));
+    background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
   }
 
   .vehicle-filters__heading-text {
@@ -139,9 +138,7 @@
   .vehicle-filters__input-wrap input:focus {
     border-color: var(--color-primary);
     background: var(--color-surface);
-    box-shadow: 0 0 0 3px color-mix(in srgb,
-        var(--color-primary) 12%,
-        transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 12%, transparent);
   }
 
   .vehicle-filters__input-wrap input::placeholder {
@@ -223,9 +220,7 @@
     border-color: var(--color-primary);
     color: #fff;
     background: var(--color-primary);
-    box-shadow: 0 5px 12px color-mix(in srgb,
-        var(--color-primary) 20%,
-        transparent);
+    box-shadow: 0 5px 12px color-mix(in srgb, var(--color-primary) 20%, transparent);
   }
 
   .vehicle-filters__category.is-active:hover {
@@ -269,9 +264,7 @@
 
   .vehicle-filters__select-wrap select:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px color-mix(in srgb,
-        var(--color-primary) 12%,
-        transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 12%, transparent);
   }
 
   .vehicle-filters__select-icon {
@@ -294,9 +287,7 @@
     padding: 14px 12px;
     border: 1px solid var(--color-border);
     border-radius: 13px;
-    background: color-mix(in srgb,
-        var(--color-primary) 3%,
-        var(--color-surface));
+    background: color-mix(in srgb, var(--color-primary) 3%, var(--color-surface));
   }
 
   .vehicle-filters__price-heading {
@@ -316,14 +307,12 @@
     padding: 5px 8px;
     border-radius: 7px;
     color: var(--color-primary);
-    background: color-mix(in srgb,
-        var(--color-primary) 11%,
-        var(--color-surface));
+    background: color-mix(in srgb, var(--color-primary) 11%, var(--color-surface));
     font-size: 12px;
     font-weight: 800;
   }
 
-  .vehicle-filters__price input[type="range"] {
+  .vehicle-filters__price input[type='range'] {
     display: block;
     width: 100%;
     height: 6px;
@@ -334,14 +323,16 @@
     border: 0;
     border-radius: 99px;
     cursor: pointer;
-    background: linear-gradient(to right,
-        var(--color-primary) 0%,
-        var(--color-primary) var(--range-progress),
-        var(--color-border) var(--range-progress),
-        var(--color-border) 100%);
+    background: linear-gradient(
+      to right,
+      var(--color-primary) 0%,
+      var(--color-primary) var(--range-progress),
+      var(--color-border) var(--range-progress),
+      var(--color-border) 100%
+    );
   }
 
-  .vehicle-filters__price input[type="range"]::-webkit-slider-thumb {
+  .vehicle-filters__price input[type='range']::-webkit-slider-thumb {
     appearance: none;
     -webkit-appearance: none;
     width: 18px;
@@ -353,11 +344,11 @@
     transition: transform 0.2s ease;
   }
 
-  .vehicle-filters__price input[type="range"]::-webkit-slider-thumb:hover {
+  .vehicle-filters__price input[type='range']::-webkit-slider-thumb:hover {
     transform: scale(1.15);
   }
 
-  .vehicle-filters__price input[type="range"]::-moz-range-thumb {
+  .vehicle-filters__price input[type='range']::-moz-range-thumb {
     width: 13px;
     height: 13px;
     border: 3px solid var(--color-surface);
@@ -438,7 +429,7 @@
   }
 
   .vehicle-filters__switch::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 3px;
     left: 3px;
@@ -450,11 +441,11 @@
     transition: transform 0.2s ease;
   }
 
-  .vehicle-filters__availability input:checked+.vehicle-filters__switch {
+  .vehicle-filters__availability input:checked + .vehicle-filters__switch {
     background: var(--color-primary);
   }
 
-  .vehicle-filters__availability input:checked+.vehicle-filters__switch::after {
+  .vehicle-filters__availability input:checked + .vehicle-filters__switch::after {
     transform: translateX(16px);
   }
 
@@ -488,9 +479,7 @@
   .vehicle-filters__reset:hover {
     border-color: var(--color-primary);
     color: var(--color-primary);
-    background: color-mix(in srgb,
-        var(--color-primary) 5%,
-        var(--color-surface));
+    background: color-mix(in srgb, var(--color-primary) 5%, var(--color-surface));
   }
 
   .vehicle-filters__reset:hover svg {
@@ -561,7 +550,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-
     .vehicle-filters *,
     .vehicle-filters *::before,
     .vehicle-filters *::after {

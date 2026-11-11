@@ -1,5 +1,6 @@
 import { applyImageFallback } from '../../../config/imageConfig.js';
-import { Status } from '../../../components/common/StatusBadge.jsx';
+import { BookingStatusSummary } from '../../../components/booking/BookingStatusSummary.jsx';
+import { rentalDuration } from '../../../utils/bookingStatus.js';
 import './BookingHeader.css';
 export function BookingHeader({ booking }) {
   return (
@@ -11,7 +12,8 @@ export function BookingHeader({ booking }) {
           {booking.customer.name} ·{' '}
           <a href={'tel:' + booking.customer.phone}>{booking.customer.phone}</a>
         </p>
-        <Status value={booking.overdue ? 'Overdue' : booking.status} />
+        <p>Rental duration: {rentalDuration(booking.starts_at, booking.ends_at)}</p>
+        <BookingStatusSummary booking={booking} />
       </div>
     </div>
   );

@@ -1,44 +1,66 @@
 @layer rr-enhancements {
-  .manage-prices {
+  .admin-app .booking-addon-charges {
+    margin: 16px 0;
+    padding: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 11px;
+  }
+  .admin-app .booking-addon-charges h4 {
+    font-size: var(--admin-text-card);
+    margin-bottom: 12px;
+  }
+  .admin-app .booking-addon-charges dl {
+    display: grid;
+    gap: 12px;
+  }
+  .admin-app .booking-addon-charges dl > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: var(--admin-text-small);
+  }
+  .admin-app .booking-addon-charges small {
+    display: block;
+    margin-top: 4px;
+    font-size: var(--admin-text-small);
+    color: var(--admin-color-muted);
+  }
+  .admin-app .booking-addon-charges dd {
+    margin: 0;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .admin-app .manage-prices {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     padding: 17px;
     border: 1px solid var(--color-border);
     border-radius: 11px;
     gap: 10px;
-    font-size: 10px;
-    color: var(--color-muted);
+    font-size: var(--admin-text-small);
+    color: var(--admin-color-muted);
     margin-block: 18px;
   }
-}
-@layer rr-enhancements {
-  .manage-prices strong {
+  .admin-app .manage-prices strong {
     display: block;
-    font-size: 18px;
+    font-size: var(--admin-text-card);
     color: var(--color-text);
     margin-top: 7px;
   }
-}
-@layer rr-enhancements {
   @media (max-width: 750px) {
-    .manage-prices {
+    .admin-app .manage-prices {
       padding: 14px;
       gap: 8px;
-      font-size: 8px;
     }
   }
-}
-@layer rr-enhancements {
   @media (max-width: 750px) {
-    .manage-prices strong {
-      font-size: 15px;
+    .admin-app .manage-prices strong {
+      font-size: var(--admin-text-body);
     }
   }
-}
-@layer rr-enhancements {
   @media (max-width: 430px) {
-    .manage-prices strong {
-      font-size: 14px;
+    .admin-app .manage-prices strong {
+      font-size: var(--admin-text-body);
     }
   }
 }

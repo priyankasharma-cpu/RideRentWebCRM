@@ -5,7 +5,6 @@
    ===================================================== */
 
 @layer rr-base {
-
   /* ========== VEHICLE GRID ========== */
 
   .vehicle-grid {
@@ -45,9 +44,7 @@
   .vehicle-card:hover {
     transform: translateY(-5px);
 
-    border-color: color-mix(in srgb,
-        var(--color-primary) 28%,
-        var(--color-border));
+    border-color: color-mix(in srgb, var(--color-primary) 28%, var(--color-border));
 
     box-shadow: 0 15px 35px rgba(20, 40, 85, 0.12);
   }
@@ -110,11 +107,13 @@
 
     pointer-events: none;
 
-    background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.13) 0%,
-        rgba(255, 255, 255, 0.03) 30%,
-        transparent 55%,
-        rgba(255, 255, 255, 0.09) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.13) 0%,
+      rgba(255, 255, 255, 0.03) 30%,
+      transparent 55%,
+      rgba(255, 255, 255, 0.09) 100%
+    );
 
     opacity: 0.35;
 
@@ -389,9 +388,7 @@
     border: 1px solid transparent;
     border-radius: 9px;
 
-    background: linear-gradient(135deg,
-        #1687ff,
-        #0067e9);
+    background: linear-gradient(135deg, #1687ff, #0067e9);
 
     color: #fff;
 
@@ -411,9 +408,7 @@
   .vehicle-bottom .vehicle-book-button:hover {
     transform: translateY(-2px);
 
-    background: linear-gradient(135deg,
-        #006fe9,
-        #0056cb);
+    background: linear-gradient(135deg, #006fe9, #0056cb);
 
     box-shadow: 0 8px 18px rgba(0, 109, 238, 0.25);
   }
@@ -463,21 +458,23 @@
 
   /* ========== DARK THEME ========== */
 
-  [data-theme="dark"] .vehicle-card {
+  [data-theme='dark'] .vehicle-card {
     background: var(--color-surface);
     border-color: var(--color-border);
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.14);
   }
 
-  [data-theme="dark"] .vehicle-card:hover {
+  [data-theme='dark'] .vehicle-card:hover {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.28);
   }
 
-  [data-theme="dark"] .vehicle-image__glass {
-    background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.09),
-        transparent 55%,
-        rgba(255, 255, 255, 0.04));
+  [data-theme='dark'] .vehicle-image__glass {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.09),
+      transparent 55%,
+      rgba(255, 255, 255, 0.04)
+    );
   }
 
   /* ========== ACCESSIBILITY ========== */
@@ -490,7 +487,6 @@
   /* ========== RESPONSIVE ========== */
 
   @media (max-width: 1200px) {
-
     .vehicle-grid {
       gap: 12px;
     }
@@ -505,14 +501,12 @@
   }
 
   @media (max-width: 950px) {
-
     .vehicle-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
   @media (max-width: 650px) {
-
     .vehicle-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
@@ -565,7 +559,6 @@
   }
 
   @media (max-width: 430px) {
-
     .vehicle-grid {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -603,7 +596,6 @@
   /* ========== REDUCED MOTION ========== */
 
   @media (prefers-reduced-motion: reduce) {
-
     .vehicle-card,
     .vehicle-image img,
     .vehicle-image__glass,

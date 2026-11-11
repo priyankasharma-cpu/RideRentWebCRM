@@ -1,5 +1,7 @@
+import { vehicleGalleryInput } from './vehicleGallery.validation.js';
 import { Router } from 'express';
 import {
+  updateVehicleGalleryController,
   listPublicVehiclesController,
   getPublicVehicleController,
   listManagedVehiclesController,
@@ -25,6 +27,12 @@ export function createVehiclesRouter(db) {
     authorize('admin'),
     validateRequest(editVehicleInput),
     editVehicleController(db),
+  );
+  router.put(
+    '/api/admin/vehicles/:id/images',
+    authorize('admin'),
+    validateRequest(vehicleGalleryInput),
+    updateVehicleGalleryController(db),
   );
   return router;
 }

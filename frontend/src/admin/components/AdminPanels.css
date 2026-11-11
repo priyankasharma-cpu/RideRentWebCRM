@@ -1,53 +1,41 @@
 @layer rr-enhancements {
-  .dashboard-chart-grid {
+  .admin-app .dashboard-chart-grid {
     display: grid;
     grid-template-columns: 1.7fr 1fr;
     gap: 21px;
     margin-bottom: 23px;
   }
-}
-@layer rr-enhancements {
-  .panel-title {
+  .admin-app .panel-title {
     display: flex;
     align-items: start;
     justify-content: space-between;
     gap: 20px;
     margin-bottom: 23px;
   }
-}
-@layer rr-enhancements {
-  .panel-title h3 {
-    font-size: 14px;
+  .admin-app .panel-title h3 {
+    font-size: var(--admin-text-card);
     font-weight: 750;
   }
-}
-@layer rr-enhancements {
-  .panel-title p {
-    font-size: 10px;
-    color: var(--color-muted);
+  .admin-app .panel-title p {
+    font-size: var(--admin-text-small);
+    color: var(--admin-color-muted);
     line-height: 1.8;
     margin-top: 6px;
   }
-}
-@layer rr-enhancements {
-  .panel-title > strong {
-    font-size: 21px;
+  .admin-app .panel-title > strong {
+    font-size: var(--admin-text-section);
     font-family: Manrope, sans-serif;
     letter-spacing: -0.5px;
   }
-}
-@layer rr-enhancements {
-  .panel-title > a {
+  .admin-app .panel-title > a {
     display: flex;
     align-items: center;
     gap: 7px;
-    color: var(--color-primary);
-    font-size: 10px;
+    color: var(--admin-accent);
+    font-size: var(--admin-text-small);
     white-space: nowrap;
   }
-}
-@layer rr-enhancements {
-  .mini-stats {
+  .admin-app .mini-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     border: 1px solid var(--color-border);
@@ -56,124 +44,70 @@
     margin-bottom: 24px;
     padding: 19px;
   }
-}
-@layer rr-enhancements {
-  .mini-stats > div {
+  .admin-app .mini-stats > div {
     padding-inline: 20px;
     border-right: 1px solid var(--color-border);
   }
-}
-@layer rr-enhancements {
-  .mini-stats > div:first-child {
+  .admin-app .mini-stats > div:first-child {
     padding-left: 0;
   }
-}
-@layer rr-enhancements {
-  .mini-stats > div:last-child {
+  .admin-app .mini-stats > div:last-child {
     border: 0;
   }
-}
-@layer rr-enhancements {
-  .mini-stats span {
+  .admin-app .mini-stats span {
     display: block;
-    font-size: 10px;
-    color: var(--color-muted);
+    font-size: var(--admin-text-small);
+    color: var(--admin-color-muted);
   }
-}
-@layer rr-enhancements {
-  .mini-stats strong {
+  .admin-app .mini-stats strong {
     display: block;
-    font-size: 20px;
+    font-size: var(--admin-text-section);
     font-family: Manrope, sans-serif;
     margin-top: 8px;
   }
-}
-@layer rr-enhancements {
   @media (max-width: 1200px) {
-    .dashboard-chart-grid {
-      grid-template-columns: 1.5fr 1fr;
+    .admin-app .dashboard-chart-grid {
+      grid-template-columns: 1fr;
       gap: 15px;
     }
   }
-}
-@layer rr-enhancements {
   @media (max-width: 1200px) {
-    .panel-title h3 {
-      font-size: 12px;
+    .admin-app .panel-title > strong {
+      font-size: var(--admin-text-card);
     }
   }
-}
-@layer rr-enhancements {
   @media (max-width: 1200px) {
-    .panel-title > strong {
-      font-size: 18px;
-    }
-  }
-}
-@layer rr-enhancements {
-  @media (max-width: 1200px) {
-    .mini-stats > div {
+    .admin-app .mini-stats > div {
       padding-inline: 15px;
     }
   }
-}
-@layer rr-enhancements {
   @media (max-width: 1200px) {
-    .mini-stats strong {
-      font-size: 18px;
+    .admin-app .mini-stats strong {
+      font-size: var(--admin-text-card);
     }
   }
-}
-@layer rr-enhancements {
   @media (max-width: 750px) {
-    .dashboard-chart-grid {
+    .admin-app .dashboard-chart-grid {
       grid-template-columns: 1fr;
       gap: 20px;
     }
   }
-}
-@layer rr-enhancements {
   @media (max-width: 750px) {
-    .panel-title h3 {
-      font-size: 13px;
-    }
-  }
-}
-@layer rr-enhancements {
-  @media (max-width: 750px) {
-    .panel-title p {
-      font-size: 9px;
-    }
-  }
-}
-@layer rr-enhancements {
-  @media (max-width: 750px) {
-    .mini-stats {
+    .admin-app .mini-stats {
       grid-template-columns: 1fr 1fr;
       gap: 20px;
       padding: 17px;
     }
   }
-}
-@layer rr-enhancements {
   @media (max-width: 750px) {
-    .mini-stats > div {
+    .admin-app .mini-stats > div {
       padding-inline: 0;
       border: 0;
     }
   }
-}
-@layer rr-enhancements {
   @media (max-width: 750px) {
-    .mini-stats span {
-      font-size: 9px;
-    }
-  }
-}
-@layer rr-enhancements {
-  @media (max-width: 750px) {
-    .mini-stats strong {
-      font-size: 19px;
+    .admin-app .mini-stats strong {
+      font-size: var(--admin-text-card);
     }
   }
 }

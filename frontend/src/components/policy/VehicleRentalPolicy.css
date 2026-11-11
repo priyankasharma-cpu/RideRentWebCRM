@@ -1,0 +1,222 @@
+@layer rr-customer {
+  .vehicle-rental-policy {
+    width: min(1000px, calc(100% - 40px));
+    margin: 48px auto;
+    color: var(--color-text);
+  }
+  .vehicle-rental-policy__topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 16px;
+  }
+  .vehicle-rental-policy__topbar .vehicle-rental-policy__eyebrow {
+    margin: 0;
+  }
+  .policy-language {
+    max-width: 100%;
+    min-width: 0;
+    display: grid;
+    gap: 7px;
+    justify-items: end;
+    flex-shrink: 0;
+  }
+  .policy-language__label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--color-muted);
+    font-size: 11px;
+  }
+  .policy-language__options {
+    display: flex;
+    padding: 3px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface-muted);
+  }
+  .policy-language__options button {
+    min-height: 40px;
+    min-width: 76px;
+    padding: 8px 14px;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 600;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+  .policy-language__options button:hover {
+    background: var(--color-surface);
+  }
+  .policy-language__options button[aria-pressed='true'] {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .policy-language__options button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  .policy-language__note {
+    color: var(--color-muted);
+    font-size: 10px;
+    line-height: 1.7;
+  }
+  .vehicle-rental-policy__review {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--color-muted);
+    margin-top: 20px;
+  }
+  .vehicle-rental-policy[lang='hi'] {
+    font-family: 'Nirmala UI', 'Noto Sans Devanagari', Mangal, sans-serif;
+  }
+  .vehicle-rental-policy[lang='hi'] :is(h1, h2) {
+    font-family: inherit;
+    letter-spacing: normal;
+    line-height: 1.6;
+  }
+  @media (max-width: 600px) {
+    .vehicle-rental-policy__topbar {
+      flex-direction: column;
+      gap: 14px;
+    }
+    .policy-language {
+      justify-items: start;
+    }
+  }
+  @media (max-width: 400px) {
+    .policy-language__options button {
+      min-width: 0;
+      padding-inline: 10px;
+      font-size: 12px;
+    }
+    .policy-language__note {
+      max-width: 100%;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .policy-language__options button {
+      transition: none;
+    }
+  }
+  .vehicle-rental-policy__header {
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .vehicle-rental-policy__eyebrow {
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 16px;
+  }
+  .vehicle-rental-policy h1 {
+    font-size: clamp(30px, 4vw, 46px);
+    line-height: 1.2;
+    letter-spacing: -1.5px;
+    margin-bottom: 26px;
+  }
+  .vehicle-rental-policy dl {
+    margin: 0;
+    display: grid;
+    gap: 12px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .vehicle-rental-policy dl > div {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 16px;
+  }
+  .vehicle-rental-policy dt {
+    font-weight: 700;
+  }
+  .vehicle-rental-policy dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: var(--color-muted);
+  }
+  .vehicle-rental-policy__contents {
+    margin-block: 28px;
+    padding: 24px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+  }
+  .vehicle-rental-policy__contents h2 {
+    font-size: 18px;
+    margin-bottom: 14px;
+    letter-spacing: 0;
+  }
+  .vehicle-rental-policy__contents ol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 30px;
+    margin: 0;
+    padding-left: 22px;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .vehicle-rental-policy__contents a {
+    display: inline-block;
+    padding-block: 5px;
+  }
+  .vehicle-rental-policy__contents a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+  .vehicle-rental-policy__contents a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  .vehicle-rental-policy__body > section {
+    padding-block: 28px;
+    border-bottom: 1px solid var(--color-border);
+    scroll-margin-top: 110px;
+  }
+  .vehicle-rental-policy__body h2 {
+    font-size: 22px;
+    line-height: 1.4;
+    letter-spacing: -0.4px;
+    margin-bottom: 18px;
+  }
+  .vehicle-rental-policy__body p {
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--color-muted);
+    margin-bottom: 12px;
+  }
+  .vehicle-rental-policy__body p:last-child {
+    margin-bottom: 0;
+  }
+  .vehicle-rental-policy__closing {
+    padding: 22px;
+    margin-top: 28px;
+    background: var(--color-surface-muted);
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--color-muted);
+    font-style: italic;
+  }
+  @media (max-width: 600px) {
+    .vehicle-rental-policy {
+      margin-block: 32px;
+      width: calc(100% - 36px);
+    }
+    .vehicle-rental-policy__contents ol {
+      grid-template-columns: 1fr;
+    }
+    .vehicle-rental-policy dl > div {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+    .vehicle-rental-policy__body h2 {
+      font-size: 20px;
+    }
+  }
+}

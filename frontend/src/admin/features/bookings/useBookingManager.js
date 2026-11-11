@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useAdminAction } from '../../hooks/useAdminAction.js';
 import { useApp } from '../../../hooks/useApp.js';
 import { api } from '../../../services/apiClient.js';
+import { useBooking } from '../../../hooks/useBookings.js';
 export function useBookingManager(initial, onChanged) {
-  const [booking, setBooking] = useState(initial),
-    [action, setAction] = useState(''),
-    { error, busy, execute } = useAdminAction(onChanged);
+  const { booking, setBooking, fetchError } = useBooking(initial.id, undefined, initial);
+  const [action, setAction] = useState('');
+  const { error, busy, execute } = useAdminAction(onChanged);
   const { user } = useApp();
   const update = async (path, body) => {
     const result = await execute(() =>
@@ -49,7 +50,7 @@ export function useBookingManager(initial, onChanged) {
     setBooking,
     action,
     setAction,
-    error,
+    error: error || fetchError,
     busy,
     execute,
     user,

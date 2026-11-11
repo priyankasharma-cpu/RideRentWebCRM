@@ -1,53 +1,31 @@
 @layer rr-enhancements {
-  .manage-history {
+  .admin-app .manage-history {
     margin-top: 27px;
     border-top: 1px solid var(--color-border);
     padding-top: 20px;
   }
-}
-@layer rr-enhancements {
-  .manage-history h3 {
-    font-size: 14px;
+  .admin-app .manage-history h3 {
+    font-size: var(--admin-text-card);
     margin-bottom: 13px;
   }
-}
-@layer rr-enhancements {
-  .manage-history > div {
+  .admin-app .manage-history > div {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    font-size: 10px;
+    font-size: var(--admin-text-small);
     border-bottom: 1px solid var(--color-border);
     padding-block: 12px;
     text-transform: capitalize;
   }
-}
-@layer rr-enhancements {
-  .manage-history small {
+  .admin-app .manage-history small {
     display: block;
-    color: var(--color-muted);
-    font-size: 9px;
+    color: var(--admin-color-muted);
+    font-size: var(--admin-text-small);
     margin-top: 5px;
     line-height: 1.7;
   }
-}
-@layer rr-enhancements {
-  .manage-history .rr-button--text {
-    font-size: 10px;
-  }
-}
-@layer rr-enhancements {
-  @media (max-width: 750px) {
-    .manage-history > div {
-      font-size: 9px;
-    }
-  }
-}
-@layer rr-enhancements {
-  @media (max-width: 750px) {
-    .manage-history .rr-button--text {
-      font-size: 9px;
-    }
+  .admin-app .manage-history .rr-button--text {
+    font-size: var(--admin-text-label);
   }
 }

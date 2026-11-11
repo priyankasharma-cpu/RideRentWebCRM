@@ -1,0 +1,39 @@
+@layer rr-enhancements {
+  .admin-app .rental-deadline-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px;
+    border: 1px solid color-mix(in srgb, var(--admin-danger) 35%, var(--color-border));
+    background: color-mix(in srgb, var(--admin-danger) 8%, var(--color-surface));
+    border-radius: 14px;
+    margin-bottom: 22px;
+    color: var(--admin-danger);
+    font-size: 14px;
+  }
+  .admin-app .rental-deadline-alert > svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .admin-app .rental-deadline-alert > div {
+    flex: 1;
+    min-width: 0;
+  }
+  .admin-app .rental-deadline-alert p {
+    font-size: 13px;
+    margin-top: 6px;
+    color: var(--admin-color-muted);
+  }
+  .admin-app .rental-deadline-alert button {
+    flex-shrink: 0;
+    white-space: normal;
+  }
+  @media (max-width: 750px) {
+    .admin-app .rental-deadline-alert {
+      flex-wrap: wrap;
+    }
+    .admin-app .rental-deadline-alert button {
+      width: 100%;
+    }
+  }
+}

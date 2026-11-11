@@ -1,20 +1,16 @@
 @layer rr-enhancements {
-  .audit-link > svg {
-    color: var(--color-primary);
+  .admin-app .audit-link > svg {
+    color: var(--admin-accent);
     margin-bottom: 17px;
   }
-}
-@layer rr-enhancements {
-  .audit-link h3 {
-    font-size: 15px;
+  .admin-app .audit-link h3 {
+    font-size: var(--admin-text-card);
     margin-bottom: 10px;
   }
-}
-@layer rr-enhancements {
-  .audit-link p {
-    font-size: 11px;
+  .admin-app .audit-link p {
+    font-size: var(--admin-text-small);
     line-height: 1.8;
-    color: var(--color-muted);
+    color: var(--admin-color-muted);
     margin-bottom: 20px;
   }
 }

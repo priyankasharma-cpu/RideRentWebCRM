@@ -1,3 +1,4 @@
+import { listVehicleImages } from './vehicleGallery.repository.js';
 import { now } from '../../utils/dateTime.js';
 import { assessAvailability, physicalVehicleStatus } from '../availability/availability.rules.js';
 import {
@@ -7,10 +8,11 @@ import {
 } from './vehicleState.repository.js';
 
 export async function vehicleViews(database, vehicles, window) {
-  const [reservations, maintenance, counts] = await Promise.all([
+  const [reservations, maintenance, counts, images] = await Promise.all([
     listCurrentReservations(database),
     listUnresolvedMaintenance(database),
     countVehicleReservations(database),
+    listVehicleImages(database),
   ]);
   const current = now();
   const countByVehicle = new Map(counts.map((row) => [row.vehicle_id, row.count]));
@@ -19,6 +21,9 @@ export async function vehicleViews(database, vehicles, window) {
     const serviceBlocks = maintenance.filter((block) => block.vehicle_id === vehicle.id);
     return {
       ...vehicle,
+      images: images
+        .filter((image) => image.vehicle_id === vehicle.id)
+        .map(({ id, label, url }) => ({ id, label, url })),
       rentalCount: countByVehicle.get(vehicle.id) || 0,
       physicalStatus: physicalVehicleStatus(vehicle, bookings, serviceBlocks, current),
       ...(window

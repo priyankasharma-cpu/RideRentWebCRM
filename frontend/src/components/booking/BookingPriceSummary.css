@@ -1,0 +1,80 @@
+@layer rr-customer {
+  .booking-price-summary {
+    margin-top: 20px;
+    padding-top: 22px;
+    border-top: 1px solid var(--color-border);
+  }
+  .booking-price-summary h2 {
+    font-size: 18px;
+    letter-spacing: -0.4px;
+  }
+  .booking-price-summary__duration {
+    font-size: 11px;
+    color: var(--color-muted);
+    line-height: 1.8;
+    margin: 12px 0;
+  }
+  .booking-price-summary ul {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+  }
+  .booking-price-summary li {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 14px;
+    padding-block: 12px;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 13px;
+  }
+  .booking-price-summary li strong {
+    display: block;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .booking-price-summary li small {
+    display: block;
+    color: var(--color-muted);
+    font-size: 10px;
+    line-height: 1.8;
+  }
+  .booking-price-summary li > span {
+    flex-shrink: 0;
+  }
+  .booking-price-summary dl {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .booking-price-summary dl > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .booking-price-summary dd {
+    margin: 0;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .booking-price-summary dt {
+    color: var(--color-muted);
+  }
+  .booking-price-summary__total {
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+    font-size: 15px;
+  }
+  .booking-price-summary__total dt {
+    color: var(--color-text);
+    font-weight: 700;
+  }
+  .booking-price-summary__note {
+    font-size: 11px;
+    line-height: 1.8;
+    color: var(--color-muted);
+    margin-top: 16px;
+  }
+}

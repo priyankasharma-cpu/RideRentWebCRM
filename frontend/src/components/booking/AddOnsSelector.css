@@ -1,0 +1,37 @@
+@layer rr-customer {
+  .add-ons-selector__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 20px;
+    padding: 18px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface-muted);
+  }
+  .add-ons-selector__option h3 {
+    font-size: 14px;
+  }
+  .add-ons-selector__option p {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--color-muted);
+    margin: 9px 0;
+  }
+  .add-ons-selector__option span {
+    font-size: 10px;
+    line-height: 1.7;
+    color: var(--color-muted);
+  }
+  .add-ons-selector__option .booking-quantity {
+    flex-shrink: 0;
+  }
+  @media (max-width: 600px) {
+    .add-ons-selector__option {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+  }
+}

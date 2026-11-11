@@ -1,0 +1,213 @@
+@layer rr-enhancements {
+  .admin-app {
+    --admin-color-muted: color-mix(in srgb, var(--color-muted) 85%, var(--color-text));
+    --admin-text-small: 13px;
+    --admin-text-label: 14px;
+    --admin-text-body: 15px;
+    --admin-text-card: 18px;
+    --admin-text-section: 22px;
+    --admin-text-title: 32px;
+    --admin-text-kpi: 32px;
+    --admin-sidebar-width: 280px;
+    --admin-control-height: 46px;
+    --admin-space-card: 24px;
+    --admin-accent: color-mix(in srgb, var(--color-primary) 80%, var(--color-text));
+    --admin-button-background: #0565d8;
+    --admin-success: #08785d;
+    --admin-warning: #875600;
+    --admin-danger: #bc304c;
+    --admin-purple: #7044c9;
+    font-size: var(--admin-text-body);
+    line-height: 1.55;
+    color: var(--color-text);
+  }
+  [data-theme='dark'] .admin-app {
+    --admin-success: #62d9b7;
+    --admin-warning: #f4c96d;
+    --admin-danger: #ff9cae;
+    --admin-purple: #c3adff;
+  }
+  .admin-app :where(h2) {
+    font-size: var(--admin-text-section);
+    line-height: 1.35;
+  }
+  .admin-app :where(h3, h4) {
+    font-size: var(--admin-text-card);
+    line-height: 1.4;
+  }
+  .admin-app :where(p) {
+    line-height: 1.65;
+  }
+  .admin-app :where(small) {
+    font-size: var(--admin-text-small);
+    line-height: 1.5;
+  }
+  .admin-app :where(label) {
+    font-size: var(--admin-text-label);
+    line-height: 1.5;
+  }
+  .admin-app :where(input:not([type='checkbox']):not([type='radio']), select, textarea) {
+    min-height: var(--admin-control-height);
+    font-size: var(--admin-text-body);
+    line-height: 1.5;
+    padding: 11px 13px;
+    border-radius: 10px;
+    min-width: 0;
+  }
+  .admin-app textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  .admin-app :where(input[type='checkbox'], input[type='radio']) {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--admin-accent);
+  }
+  .admin-app :where(button, .rr-button, .rr-button--outline, .rr-button--text) {
+    min-height: 44px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .admin-app :where(.rr-button, .rr-button--outline, .rr-button--text) {
+    padding: 11px 16px;
+    border-radius: 10px;
+  }
+  .admin-app .rr-button {
+    background: var(--admin-button-background);
+    color: #fff;
+  }
+  .admin-app :where(input, select, textarea, button, a):focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  .admin-app :where(input, textarea)::placeholder {
+    color: var(--admin-color-muted);
+    opacity: 1;
+  }
+  .admin-app .rr-panel {
+    box-shadow: var(--shadow-card);
+  }
+  .admin-app :where(.form-grid) {
+    gap: 16px;
+    min-width: 0;
+  }
+  .admin-app :where(.error-box, .empty-state, .subtle-note, .form-note, .checkbox-label) {
+    font-size: var(--admin-text-small);
+    line-height: 1.6;
+  }
+  .admin-app .status {
+    font-size: 12px;
+    padding: 5px 9px;
+    line-height: 1.4;
+  }
+  .admin-app
+    :where(
+      .status-available,
+      .status-completed,
+      .status-verified,
+      .status-resolved,
+      .status-rental
+    ) {
+    color: var(--admin-success);
+    background: color-mix(in srgb, var(--admin-success) 10%, var(--color-surface));
+  }
+  .admin-app
+    :where(.status-active, .status-rented, .status-confirmed, .status-reserved, .status-admin) {
+    color: var(--admin-accent);
+    background: color-mix(in srgb, var(--admin-accent) 10%, var(--color-surface));
+  }
+  .admin-app
+    :where(
+      .status-inspecting,
+      .status-inspection,
+      .status-maintenance,
+      .status-unverified,
+      .status-scheduled,
+      .status-deposit
+    ) {
+    color: var(--admin-warning);
+    background: color-mix(in srgb, var(--admin-warning) 10%, var(--color-surface));
+  }
+  .admin-app :where(.status-overdue, .status-cancelled, .status-unavailable, .status-inactive) {
+    color: var(--admin-danger);
+    background: color-mix(in srgb, var(--admin-danger) 10%, var(--color-surface));
+  }
+  .admin-app .admin-modal {
+    width: 760px;
+    max-width: 100%;
+    padding: 28px;
+  }
+  .admin-app .admin-modal > h2 {
+    font-size: var(--admin-text-section);
+    line-height: 1.4;
+    padding-right: 32px;
+  }
+  .admin-app .close-modal {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
+  .admin-app .booking-facts small,
+  .admin-app .booking-facts strong {
+    font-size: var(--admin-text-small);
+  }
+  .admin-app .booking-facts {
+    gap: 16px;
+  }
+  .admin-app .checkout-form h3 {
+    font-size: var(--admin-text-card);
+  }
+  .admin-app .checkout-form label,
+  .admin-app .period-fields label {
+    font-size: var(--admin-text-label);
+  }
+  .admin-app .checkout-form input,
+  .admin-app .period-fields input {
+    font-size: var(--admin-text-body);
+  }
+  .admin-app .price-breakdown {
+    font-size: var(--admin-text-body);
+  }
+  .admin-app .price-breakdown p {
+    font-size: var(--admin-text-small);
+  }
+  @media (max-width: 1200px) {
+    .admin-app {
+      --admin-sidebar-width: 270px;
+    }
+  }
+  @media (max-width: 750px) {
+    .admin-app {
+      --admin-text-title: 28px;
+      --admin-space-card: 20px;
+    }
+    .admin-app .admin-modal {
+      padding: 24px 18px;
+    }
+    .admin-app .admin-modal .form-grid,
+    .admin-app .admin-checkout .checkout-form .form-grid {
+      grid-template-columns: 1fr;
+    }
+    .admin-app .admin-modal .span-2 {
+      grid-column: auto;
+    }
+    .admin-app .booking-facts,
+    .admin-app .manage-prices {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 430px) {
+    .admin-app {
+      --admin-text-title: 26px;
+    }
+    .admin-app .manage-header {
+      flex-wrap: wrap;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .admin-app .admin-sidebar {
+      transition: none;
+    }
+  }
+}

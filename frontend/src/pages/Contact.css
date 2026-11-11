@@ -1,0 +1,102 @@
+@layer rr-customer {
+  .contact-page {
+    --contact-accent: color-mix(in srgb, var(--color-primary) 76%, var(--color-text));
+    color: var(--color-text);
+  }
+  .contact-page__container {
+    width: min(1240px, calc(100% - 48px));
+    margin-inline: auto;
+  }
+  .contact-page__eyebrow {
+    color: var(--contact-accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 1.7;
+    margin-bottom: 17px;
+  }
+  .contact-page h2 {
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -1.2px;
+    line-height: 1.25;
+  }
+  .contact-page__support {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    align-items: start;
+    gap: clamp(28px, 5vw, 64px);
+    padding-block: 56px;
+  }
+  .contact-page__support-details {
+    min-width: 0;
+    padding-top: 16px;
+  }
+  .contact-page__support-description {
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.85;
+    margin-block: 18px 24px;
+  }
+  .contact-page__support .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .contact-page__support .contact-card {
+    padding: 16px 18px;
+    border-radius: 13px;
+    box-shadow: none;
+    gap: 4px 12px;
+  }
+  .contact-page__support .contact-card > :not(.contact-card__icon):not(h3) {
+    grid-column: 2;
+  }
+  .contact-page__support .contact-card__icon {
+    grid-row: 1 / 3;
+    align-self: start;
+  }
+  .contact-page__support .contact-card h3 {
+    font-size: 14px;
+  }
+  .contact-page__support .contact-card p {
+    font-size: 12px;
+  }
+  .contact-page__support .contact-card__action {
+    min-height: 32px;
+  }
+  .contact-page__support .contact-card__number {
+    font-size: 15px;
+  }
+  .contact-page__support .contact-card__warning {
+    font-size: 10px;
+  }
+  .contact-page :is(a, button, input, select, textarea):focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  @media (max-width: 850px) {
+    .contact-page__support {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding-block: 40px;
+    }
+    .contact-page__support-details {
+      padding-top: 0;
+    }
+  }
+  @media (max-width: 500px) {
+    .contact-page__container {
+      width: calc(100% - 36px);
+    }
+    .contact-page__support .contact-card {
+      padding: 15px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .contact-page *,
+    .contact-page *::before,
+    .contact-page *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}

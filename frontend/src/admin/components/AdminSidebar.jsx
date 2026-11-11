@@ -1,5 +1,5 @@
 import { Logo } from '../../components/common/Logo.jsx';
-import { links } from '../../config/adminNavigation.js';
+import { navigationGroups, canAccessAdminLink } from '../../config/adminNavigation.js';
 import { NavLink, Link } from 'react-router-dom';
 import { Plus, ShieldCheck, ArrowUpRight, LogOut } from 'lucide-react';
 import './AdminSidebar.css';
@@ -14,26 +14,29 @@ export function AdminSidebar({ open, user, logout }) {
         </div>
         <span className="live-dot" />
       </div>
-      <div className="sidebar-caption">WORKSPACE</div>
-      <nav>
-        {links
-          .filter(
-            ([name]) =>
-              user.role === 'admin' || !['Vehicles', 'Maintenance', 'Staff & Roles'].includes(name),
-          )
-          .map(([name, path, Icon]) => (
-            <NavLink
-              key={name}
-              to={'/admin' + (path ? '/' + path : '')}
-              aria-label={name}
-              title={name}
-              end
-            >
-              <Icon size={17} />
-              <span className="nav-label">{name}</span>
-              {path === 'create-booking' && <Plus size={13} />}
-            </NavLink>
-          ))}
+      <nav aria-label="Admin navigation">
+        {navigationGroups.map((group) => {
+          const visible = group.links.filter(([, path]) => canAccessAdminLink(path, user.role));
+          if (!visible.length) return null;
+          return (
+            <section key={group.label} aria-label={group.label}>
+              <div className="sidebar-caption">{group.label}</div>
+              {visible.map(([name, path, Icon]) => (
+                <NavLink
+                  key={path}
+                  to={'/admin' + (path ? '/' + path : '')}
+                  aria-label={name}
+                  title={name}
+                  end
+                >
+                  <Icon size={20} />
+                  <span className="nav-label">{name}</span>
+                  {path === 'create-booking' && <Plus size={13} />}
+                </NavLink>
+              ))}
+            </section>
+          );
+        })}
       </nav>
       <div className="sidebar-bottom">
         <div className="sidebar-help">

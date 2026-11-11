@@ -1,95 +1,58 @@
 @layer rr-enhancements {
-  .admin-page-title {
+  .admin-app .admin-page-title {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: 24px;
     margin-bottom: 26px;
   }
-  .admin-page-title .eyebrow {
-    font-size: 8px;
-    letter-spacing: 2px;
-    margin-bottom: 9px;
+  .admin-app .admin-page-title > div {
+    min-width: 0;
   }
-  .admin-page-title h1 {
-    font-size: 28px;
+  .admin-app .admin-page-title .eyebrow {
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .admin-app .admin-page-title h1 {
+    font-size: var(--admin-text-title);
     font-family: Manrope, sans-serif;
-    letter-spacing: -1px;
+    letter-spacing: -0.8px;
     line-height: 1.25;
     margin: 0;
     font-weight: 800;
+    overflow-wrap: anywhere;
   }
-  .admin-page-title p {
-    font-size: 11px;
-    color: var(--color-muted);
-    line-height: 1.8;
-    margin-top: 9px;
+  .admin-app .admin-page-title p {
+    font-size: 15px;
+    color: var(--admin-color-muted);
+    line-height: 1.65;
+    margin-top: 10px;
+    max-width: 70ch;
   }
-  .page-title-actions .rr-button {
-    font-size: 11px;
-    padding: 12px 17px;
+  .admin-app .page-title-actions:empty {
+    display: none;
+  }
+  .admin-app .page-title-actions {
+    flex-shrink: 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .admin-app .page-title-actions .rr-button {
+    font-size: 14px;
+    padding: 12px 16px;
     white-space: nowrap;
-  }
-  @media (min-width: 1550px) {
-    .admin-page-title h1 {
-      font-size: 32px;
-    }
-  }
-  @media (min-width: 1550px) {
-    .admin-page-title p {
-      font-size: 12px;
-    }
-  }
-  @media (max-width: 1200px) {
-    .admin-page-title h1 {
-      font-size: 24px;
-    }
+    min-height: 46px;
   }
   @media (max-width: 750px) {
-    .admin-page-title {
+    .admin-app .admin-page-title {
       align-items: start;
-      gap: 15px;
+      flex-direction: column;
+      gap: 16px;
     }
-  }
-  @media (max-width: 750px) {
-    .admin-page-title h1 {
-      font-size: 23px;
-    }
-  }
-  @media (max-width: 750px) {
-    .admin-page-title p {
-      font-size: 10px;
-    }
-  }
-  @media (max-width: 750px) {
-    .page-title-actions .rr-button {
-      padding: 10px;
-      font-size: 0;
-      gap: 0;
-      width: 36px;
-      height: 36px;
-    }
-  }
-  @media (max-width: 750px) {
-    .page-title-actions .rr-button svg {
-      width: 16px;
-      height: 16px;
-    }
-  }
-  @media (max-width: 430px) {
-    .admin-page-title h1 {
-      font-size: 21px;
-      line-height: 1.4;
-    }
-  }
-  @media (max-width: 430px) {
-    .admin-page-title .eyebrow {
-      font-size: 7px;
-    }
-  }
-  @media (max-width: 430px) {
-    .admin-page-title p {
-      font-size: 10px;
+    .admin-app .page-title-actions {
+      width: 100%;
     }
   }
 }

@@ -4,6 +4,7 @@ import { RentalInspectionForm } from '../rentals/RentalInspectionForm.jsx';
 import { BookingLedger } from '../payments/BookingLedger.jsx';
 import { BookingActions } from './BookingActions.jsx';
 import { BookingCharges } from './BookingCharges.jsx';
+import { BookingTimingNotice } from '../../../components/booking/BookingStatusSummary.jsx';
 import { BookingHeader } from './BookingHeader.jsx';
 import { Modal } from '../../../components/common/Modal.jsx';
 import { formatTime, money } from '../../../utils/formatters.js';
@@ -28,6 +29,7 @@ export function BookingManager({ initial, onClose, onChanged }) {
   return (
     <Modal title={booking.reference} onClose={onClose}>
       <BookingHeader booking={booking} />
+      <BookingTimingNotice booking={booking} />
       <div className="booking-facts">
         <div>
           <small>Scheduled pickup</small>
