@@ -1,11 +1,28 @@
-import { all } from '../../config/database.js';
+import { collection, fromDocuments, mongoOptions } from '../../config/mongoDatabase.js';
 
-export const listCurrentReservations = (database) =>
-  all(database, "SELECT * FROM bookings WHERE status IN ('confirmed','active','inspecting')");
-export const listUnresolvedMaintenance = (database) =>
-  all(database, 'SELECT * FROM maintenance WHERE resolved=0');
-export const countVehicleReservations = (database) =>
-  all(
-    database,
-    "SELECT vehicle_id,COUNT(*) count FROM bookings WHERE status<>'cancelled' GROUP BY vehicle_id",
-  );
+export async function listCurrentReservations(database) {
+  const bookings = await collection(database, 'bookings')
+    .find({ status: { $in: ['confirmed', 'active', 'inspecting'] } }, mongoOptions(database))
+    .toArray();
+  return fromDocuments(bookings);
+}
+
+export async function listUnresolvedMaintenance(database) {
+  const blocks = await collection(database, 'maintenance')
+    .find({ resolved: 0 }, mongoOptions(database))
+    .toArray();
+  return fromDocuments(blocks);
+}
+
+export async function countVehicleReservations(database) {
+  return collection(database, 'bookings')
+    .aggregate(
+      [
+        { $match: { status: { $ne: 'cancelled' } } },
+        { $group: { _id: '$vehicle_id', count: { $sum: 1 } } },
+        { $project: { _id: 0, vehicle_id: '$_id', count: 1 } },
+      ],
+      mongoOptions(database),
+    )
+    .toArray();
+}

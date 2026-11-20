@@ -11,9 +11,9 @@ export function PrivacyContent() {
       </p>
       <h3>Access & storage</h3>
       <p>
-        Administrator sessions use HTTP-only cookies. Booking access uses your reference and phone
-        number. The local database is stored on the agency machine. Do not enter real identity
-        documents in this demo.
+        Administrator and verified customer access use expiring HTTP-only cookies. Booking details
+        require a one-time code sent to the email saved with the booking. The local database is
+        stored on the agency machine. Do not enter real identity documents in this demo.
       </p>
       <h3>Contact & retention</h3>
       <p>

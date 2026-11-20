@@ -63,7 +63,7 @@ function HeaderNavigation({ onNavigate }) {
         <NavLink
           key={path}
           to={path}
-          end={path === '/'}
+          end={path === '/rentals'}
           onClick={onNavigate}
           className={({ isActive }) => (isActive ? 'customer-header__nav-active' : '')}
         >

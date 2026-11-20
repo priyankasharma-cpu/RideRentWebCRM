@@ -1,6 +1,6 @@
 # Vehicle photo gallery
 
-The existing application uses Prisma and SQLite, not MongoDB. This feature preserves the original detail-page image dimensions (380/320/310/250px), main `cover` image, legacy `image` property and booking/rental fields.
+The active application uses MongoDB. This feature preserves the existing detail-page image dimensions (380/320/310/250px), main `cover` image, legacy `image` property and booking/rental fields. Previous SQLite/Prisma notes in this document are historical only.
 
 ## Frontend
 
@@ -24,17 +24,15 @@ Thumbnail navigation appears only for multiple photos. Native dialog supports ar
 
 ## Persistence and deployment
 
-`backend/prisma/migrations/0004_vehicle_gallery/migration.sql` adds an independent `vehicle_images` table with foreign key, unique URL/order constraints and positions 0–4. The Prisma model is `VehicleImage`. No existing vehicle table columns are rebuilt and no booking/payment records are changed.
+The MongoDB backend stores gallery entries in `vehicle_images`, indexed by vehicle and ordered position. Existing vehicle documents and booking/payment fields are unchanged.
 
-**The migration was not run against the agency database or the current preview database.** New disposable test databases include it automatically. On an unmigrated database the public API still works and returns `images: []`; gallery writes return a clear 503 migration-required message.
+The MongoDB repository returns `images: []` when a vehicle has no gallery entries; gallery writes use the dedicated backend route and runtime indexes.
 
 Deployment by the operator:
 
-1. Back up the existing SQLite database with a SQLite-aware backup procedure (including active WAL state); do not copy an active main file alone.
-2. Stop the API for the maintenance window and confirm the intended DATABASE_URL/DB_PATH.
-3. Run `npm run db:migrate` from the project root. Do not run reset or seed. Standard migration tracking must already be baselined for this existing database; use the project's documented baseline workflow when required.
-4. Run `npm run db:generate` and restart the API.
-5. Confirm GET `/api/vehicles/:slug` and existing bookings still work before publishing gallery updates.
+1. Confirm the API is connected to the intended MongoDB database.
+2. Check `/readyz` and confirm database readiness.
+3. Confirm GET `/api/vehicles/:slug` and existing bookings work before publishing gallery updates.
 
 ## Existing admin integration
 
@@ -58,8 +56,8 @@ The existing admin VehicleEditor UI has **not** been redesigned into a five-phot
 ## Files
 
 Frontend: VehicleGallery.jsx/.css, utils/vehicleGallery.js.
-Backend: vehicleGallery.repository.js, vehicleGallery.validation.js, vehicleGallery.service.js; existing vehicle.presenter.js, vehicle.controller.js, vehicle.routes.js; schema.prisma and additive migration.
-Tests: backend/tests/integration/vehicleGallery.test.js. Browser verification artifact: backend/.artifacts/vehicles-redesign/verify-multi-gallery.mjs. Its five-photo fixtures use different existing local assets ONLY to exercise navigation; they are not published as real angles of a vehicle.
+Backend: vehicleGallery.repository.js, vehicleGallery.validation.js, vehicleGallery.service.js; existing vehicle.presenter.js, vehicle.controller.js, vehicle.routes.js; MongoDB collection indexes are in `backend/src/config/mongoDatabase.js`.
+Tests: prior SQLite integration coverage is preserved in `archive/legacy-prisma-sqlite/`; MongoDB-backed verification requires a configured isolated database. Browser fixture assets exercise navigation only; they are not published as real angles of a vehicle.
 
 ## Verification limits
 

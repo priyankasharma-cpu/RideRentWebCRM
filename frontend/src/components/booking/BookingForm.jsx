@@ -32,15 +32,21 @@ export function BookingForm({ submit, period, setPeriod, error, quote, busy, sel
           <input
             name="phone"
             type="tel"
-            pattern="[+0-9 ()-]{10,18}"
+            pattern={String.raw`[+0-9 \(\)\-]{10,18}`}
             autoComplete="tel"
             placeholder="Your mobile number"
             required
           />
         </label>
         <label className="span-2">
-          Email (optional)
-          <input name="email" type="email" autoComplete="email" placeholder="you@example.com" />
+          Email for booking verification
+          <input
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            required
+          />
         </label>
       </div>
       <label className="checkbox-label">

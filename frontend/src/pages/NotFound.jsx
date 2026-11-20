@@ -8,7 +8,7 @@ export function NotFound() {
         Let’s get you <em>back on track.</em>
       </h1>
       <p>That page or ride could not be found.</p>
-      <Link className="rr-button" to="/">
+      <Link className="rr-button" to="/rentals">
         Back to Home <ArrowRight size={16} />
       </Link>
     </main>

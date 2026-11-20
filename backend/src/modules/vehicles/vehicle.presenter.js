@@ -1,4 +1,5 @@
 import { listVehicleImages } from './vehicleGallery.repository.js';
+import { queryGroup } from '../../config/mongoDatabase.js';
 import { now } from '../../utils/dateTime.js';
 import { assessAvailability, physicalVehicleStatus } from '../availability/availability.rules.js';
 import {
@@ -8,11 +9,11 @@ import {
 } from './vehicleState.repository.js';
 
 export async function vehicleViews(database, vehicles, window) {
-  const [reservations, maintenance, counts, images] = await Promise.all([
-    listCurrentReservations(database),
-    listUnresolvedMaintenance(database),
-    countVehicleReservations(database),
-    listVehicleImages(database),
+  const [reservations, maintenance, counts, images] = await queryGroup(database, [
+    () => listCurrentReservations(database),
+    () => listUnresolvedMaintenance(database),
+    () => countVehicleReservations(database),
+    () => listVehicleImages(database),
   ]);
   const current = now();
   const countByVehicle = new Map(counts.map((row) => [row.vehicle_id, row.count]));

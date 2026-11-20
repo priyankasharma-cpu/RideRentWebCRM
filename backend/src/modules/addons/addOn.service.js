@@ -1,4 +1,4 @@
-import { transaction } from '../../config/database.js';
+import { queryGroup, withTransaction } from '../../config/mongoDatabase.js';
 import { fail } from '../../utils/ApiError.js';
 import { id } from '../../utils/crypto.js';
 import { now } from '../../utils/dateTime.js';
@@ -14,8 +14,9 @@ async function requireInstallation(db) {
 export async function managedAddOns(db) {
   await requireInstallation(db);
   const start = now();
-  return Promise.all(
-    (await repository.listAddOns(db)).map(async (addon) => ({
+  return queryGroup(
+    db,
+    (await repository.listAddOns(db)).map((addon) => async () => ({
       ...addon,
       inventory: stockSummary(
         addon,
@@ -28,7 +29,7 @@ export async function managedAddOns(db) {
 }
 export async function createAddOn(db, raw, user) {
   const input = addOnInput.parse(raw);
-  return transaction(db, async () => {
+  return withTransaction(db, async () => {
     await requireInstallation(db);
     if (await repository.findAddOnCode(db, input.code))
       fail(409, 'An add-on with this code already exists.');
@@ -51,7 +52,7 @@ export async function createAddOn(db, raw, user) {
 }
 export async function editAddOn(db, key, raw, user) {
   const input = updateAddOnInput.parse(raw);
-  return transaction(db, async () => {
+  return withTransaction(db, async () => {
     await requireInstallation(db);
     const old = await repository.findAddOn(db, key);
     if (!old) fail(404, 'Add-on not found.');
@@ -77,7 +78,7 @@ export async function editAddOn(db, key, raw, user) {
 }
 export async function archiveAddOn(db, key, raw, user) {
   const input = archiveAddOnInput.parse(raw);
-  return transaction(db, async () => {
+  return withTransaction(db, async () => {
     await requireInstallation(db);
     const old = await repository.findAddOn(db, key);
     if (!old) fail(404, 'Add-on not found.');
@@ -89,10 +90,11 @@ export async function archiveAddOn(db, key, raw, user) {
 }
 export async function publicAddOns(db, period) {
   const records = await repository.listAddOns(db);
-  return Promise.all(
+  return queryGroup(
+    db,
     records
       .filter((row) => row.enabled && !row.archived_at)
-      .map(async (row) => ({
+      .map((row) => async () => ({
         id: row.id,
         code: row.code,
         name: row.name,

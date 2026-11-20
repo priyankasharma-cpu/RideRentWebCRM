@@ -9,12 +9,15 @@ import {
   checkoutCatalog,
 } from '../../src/modules/bookings/checkout.service.js';
 import {
-  lookupBooking,
   createBooking,
   getBooking,
   cancelBooking,
   reschedule,
 } from '../../src/modules/bookings/booking.service.js';
+import {
+  createCustomerAccessSession,
+  getCustomerAccessSession,
+} from '../../src/modules/bookings/customerAccess.service.js';
 import { bookingView } from '../../src/modules/bookings/booking.read.service.js';
 import { recordPayment } from '../../src/modules/payments/payment.service.js';
 import { createApp } from '../../src/app.js';
@@ -109,17 +112,21 @@ test('mixed checkout reserves distinct identical-model units and helmets with ex
     reserveCheckout(db, { ...input, expectedTotal: input.expectedTotal + 1 }),
     /already used/,
   );
-  const lookup = await lookupBooking(db, {
-    body: { reference: result.bookings[0].booking.reference, phone: input.phone },
-  });
+  const owner = result.bookings[0].booking.customer_id;
+  const session = await createCustomerAccessSession(
+    db,
+    owner,
+    result.bookings.map((row) => row.booking.id),
+  );
+  const access = await getCustomerAccessSession(db, session.token);
   for (const entry of result.bookings)
     assert.equal(
-      (await getBooking(db, { params: { id: entry.booking.id }, bookingToken: lookup.token })).id,
+      (await getBooking(db, { params: { id: entry.booking.id }, customerAccess: access })).id,
       entry.booking.id,
     );
   await assert.rejects(
-    getBooking(db, { params: { id: result.bookings[0].booking.id }, bookingToken: 'wrong' }),
-    /reference and phone/,
+    getBooking(db, { params: { id: result.bookings[0].booking.id }, customerAccess: null }),
+    /Verify the email/,
   );
 });
 
@@ -144,6 +151,7 @@ test('rejects duplicate model rows, unavailable quantity, tampered total and unc
       ...emptyInput,
       name: 'Blocked booking',
       phone: '9876500013',
+      email: 'blocked@example.com',
       agreement: true,
       submissionKey: randomUUID(),
       reservationToken: randomBytes(32).toString('hex'),

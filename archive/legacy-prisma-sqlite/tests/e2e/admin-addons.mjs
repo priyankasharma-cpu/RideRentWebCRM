@@ -138,7 +138,7 @@ try {
   await expect(guest.locator('.checkout-totals')).toContainText('1 included · 1 extra');
   await guest.getByLabel('Full name', { exact: true }).fill('Helmet Snapshot Tester');
   await guest.getByLabel('Mobile number', { exact: true }).fill('9876500074');
-  await guest.getByLabel('Email (optional)').fill('helmet-test@example.com');
+  await guest.getByLabel('Email for booking verification').fill('helmet-test@example.com');
   await guest.locator('[name=agreement]').check();
   await guest.getByRole('button', { name: 'Confirm Booking · Pay at Shop' }).click();
   await expect(guest.locator('.price-breakdown')).toContainText('Extra helmets × 2');
@@ -217,7 +217,7 @@ try {
   await guest.getByRole('button', { name: 'Increase Phone holder quantity' }).click();
   await guest.getByLabel('Full name', { exact: true }).fill('Generic Accessory Tester');
   await guest.getByLabel('Mobile number', { exact: true }).fill('9876500075');
-  await guest.getByLabel('Email (optional)').fill('accessory-test@example.com');
+  await guest.getByLabel('Email for booking verification').fill('accessory-test@example.com');
   await guest.locator('[name=agreement]').check();
   await expect(guest.getByRole('button', { name: 'Confirm Booking · Pay at Shop' })).toBeEnabled();
   await guest.getByRole('button', { name: 'Confirm Booking · Pay at Shop' }).click();

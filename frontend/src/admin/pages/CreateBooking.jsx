@@ -1,7 +1,7 @@
 import '../../components/booking/BookingForm.css';
 import '../../components/booking/BookingSummary.css';
 import '../../components/booking/BookingLayout.css';
-import { useQuote } from '../../hooks/useQuote';
+import { useCheckout } from '../../hooks/useCheckout.js';
 import { useResource } from '../../hooks/useResource.js';
 import { useState } from 'react';
 import { defaultPeriod, toUTC } from '../../utils/rentalTime.js';
@@ -14,7 +14,8 @@ import { PeriodFields } from '../../components/booking/PeriodFields.jsx';
 import { ErrorBox } from '../../components/common/ErrorBox.jsx';
 import { Check, ShieldCheck } from 'lucide-react';
 import { Status } from '../../components/common/StatusBadge.jsx';
-import { PriceBreakdown } from '../../components/booking/PriceBreakdown.jsx';
+import { CheckoutAddOns } from '../../components/booking/CheckoutAddOns.jsx';
+import { CheckoutTotals } from '../../components/booking/CheckoutTotals.jsx';
 import './CreateBooking.css';
 export function CreateBooking() {
   const { data: vehicles, error: vehicleError } = useResource('/admin/vehicles');
@@ -25,7 +26,8 @@ export function CreateBooking() {
     [name, setName] = useState(''),
     [phone, setPhone] = useState(''),
     [email, setEmail] = useState(''),
-    [verified, setVerified] = useState(false);
+    [verified, setVerified] = useState(false),
+    [addOnQuantities, setAddOnQuantities] = useState({});
   const { error, busy, execute } = useAdminAction();
   const navigate = useNavigate();
   const selectCustomer = (id) => {
@@ -36,6 +38,11 @@ export function CreateBooking() {
     setEmail(c?.email || '');
     setVerified(!!c?.verified);
   };
+  const checkout = useCheckout(
+    period,
+    vehicleId ? [{ vehicleId, quantity: 1 }] : [],
+    addOnQuantities,
+  );
   const submit = async (e) => {
     e.preventDefault();
     const values = Object.fromEntries(new FormData(e.currentTarget));
@@ -50,6 +57,7 @@ export function CreateBooking() {
             phone,
             email,
             verified,
+            addOns: checkout.addOns,
             agreement: true,
             startsAt: toUTC(period.startsAt),
             endsAt: toUTC(period.endsAt),
@@ -59,7 +67,8 @@ export function CreateBooking() {
     );
     if (result) navigate('/admin/bookings');
   };
-  const { quote, quoteError } = useQuote(vehicleId, period);
+  const quote = checkout.quote;
+  const quoteError = checkout.error;
   return (
     <>
       <PageTitle
@@ -96,7 +105,7 @@ export function CreateBooking() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required
-                pattern="[+0-9 ()-]{10,18}"
+                pattern={String.raw`[+0-9 \(\)\-]{10,18}`}
               />
             </label>
             <label className="span-2">
@@ -127,6 +136,14 @@ export function CreateBooking() {
             </select>
           </label>
           <PeriodFields value={period} onChange={setPeriod} />
+          <CheckoutAddOns
+            rows={checkout.addOnRows}
+            verified={checkout.verified}
+            busy={busy}
+            onChange={setAddOnQuantities}
+            isAdmin
+            helmetConfigured={Boolean(checkout.catalog?.helmets?.enabled)}
+          />
           <h3>03 · Booking details</h3>
           <div className="form-grid">
             <label>
@@ -168,7 +185,13 @@ export function CreateBooking() {
                 <Status value={quote.available ? 'Available' : 'Unavailable'} />
                 <p>{quote.reason}</p>
               </div>
-              <PriceBreakdown quote={quote} />
+              <CheckoutTotals
+                quote={quote}
+                items={checkout.displayRows}
+                catalog={checkout.catalog}
+                addOnRows={checkout.addOnRows}
+                error={quoteError}
+              />
             </>
           ) : (
             <p className="subtle-note">

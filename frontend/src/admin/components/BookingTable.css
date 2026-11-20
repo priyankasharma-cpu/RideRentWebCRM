@@ -26,4 +26,103 @@
     font-size: 12px;
     color: var(--admin-color-muted);
   }
+  .admin-app .checkout-summary-row > td {
+    background: var(--color-surface-muted);
+    vertical-align: top;
+  }
+  .admin-app .checkout-group__toggle {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    text-align: left;
+    cursor: pointer;
+  }
+  .admin-app .checkout-group__toggle > svg {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    color: var(--admin-accent);
+  }
+  .admin-app .checkout-group__toggle span,
+  .admin-app .checkout-summary-row td > strong,
+  .admin-app .checkout-summary-row td > small {
+    display: block;
+  }
+  .admin-app .checkout-summary-row td small {
+    margin-top: 4px;
+    color: var(--admin-color-muted);
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+  .admin-app .checkout-group__payment-state {
+    display: inline-flex;
+    color: var(--admin-accent);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .admin-app .checkout-details-row > td {
+    padding: 0;
+    background: var(--color-surface);
+  }
+  .admin-app .checkout-group__members {
+    display: grid;
+    gap: 10px;
+    padding: 14px 18px 18px;
+  }
+  .admin-app .checkout-member {
+    padding: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface);
+  }
+  .admin-app .checkout-member__heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .admin-app .checkout-member__heading > div:first-child > * {
+    display: block;
+  }
+  .admin-app .checkout-member__heading small {
+    margin-top: 4px;
+    color: var(--admin-color-muted);
+  }
+  .admin-app .checkout-member__action {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .admin-app .checkout-member__financials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    gap: 10px;
+    margin: 14px 0 0;
+  }
+  .admin-app .checkout-member__financials > div {
+    min-width: 0;
+    padding: 9px 10px;
+    border-radius: 8px;
+    background: var(--color-surface-muted);
+  }
+  .admin-app .checkout-member__financials dt {
+    color: var(--admin-color-muted);
+    font-size: 12px;
+  }
+  .admin-app .checkout-member__financials dd {
+    margin: 4px 0 0;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  @media (max-width: 700px) {
+    .admin-app .checkout-member__heading,
+    .admin-app .checkout-member__action {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
 }

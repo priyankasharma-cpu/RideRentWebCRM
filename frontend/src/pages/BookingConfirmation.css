@@ -9,6 +9,33 @@
     font-size: 20px;
     margin-bottom: 10px;
   }
+  .confirmation-order__totals {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 18px;
+    padding: 14px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface-muted);
+    color: var(--color-muted);
+    font-size: 13px;
+  }
+  .confirmation-order__grand-total {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    color: var(--color-text);
+    font-size: 15px;
+  }
+  .confirmation-order__grand-total span {
+    color: var(--color-primary);
+    font-size: 21px;
+  }
+  .confirmation-order__payment-state {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
   .confirmation-order ul {
     list-style: none;
     padding: 0;
@@ -29,6 +56,34 @@
   }
   .confirmation-order li span {
     color: var(--color-muted);
+  }
+  .confirmation-order__member {
+    display: grid;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-surface);
+  }
+  .confirmation-order__member-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .confirmation-order__member-finances {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .confirmation-order__individual-label {
+    margin-block: 0 14px;
+    color: var(--color-muted);
+    font-size: 13px;
+  }
+  .confirmation-order__individual-label strong {
+    color: var(--color-text);
   }
   .booking-summary-layout {
     display: grid;
@@ -80,6 +135,10 @@
   @media (max-width: 750px) {
     .confirmation-page h1 {
       font-size: 30px;
+    }
+    .confirmation-order__member-heading {
+      flex-direction: column;
+      gap: 4px;
     }
   }
 }

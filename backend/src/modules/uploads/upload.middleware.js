@@ -1,6 +1,6 @@
 import { mkdirSync } from 'node:fs';
 import multer from 'multer';
-import { uploadDirectory } from '../../config/paths.js';
+import { uploadDirectory } from '../../config/storagePaths.js';
 mkdirSync(uploadDirectory, {
   recursive: true,
 });

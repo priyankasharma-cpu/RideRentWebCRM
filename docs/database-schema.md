@@ -1,9 +1,16 @@
-# Database schema
+# MongoDB collections and data model
 
-Prisma schema: backend/prisma/schema.prisma. SQLite remains the configured relational database. Existing tables are users, sessions, vehicles, customers, bookings, booking_contacts, rentals, payments, refunds, inspections, maintenance, settings and audit. Foreign keys, unique constraints and indexes preserve their relationships.
+The active database uses the official MongoDB Node.js driver. Connection pooling, collection helpers, transaction sessions and index initialization are centralized in `backend/src/config/mongoDatabase.js`. The former Prisma schema and SQL migration history are preserved outside the runtime in `archive/legacy-prisma-sqlite/`.
 
-Bookings retain historical pricing and scheduled dates. Rentals store actual pickup/return. Booking contacts preserve customer details at booking time. Payments and refunds are separate ledger records. Inspections and maintenance control road readiness. Audit records retain staff activity.
+Collections retain the previous relational table names and snake_case fields to keep application/API mappings stable. The active collection families include:
 
-Dates remain existing ISO strings for compatibility. Money and epoch values use Prisma BigInt, normalized at the API boundary. Migration 0001 baselines the existing schema; 0002 adds null identifier guards and session expiry indexing; 0003 indexes read paths. No business records are rewritten by these migrations.
+- `users`, `sessions`, `customers`, `customer_access_sessions`, `booking_access_challenges`
+- `vehicles`, `vehicle_images`, `maintenance`
+- `bookings`, `booking_contacts`, `checkout_orders`, `checkout_items`, `booking_addons`, `addon_allocations`, `addon_categories`, `addons`
+- `rentals`, `inspections`, `payments`, `refunds`, `audit`, `settings`, `contact_inquiries`
 
-Never use prisma migrate reset or db push against an existing client database. Back up first and validate migrations on a copy. See deployment.md.
+MongoDB `_id` values mirror application IDs for normal records; compound-key records use stable composite IDs. Monetary amounts are integer paise. Dates continue to use the existing ISO timestamp representation at the API boundary. Booking-time rates and totals remain saved on booking records so later pricing edits do not rewrite history.
+
+`mongoDatabase.js` initializes unique ID, booking reference, user email, customer phone, vehicle slug/registration, add-on code, session token, checkout idempotency, gallery ordering and related query indexes. Booking, checkout and inventory allocation writes use MongoDB transactions and a shared lock document. These transaction/index behaviors still require isolated Atlas rehearsal before production use.
+
+No schema reset, Prisma migration or SQLite mutation is part of active startup. See `sqlite-to-mongodb-migration.md` for source preservation and the separately managed import plan.

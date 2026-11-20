@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { toUTC } from '../utils/rentalTime.js';
 import { useRentalPeriod } from '../hooks/useRentalPeriod.js';
 import { api } from '../services/apiClient.js';
-import { saveBookingToken } from '../services/bookingTokens.js';
 import { ErrorBox } from '../components/common/ErrorBox.jsx';
 import { BookingForm } from '../components/booking/BookingForm.jsx';
 import { BookingSummary } from '../components/booking/BookingSummary.jsx';
@@ -80,7 +79,6 @@ function CheckoutContent({ params }) {
           reservationToken: credentials.reservationToken,
         },
       });
-      for (const entry of result.bookings) saveBookingToken(entry.booking.id, entry.token);
       notify(
         result.bookings.length > 1
           ? `${result.bookings.length} vehicles reserved together.`

@@ -1,40 +1,69 @@
-import { all, get, run } from '../../config/database.js';
-export const inquiriesInstalled = async (db) =>
-  Boolean(
-    await get(db, "SELECT name FROM sqlite_master WHERE type='table' AND name='contact_inquiries'"),
+import {
+  collection,
+  fromDocument,
+  fromDocuments,
+  mongoOptions,
+} from '../../config/mongoDatabase.js';
+
+export const inquiriesInstalled = async () => true;
+
+export async function findSubmission(db, key) {
+  return fromDocument(
+    await collection(db, 'contact_inquiries').findOne({ submission_key: key }, mongoOptions(db)),
   );
-export const findSubmission = (db, key) =>
-  get(db, 'SELECT * FROM contact_inquiries WHERE submission_key=?', key);
-export const findInquiry = (db, id) => get(db, 'SELECT * FROM contact_inquiries WHERE id=?', id);
-export const insertInquiry = (db, record, input, time) =>
-  run(
-    db,
-    "INSERT INTO contact_inquiries(id,submission_key,name,email,phone,inquiry_type,message,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,'new',?,?)",
-    record,
-    input.submissionKey,
-    input.name,
-    input.email,
-    input.phone,
-    input.inquiryType,
-    input.message,
-    time,
-    time,
-  );
-export async function listInquiries(db, status, offset) {
-  const where = status === 'all' ? '' : ' WHERE status=?';
-  const parameters = status === 'all' ? [] : [status];
-  const [items, count] = await Promise.all([
-    all(
-      db,
-      'SELECT id,name,email,phone,inquiry_type,message,status,created_at,updated_at FROM contact_inquiries' +
-        where +
-        ' ORDER BY created_at DESC,id DESC LIMIT 50 OFFSET ?',
-      ...parameters,
-      offset,
-    ),
-    get(db, 'SELECT COUNT(*) total FROM contact_inquiries' + where, ...parameters),
-  ]);
-  return { items, total: count.total, limit: 50, offset };
 }
-export const updateInquiryStatus = (db, id, status, time) =>
-  run(db, 'UPDATE contact_inquiries SET status=?,updated_at=? WHERE id=?', status, time, id);
+
+export async function findInquiry(db, id) {
+  return fromDocument(await collection(db, 'contact_inquiries').findOne({ id }, mongoOptions(db)));
+}
+
+export async function insertInquiry(db, record, input, time) {
+  const document = {
+    _id: record,
+    id: record,
+    submission_key: input.submissionKey,
+    name: input.name,
+    email: input.email,
+    phone: input.phone,
+    inquiry_type: input.inquiryType,
+    message: input.message,
+    status: 'new',
+    created_at: time,
+    updated_at: time,
+  };
+  return collection(db, 'contact_inquiries').insertOne(document, mongoOptions(db));
+}
+
+export async function listInquiries(db, status, offset) {
+  const filter = status === 'all' ? {} : { status };
+  const [items, total] = await Promise.all([
+    collection(db, 'contact_inquiries')
+      .find(filter, mongoOptions(db))
+      .project({
+        _id: 0,
+        id: 1,
+        name: 1,
+        email: 1,
+        phone: 1,
+        inquiry_type: 1,
+        message: 1,
+        status: 1,
+        created_at: 1,
+        updated_at: 1,
+      })
+      .sort({ created_at: -1, id: -1 })
+      .skip(offset)
+      .limit(50)
+      .toArray(),
+    collection(db, 'contact_inquiries').countDocuments(filter, mongoOptions(db)),
+  ]);
+  return { items: fromDocuments(items), total, limit: 50, offset };
+}
+
+export async function updateInquiryStatus(db, id, status, time) {
+  return collection(db, 'contact_inquiries').updateOne(
+    { id },
+    { $set: { status, updated_at: time } },
+    mongoOptions(db),
+  );
+}

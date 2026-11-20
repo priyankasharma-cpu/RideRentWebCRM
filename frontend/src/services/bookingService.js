@@ -11,14 +11,18 @@ export const bookingService = {
       method: 'POST',
       body: values,
     }),
-  lookup: (values) =>
-    api('/bookings/lookup', {
+  requestAccessCode: (values) =>
+    api('/bookings/access/request', {
       method: 'POST',
       body: values,
     }),
-  get: (id, token, signal) =>
+  verifyAccessCode: (values) =>
+    api('/bookings/access/verify', {
+      method: 'POST',
+      body: values,
+    }),
+  get: (id, _legacyToken, signal) =>
     api(`/bookings/${id}`, {
-      token,
       signal,
     }),
 };

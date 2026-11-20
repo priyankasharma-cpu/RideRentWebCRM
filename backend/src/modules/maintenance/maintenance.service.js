@@ -8,7 +8,7 @@ import {
   findMaintenanceByVehicleIdVariant2,
   updateVehicleByIdVariant2,
 } from './maintenance.repository.js';
-import { transaction } from '../../config/database.js';
+import { withTransaction } from '../../config/mongoDatabase.js';
 import { rentalWindow } from '../availability/rentalWindow.service.js';
 import { availability } from '../availability/availability.service.js';
 import { fail } from '../../utils/ApiError.js';
@@ -20,7 +20,7 @@ export async function listMaintenance(db, _request) {
 }
 export async function scheduleMaintenance(db, request) {
   const input = request.body;
-  await transaction(db, async () => {
+  await withTransaction(db, async () => {
     const w = await rentalWindow(db, input, {
         future: false,
       }),
@@ -43,7 +43,7 @@ export async function scheduleMaintenance(db, request) {
   };
 }
 export async function resolveMaintenance(db, request) {
-  await transaction(db, async () => {
+  await withTransaction(db, async () => {
     const m = await findMaintenanceById(db, request.params.id);
     if (!m) fail(404, 'Maintenance record not found.');
     await updateMaintenanceById(db, m.id);

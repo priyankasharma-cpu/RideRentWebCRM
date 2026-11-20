@@ -44,7 +44,7 @@ export function CustomerDetails({ customer, onChange, onReview, canReview, error
               autoComplete="tel"
               maxLength={20}
               required
-              pattern={String.raw`[+0-9 \(\)\-]{10,20}`}
+              pattern={String.raw`[+0-9 \(\)\-]{10,18}`}
               value={customer.phone}
               onChange={change}
               placeholder="Your contact number"

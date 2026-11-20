@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { transaction } from '../../config/database.js';
+import { queryGroup, withTransaction } from '../../config/mongoDatabase.js';
 import { fail } from '../../utils/ApiError.js';
 import { hash, id } from '../../utils/crypto.js';
 import { now } from '../../utils/dateTime.js';
@@ -11,7 +11,6 @@ import { quoteAddOns, reserveAddOnAllocations } from '../addons/addOn.pricing.js
 import { price } from './pricing.service.js';
 import { createBooking } from './booking.service.js';
 import { bookingView } from './booking.read.service.js';
-import { updateBookingByAccessHashAndId } from './booking.repository.js';
 import { checkoutQuoteInput, checkoutReservationInput } from './checkout.validation.js';
 import {
   checkoutInstalled,
@@ -108,7 +107,8 @@ async function calculate(db, input) {
     const units = [...group.available]
       .sort((a, b) => Number(b.id === item.vehicleId) - Number(a.id === item.vehicleId))
       .slice(0, item.quantity);
-    const quotes = await Promise.all(units.map((v) => price(db, v, period)));
+    const quotes = [];
+    for (const unit of units) quotes.push(await price(db, unit, period));
     lines.push({
       vehicleId: item.vehicleId,
       name: group.vehicle.name,
@@ -145,13 +145,13 @@ async function calculate(db, input) {
   return { ...quoted, signature: hash(JSON.stringify(quoted)) };
 }
 export const quoteCheckout = (db, raw) =>
-  transaction(db, () => calculate(db, checkoutQuoteInput.parse(raw)));
+  withTransaction(db, () => calculate(db, checkoutQuoteInput.parse(raw)));
 export async function reserveCheckout(db, raw) {
   const input = checkoutReservationInput.parse(raw);
   const fingerprint = hash(
     JSON.stringify({ ...input, submissionKey: undefined, reservationToken: undefined }),
   );
-  return transaction(db, async () => {
+  return withTransaction(db, async () => {
     await requireInstallation(db);
     const existing = await previousCheckout(db, input.submissionKey);
     if (existing) {
@@ -161,14 +161,11 @@ export async function reserveCheckout(db, raw) {
       )
         fail(409, 'This checkout attempt was already used. Refresh and review your booking.');
       const entries = await orderBookingIds(db, existing.id);
-      return {
-        bookings: await Promise.all(
-          entries.map(async (row) => ({
-            booking: await bookingView(db, row.booking_id),
-            token: input.reservationToken,
-          })),
-        ),
-      };
+      const bookings = await queryGroup(
+        db,
+        entries.map((row) => async () => ({ booking: await bookingView(db, row.booking_id) })),
+      );
+      return { bookings };
     }
     const quote = await calculate(db, input);
     if (quote.total !== input.expectedTotal)
@@ -187,26 +184,27 @@ export async function reserveCheckout(db, raw) {
     const allocations = [];
     for (const line of quote.lines) {
       for (const vehicleId of line.unitIds) {
-        const result = await createBooking(db, {
-          ...input,
-          vehicleId,
-          source: 'Website',
-          verified: false,
-        });
-        await updateBookingByAccessHashAndId(db, hash(input.reservationToken), result.booking.id);
+        const result = await createBooking(
+          db,
+          {
+            ...input,
+            vehicleId,
+            source: 'Website',
+            verified: false,
+          },
+          null,
+          { reserveAddOns: false },
+        );
         await saveCheckoutItem(db, orderId, result.booking.id);
         ids.push(result.booking.id);
         allocations.push({ id: result.booking.id, category: line.category });
       }
     }
     await reserveAddOnAllocations(db, quote.addOns, allocations);
-    return {
-      bookings: await Promise.all(
-        ids.map(async (bookingId) => ({
-          booking: await bookingView(db, bookingId),
-          token: input.reservationToken,
-        })),
-      ),
-    };
+    const bookings = await queryGroup(
+      db,
+      ids.map((bookingId) => async () => ({ booking: await bookingView(db, bookingId) })),
+    );
+    return { bookings };
   });
 }

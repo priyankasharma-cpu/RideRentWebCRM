@@ -17,41 +17,52 @@ export async function loadSession() {
       });
   return sessionPromise;
 }
-export async function api(path, { method = 'GET', body, token, ...rest } = {}) {
+export async function api(path, { method = 'GET', body, ...rest } = {}) {
   if (method !== 'GET') await loadSession();
   const isForm = body instanceof FormData;
-  const res = await fetch('/api' + path, {
-    method,
-    credentials: 'same-origin',
-    headers: {
-      ...(!isForm && body
+  const send = async () => {
+    const sentCsrf = method === 'GET' ? '' : csrf;
+    const res = await fetch('/api' + path, {
+      method,
+      credentials: 'same-origin',
+      headers: {
+        ...(!isForm && body
+          ? {
+              'Content-Type': 'application/json',
+            }
+          : {}),
+        ...(method !== 'GET'
+          ? {
+              'X-CSRF-Token': sentCsrf,
+            }
+          : {}),
+      },
+      ...(body
         ? {
-            'Content-Type': 'application/json',
+            body: isForm ? body : JSON.stringify(body),
           }
         : {}),
-      ...(method !== 'GET'
-        ? {
-            'X-CSRF-Token': csrf,
-          }
-        : {}),
-      ...(token
-        ? {
-            'X-Booking-Token': token,
-          }
-        : {}),
-    },
-    ...(body
-      ? {
-          body: isForm ? body : JSON.stringify(body),
-        }
-      : {}),
-    ...rest,
-  });
-  let data;
-  try {
-    data = await res.json();
-  } catch {
-    throw Error('Server unavailable. Start both the API and frontend.');
+      ...rest,
+    });
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      throw Error('Server unavailable. Start both the API and frontend.');
+    }
+    return { res, data, sentCsrf };
+  };
+
+  let { res, data, sentCsrf } = await send();
+  if (
+    res.status === 403 &&
+    data.error === 'Session expired. Refresh and try again.' &&
+    method !== 'GET' &&
+    !rest.signal?.aborted
+  ) {
+    if (csrf === sentCsrf) resetSessionCache();
+    await loadSession();
+    ({ res, data } = await send());
   }
   if (!res.ok) throw Error(data.error || 'Request failed.');
   if (data.csrf) csrf = data.csrf;

@@ -57,12 +57,40 @@ model Booking {
   checkoutItem CheckoutItem?
   addon BookingAddon?
   addonAllocations AddOnAllocation[]
+  accessChallenges BookingAccessChallenge[]
 
   @@index([customerId], map: "booking_customer")
   @@index([vehicleId, status, startsAt, endsAt], map: "booking_availability")
   @@map("bookings")
   @@index([status, vehicleId, startsAt, endsAt], map: "booking_status_window")
   @@index([createdAt], map: "booking_created_at")
+}
+
+model BookingAccessChallenge {
+  id         String   @id
+  bookingId  String?  @map("booking_id")
+  otpHash    String   @map("otp_hash")
+  attempts   Int      @default(0)
+  expiresAt  BigInt   @map("expires_at")
+  consumedAt BigInt?  @map("consumed_at")
+  createdAt  BigInt   @map("created_at")
+  booking    Booking? @relation(fields: [bookingId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("booking_access_challenges")
+  @@index([expiresAt], map: "booking_access_challenge_expiry")
+}
+
+model CustomerAccessSession {
+  tokenHash  String   @id @map("token_hash")
+  customerId String   @map("customer_id")
+  bookingIds String   @map("booking_ids")
+  expiresAt  BigInt   @map("expires_at")
+  createdAt  BigInt   @map("created_at")
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("customer_access_sessions")
+  @@index([customerId, expiresAt], map: "customer_access_session_owner_expiry")
+  @@index([expiresAt], map: "customer_access_session_expiry")
 }
 
 model Customer {
@@ -73,6 +101,7 @@ model Customer {
   verified   Int        @default(0)
   createdAt String @map("created_at")
   bookings   Booking[]
+  accessSessions CustomerAccessSession[]
   @@map("customers")
 }
 

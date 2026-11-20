@@ -1,12 +1,30 @@
-import { all, findRecord } from '../../config/database.js';
+import {
+  collection,
+  fromDocument,
+  fromDocuments,
+  mongoOptions,
+} from '../../config/mongoDatabase.js';
 
-export const findAvailabilityVehicle = (database, id) => findRecord(database, 'vehicle', 'id', id);
-export const listVehicleReservations = (database, vehicleId, excludedBookingId) =>
-  all(
-    database,
-    "SELECT * FROM bookings WHERE vehicle_id=? AND id<>? AND status IN ('confirmed','active','inspecting')",
-    vehicleId,
-    excludedBookingId,
-  );
-export const listVehicleServiceBlocks = (database, vehicleId) =>
-  all(database, 'SELECT * FROM maintenance WHERE vehicle_id=? AND resolved=0', vehicleId);
+export const findAvailabilityVehicle = async (database, id) =>
+  fromDocument(await collection(database, 'vehicles').findOne({ id }, mongoOptions(database)));
+
+export async function listVehicleReservations(database, vehicleId, excludedBookingId) {
+  const records = await collection(database, 'bookings')
+    .find(
+      {
+        vehicle_id: vehicleId,
+        id: { $ne: excludedBookingId },
+        status: { $in: ['confirmed', 'active', 'inspecting'] },
+      },
+      mongoOptions(database),
+    )
+    .toArray();
+  return fromDocuments(records);
+}
+
+export async function listVehicleServiceBlocks(database, vehicleId) {
+  const records = await collection(database, 'maintenance')
+    .find({ vehicle_id: vehicleId, resolved: 0 }, mongoOptions(database))
+    .toArray();
+  return fromDocuments(records);
+}

@@ -1,4 +1,4 @@
-import { transaction } from '../../config/database.js';
+import { withTransaction } from '../../config/mongoDatabase.js';
 import {
   listCustomerRecords,
   findCustomerById,
@@ -16,7 +16,7 @@ export async function listCustomers(db, _request) {
   }));
 }
 export async function verifyCustomer(db, request) {
-  return transaction(db, async () => {
+  return withTransaction(db, async () => {
     const v = request.body;
     if (!(await findCustomerById(db, request.params.id))) fail(404, 'Customer not found.');
     await updateCustomerByVerifiedAndId(db, v.verified ? 1 : 0, request.params.id);

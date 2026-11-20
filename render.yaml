@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: riderent-api
+    runtime: node
+    plan: free
+    region: singapore
+    autoDeployTrigger: off
+    buildCommand: npm --prefix backend ci --omit=dev && npm --prefix frontend ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /readyz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: UPLOAD_DIR
+        value: /tmp/riderent-uploads
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB_NAME
+        sync: false
+      - key: TRUST_PROXY_HOPS
+        value: '1'
+      - key: APP_ORIGIN
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: OTP_FROM_EMAIL
+        sync: false
+      - key: OTP_HASH_SECRET
+        sync: false

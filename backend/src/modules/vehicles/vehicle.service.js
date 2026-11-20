@@ -12,7 +12,7 @@ import {
 import { vehicleView, vehicleViews } from './vehicle.presenter.js';
 import { fail } from '../../utils/ApiError.js';
 import { id } from '../../utils/crypto.js';
-import { transaction } from '../../config/database.js';
+import { withTransaction } from '../../config/mongoDatabase.js';
 import { now } from '../../utils/dateTime.js';
 import { serviceRecord } from '../maintenance/serviceRecord.service.js';
 import { audit } from '../audit/audit.service.js';
@@ -42,7 +42,7 @@ export async function addVehicle(db, request) {
   const v = request.body,
     key = id(),
     slug = v.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + key.slice(0, 5);
-  await transaction(db, async () => {
+  await withTransaction(db, async () => {
     await insertVehicle(
       db,
       key,
@@ -70,7 +70,7 @@ export async function addVehicle(db, request) {
 }
 export async function editVehicle(db, request) {
   const v = request.body;
-  await transaction(db, async () => {
+  await withTransaction(db, async () => {
     const old = await findVehicleById(db, request.params.id);
     if (!old) fail(404, 'Vehicle not found.');
     if (

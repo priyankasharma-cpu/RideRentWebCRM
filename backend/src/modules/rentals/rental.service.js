@@ -1,4 +1,4 @@
-import { transaction } from '../../config/database.js';
+import { withTransaction } from '../../config/mongoDatabase.js';
 import {
   findBookingByIdVariant2,
   findVehicleByIdVariant3,
@@ -22,7 +22,7 @@ import { settings } from '../settings/settings.service.js';
 import { serviceRecord } from '../maintenance/serviceRecord.service.js';
 export async function pickUpRental(db, request) {
   const input = request.body;
-  await transaction(db, async () => {
+  await withTransaction(db, async () => {
     const b = await findBookingByIdVariant2(db, request.params.id);
     if (!b) fail(404, 'Booking not found.');
     if (b.status !== 'confirmed') fail(409, 'Only confirmed bookings can be picked up.');
@@ -70,7 +70,7 @@ export async function pickUpRental(db, request) {
 }
 export async function returnRental(db, request) {
   const input = request.body;
-  await transaction(db, async () => {
+  await withTransaction(db, async () => {
     const b = await findBookingByIdVariant2(db, request.params.id);
     if (!b) fail(404, 'Booking not found.');
     if (b.status !== 'active') fail(409, 'Only active rentals can be returned.');
@@ -113,7 +113,7 @@ export async function returnRental(db, request) {
 }
 export async function completeRental(db, request) {
   const input = request.body;
-  await transaction(db, async () => {
+  await withTransaction(db, async () => {
     const b = await findBookingByIdVariant2(db, request.params.id);
     if (!b) fail(404, 'Booking not found.');
     if (b.status !== 'inspecting') fail(409, 'Record a return inspection first.');

@@ -1,23 +1,26 @@
-import { run } from '../../config/database.js';
+import { collection, mongoOptions } from '../../config/mongoDatabase.js';
+
 export async function insertMaintenanceVariant2(
   db,
-  idValue,
+  id,
   vehicleId,
-  nowValue,
-  value4,
+  start,
+  end,
   reason,
-  value6,
-  nowValueValue,
+  resolved,
+  createdAt,
 ) {
-  return await run(
-    db,
-    'INSERT INTO maintenance VALUES(?,?,?,?,?,?,?)',
-    idValue,
-    vehicleId,
-    nowValue,
-    value4,
-    reason,
-    value6,
-    nowValueValue,
+  return collection(db, 'maintenance').insertOne(
+    {
+      _id: id,
+      id,
+      vehicle_id: vehicleId,
+      starts_at: start,
+      ends_at: end,
+      reason,
+      resolved,
+      created_at: createdAt,
+    },
+    mongoOptions(db),
   );
 }

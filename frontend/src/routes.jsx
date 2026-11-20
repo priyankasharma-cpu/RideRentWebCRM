@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Outlet, Routes, Route } from 'react-router-dom';
+import { AppProviders } from './context/AppProviders';
 import { CustomerLayout } from './components/layout/CustomerLayout';
 import { Loading } from './components/common/Loader';
 const Booking = lazy(() => import('./pages/Booking.jsx'));
@@ -88,27 +89,36 @@ export function AppRoutes() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route element={<CustomerLayout />}>
-          <Route index element={<Home />} />
-          <Route path="vehicles" element={<Vehicles />} />
-          <Route path="vehicles/:slug" element={<VehicleDetails />} />
-          <Route path="checkout" element={<Checkout />} />
-          <Route path="booking" element={<Booking />} />
-          <Route path="booking/confirmation/:id" element={<BookingConfirmation />} />
-          <Route path="my-bookings" element={<MyBookings />} />
-          <Route path="my-bookings/:id" element={<BookingConfirmation />} />
-          <Route path="about" element={<About />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="how-it-works" element={<HowItWorks />} />
-          <Route path="faq" element={<FAQ />} />
-          <Route path="rental-policy" element={<RentalPolicy />} />
-          <Route path="privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="terms" element={<Terms />} />
-          <Route path="login" element={<Login />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="*" element={<NotFound />} />
+        <Route
+          element={
+            <AppProviders>
+              <Outlet />
+            </AppProviders>
+          }
+        >
+          <Route element={<CustomerLayout />}>
+            <Route index element={<Home />} />
+            <Route path="rentals" element={<Home />} />
+            <Route path="vehicles" element={<Vehicles />} />
+            <Route path="vehicles/:slug" element={<VehicleDetails />} />
+            <Route path="checkout" element={<Checkout />} />
+            <Route path="booking" element={<Booking />} />
+            <Route path="booking/confirmation/:id" element={<BookingConfirmation />} />
+            <Route path="my-bookings" element={<MyBookings />} />
+            <Route path="my-bookings/:id" element={<BookingConfirmation />} />
+            <Route path="about" element={<About />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="how-it-works" element={<HowItWorks />} />
+            <Route path="faq" element={<FAQ />} />
+            <Route path="rental-policy" element={<RentalPolicy />} />
+            <Route path="privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="terms" element={<Terms />} />
+            <Route path="login" element={<Login />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+          <Route path="admin/*" element={<Admin />} />
         </Route>
-        <Route path="admin/*" element={<Admin />} />
       </Routes>
     </Suspense>
   );

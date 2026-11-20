@@ -19,7 +19,8 @@ export function useCheckout(period, selections, addOnQuantities) {
     refetchInterval: 30000,
     retry: false,
   });
-  const verified = Boolean(window && catalog.isSuccess && !catalog.isFetching);
+  // A background availability refresh should not temporarily clear a valid selection.
+  const verified = Boolean(window && catalog.isSuccess);
   const previousCatalog = useRef();
   useEffect(() => {
     if (catalog.data) previousCatalog.current = catalog.data;

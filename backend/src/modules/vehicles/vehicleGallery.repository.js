@@ -1,27 +1,39 @@
-import { all, get, run } from '../../config/database.js';
-export const galleryInstalled = async (db) =>
-  Boolean(
-    await get(db, "SELECT name FROM sqlite_master WHERE type='table' AND name='vehicle_images'"),
-  );
+import { collection, fromDocuments, mongoOptions } from '../../config/mongoDatabase.js';
+
+export const galleryInstalled = async () => true;
+
 export async function listVehicleImages(db) {
-  // Existing databases remain readable until the additive migration is deployed.
-  return (await galleryInstalled(db))
-    ? all(db, 'SELECT vehicle_id,id,label,url FROM vehicle_images ORDER BY vehicle_id,position')
-    : [];
+  const images = await collection(db, 'vehicle_images')
+    .find(
+      {},
+      {
+        ...mongoOptions(db),
+        projection: { _id: 0, vehicle_id: 1, id: 1, label: 1, url: 1, position: 1 },
+      },
+    )
+    .sort({ vehicle_id: 1, position: 1 })
+    .toArray();
+  return fromDocuments(images);
 }
+
 export async function replaceVehicleImages(db, vehicleId, images) {
-  await run(db, 'DELETE FROM vehicle_images WHERE vehicle_id=?', vehicleId);
-  for (const [position, image] of images.entries()) {
-    await run(
-      db,
-      'INSERT INTO vehicle_images(vehicle_id,id,label,url,position) VALUES(?,?,?,?,?)',
-      vehicleId,
-      image.id,
-      image.label,
-      image.url,
-      position,
+  await collection(db, 'vehicle_images').deleteMany({ vehicle_id: vehicleId }, mongoOptions(db));
+  if (images.length) {
+    await collection(db, 'vehicle_images').insertMany(
+      images.map((image, position) => ({
+        _id: `${vehicleId}:${image.id}`,
+        vehicle_id: vehicleId,
+        id: image.id,
+        label: image.label,
+        url: image.url,
+        position,
+      })),
+      mongoOptions(db),
+    );
+    await collection(db, 'vehicles').updateOne(
+      { id: vehicleId },
+      { $set: { image: images[0].url } },
+      mongoOptions(db),
     );
   }
-  if (images.length)
-    await run(db, 'UPDATE vehicles SET image=? WHERE id=?', images[0].url, vehicleId);
 }

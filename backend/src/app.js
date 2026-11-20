@@ -6,12 +6,15 @@ import express from 'express';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { frontendDist } from './config/paths.js';
-import { isProduction } from './config/env.js';
+import { env, isProduction } from './config/env.js';
 import { authenticate, requireStaff } from './middleware/authenticate.js';
 import { csrfProtection } from './middleware/csrf.js';
 import { apiLimiter } from './middleware/rateLimiter.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { uploadedImages } from './modules/uploads/upload.static.js';
+import { uploadDirectory } from './config/storagePaths.js';
+import { access } from 'node:fs/promises';
+import { constants } from 'node:fs';
 import { createAuthRouter } from './modules/auth/auth.routes.js';
 import { createSettingsRouter as moduleRouter0 } from './modules/settings/settings.routes.js';
 import { createVehiclesRouter as moduleRouter1 } from './modules/vehicles/vehicle.routes.js';
@@ -24,9 +27,10 @@ import { createCustomersRouter as moduleRouter7 } from './modules/customers/cust
 import { createMaintenanceRouter as moduleRouter8 } from './modules/maintenance/maintenance.routes.js';
 import { createAuthRouter as moduleRouter9 } from './modules/auth/staff.routes.js';
 import { createAuditRouter as moduleRouter10 } from './modules/audit/audit.routes.js';
-export function createApp(db, { origins } = {}) {
+export function createApp(db, { origins, otpDelivery } = {}) {
   const app = express();
   app.disable('x-powered-by');
+  app.set('trust proxy', env.TRUST_PROXY_HOPS);
   app.use(requestId);
   app.use(
     helmet({
@@ -50,6 +54,18 @@ export function createApp(db, { origins } = {}) {
     }),
   );
   app.use(cookieParser());
+  app.get('/healthz', (_req, res) => {
+    res.set('Cache-Control', 'no-store').json({ status: 'ok' });
+  });
+  app.get('/readyz', async (_req, res) => {
+    try {
+      await db.db.command({ ping: 1 });
+      await access(uploadDirectory, constants.R_OK | constants.W_OK);
+      res.set('Cache-Control', 'no-store').json({ status: 'ready' });
+    } catch {
+      res.set('Cache-Control', 'no-store').status(503).json({ status: 'not_ready' });
+    }
+  });
   app.use('/api', apiLimiter, authenticate(db), csrfProtection(origins));
   app.use('/api/admin', requireStaff, (_req, res, next) => {
     res.set('Cache-Control', 'no-store');
@@ -65,7 +81,7 @@ export function createApp(db, { origins } = {}) {
   app.use(createAddOnsRouter(db));
   app.use(moduleRouter0(db));
   app.use(moduleRouter1(db));
-  app.use(moduleRouter2(db));
+  app.use(moduleRouter2(db, { otpDelivery }));
   app.use(moduleRouter3(db));
   app.use(moduleRouter4(db));
   app.use(moduleRouter5(db));

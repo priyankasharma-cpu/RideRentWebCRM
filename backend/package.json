@@ -5,15 +5,17 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
-    "test": "node --test tests/integration/*.test.js"
+    "test": "node --test tests/unit/*.test.js",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:mongodb": "node --test tests/mongodb/*.test.js",
+    "db:check": "node scripts/check-mongodb.mjs"
   },
   "dependencies": {
-    "@prisma/adapter-better-sqlite3": "^7.10.1",
-    "@prisma/client": "^7.10.1",
     "cookie-parser": "^1.4.7",
     "express": "^5.3.0",
     "express-rate-limit": "^8.7.2",
     "helmet": "^8.3.0",
+    "mongodb": "^7.8.0",
     "multer": "^2.5.0",
     "zod": "^4.6.7"
   },
@@ -24,7 +26,6 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0",
-    "prettier": "^3.9.10",
-    "prisma": "^7.10.1"
+    "prettier": "^3.9.10"
   }
 }

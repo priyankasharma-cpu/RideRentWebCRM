@@ -5,7 +5,6 @@ import { useParams, Link } from 'react-router-dom';
 import { useApp } from '../hooks/useApp.js';
 import { useState, useEffect } from 'react';
 import { defaultPeriod, shopInput, toUTC } from '../utils/rentalTime.js';
-import { bookingToken, saveBookingToken } from '../services/bookingTokens.js';
 import { api } from '../services/apiClient.js';
 import { Loading } from '../components/common/Loader.jsx';
 import { ErrorBox } from '../components/common/ErrorBox.jsx';
@@ -17,6 +16,7 @@ import { MapPin, ArrowRight } from 'lucide-react';
 import { PriceBreakdown } from '../components/booking/PriceBreakdown.jsx';
 import { CallLink } from '../components/common/CallLink.jsx';
 import { PeriodFields } from '../components/booking/PeriodFields.jsx';
+import { paymentLabels } from '../utils/bookingStatus.js';
 import './BookingConfirmation.css';
 export function BookingConfirmation() {
   const { id } = useParams(),
@@ -25,13 +25,7 @@ export function BookingConfirmation() {
     [busy, setBusy] = useState(false),
     [rescheduling, setRescheduling] = useState(false),
     [period, setPeriod] = useState(defaultPeriod);
-  const token = bookingToken(id);
-  const { booking, fetchError, setBooking } = useBooking(id, token);
-  useEffect(() => {
-    if (booking) {
-      for (const member of booking.checkout?.bookings || []) saveBookingToken(member.id, token);
-    }
-  }, [booking, token]);
+  const { booking, fetchError, setBooking } = useBooking(id);
   const scheduledStart = booking?.starts_at,
     scheduledEnd = booking?.ends_at;
   useEffect(() => {
@@ -44,7 +38,6 @@ export function BookingConfirmation() {
       const b = await api('/bookings/' + id + path, {
         method: 'POST',
         body,
-        token,
       });
       setBooking(b);
       setRescheduling(false);
@@ -70,27 +63,68 @@ export function BookingConfirmation() {
               {booking.checkout?.bookings.length > 1 && (
                 <section
                   className="rr-panel confirmation-order"
-                  aria-label="All vehicles in this booking"
+                  aria-label="Combined checkout summary"
                 >
                   <h2>{booking.checkout.bookings.length} vehicles reserved together</h2>
-                  <p>
-                    Total for this checkout: <strong>{money(booking.checkout.total)}</strong> · Pay
-                    at shop
-                  </p>
+                  <div className="confirmation-order__totals">
+                    <strong className="confirmation-order__grand-total">
+                      Combined checkout total <span>{money(booking.checkout.totalPayable)}</span>
+                    </strong>
+                    <span>Paid (after refunds): {money(booking.checkout.amountPaid)}</span>
+                    <span>Outstanding: {money(booking.checkout.outstanding)}</span>
+                    <span>Security deposits booked: {money(booking.checkout.securityDeposit)}</span>
+                    <span>
+                      Refundable deposit available: {money(booking.checkout.refundableDeposit)}
+                    </span>
+                    {booking.checkout.amountRefunded > 0 && (
+                      <span>Refunded: {money(booking.checkout.amountRefunded)}</span>
+                    )}
+                    <span className="confirmation-order__payment-state">
+                      {paymentLabels[booking.checkout.paymentState]}
+                    </span>
+                  </div>
                   <p className="subtle-note">
                     Each vehicle has its own reference, pickup, return and payment record. The
-                    summary below is for the selected vehicle.
+                    selected vehicle’s individual booking total is shown in its summary below.
                   </p>
                   <ul>
                     {booking.checkout.bookings.map((member) => (
-                      <li key={member.id}>
-                        <Link
-                          to={'/booking/confirmation/' + member.id}
-                          aria-current={member.id === id ? 'page' : undefined}
-                        >
-                          {member.name} · {member.reference}
-                        </Link>
-                        <span>{member.status}</span>
+                      <li key={member.id} className="confirmation-order__member">
+                        <div className="confirmation-order__member-heading">
+                          <Link
+                            to={'/booking/confirmation/' + member.id}
+                            aria-current={member.id === id ? 'page' : undefined}
+                          >
+                            {member.name} · {member.reference}
+                            {member.id === id ? ' · Selected vehicle' : ''}
+                          </Link>
+                          <span>
+                            {member.status} ·{' '}
+                            {paymentLabels[member.paymentState] || 'Payment status unavailable'}
+                          </span>
+                        </div>
+                        <div className="confirmation-order__member-finances">
+                          <span>Rental: {money(member.rentalCharge)}</span>
+                          <span>Tax: {money(member.tax)}</span>
+                          <span>Security deposit booked: {money(member.securityDeposit)}</span>
+                          <span>Deposit paid: {money(member.depositPaid)}</span>
+                          <span>
+                            Refundable deposit available: {money(member.refundableDeposit)}
+                          </span>
+                          <span>Paid after refunds: {money(member.amountPaid)}</span>
+                          {member.amountRefunded > 0 && (
+                            <span>Refunded: {money(member.amountRefunded)}</span>
+                          )}
+                          <span>Outstanding: {money(member.outstanding)}</span>
+                          <span>Total payable: {money(member.totalPayable)}</span>
+                          {member.addOns.map((addon, index) => (
+                            <span key={`${member.id}-${addon.name}-${index}`}>
+                              {addon.name} × {addon.quantity}: {money(addon.base + addon.tax)}
+                              {addon.includedQuantity > 0 &&
+                                ` (${addon.includedQuantity} included)`}
+                            </span>
+                          ))}
+                        </div>
                       </li>
                     ))}
                   </ul>
@@ -143,6 +177,12 @@ export function BookingConfirmation() {
                 </div>
                 <div className="rr-panel">
                   <h3>Your rental summary</h3>
+                  {booking.checkout?.bookings.length > 1 && (
+                    <p className="confirmation-order__individual-label">
+                      Individual total for {booking.vehicle.name}:{' '}
+                      <strong>{money(booking.total)}</strong>
+                    </p>
+                  )}
                   <PriceBreakdown
                     quote={{
                       ...booking,

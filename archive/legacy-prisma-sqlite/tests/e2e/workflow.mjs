@@ -65,7 +65,7 @@ try {
   await book.click();
   await page.getByLabel('Full name').fill('E2E Demo Rider');
   await page.getByLabel('Mobile number').fill(phone);
-  await page.getByLabel('Email (optional)').fill('e2e@example.com');
+  await page.getByLabel('Email for booking verification').fill('e2e@example.com');
   await page.locator('[name=agreement]').check();
   await page.getByRole('button', { name: 'Confirm Booking · Pay at Shop' }).click();
   await expect(page.getByRole('heading', { name: 'You’re all set to ride.' })).toBeVisible();
@@ -182,9 +182,14 @@ try {
   await expect(page.locator('.admin-sidebar')).not.toHaveClass(/open/);
   await page.goto(base + '/my-bookings', { waitUntil: 'networkidle' });
   await page.getByLabel('Booking reference').fill(reference);
-  await page.getByLabel('Mobile number').fill(phone);
-  await page.getByRole('button', { name: 'Find My Booking' }).click();
-  await expect(page).toHaveURL(base + '/my-bookings/' + bookingId);
+  await page.getByLabel('Booking email').fill('e2e@example.com');
+  await page.getByRole('button', { name: 'Send verification code' }).click();
+  await expect(page.getByLabel('Six-digit verification code')).toBeVisible();
+  await page.getByLabel('Six-digit verification code').fill('000000');
+  await page.getByRole('button', { name: 'Verify and find booking' }).click();
+  await expect(page.getByText(/verification code is invalid or expired/i)).toBeVisible();
+  // A website-created booking remains available to its already verified, scoped session.
+  await page.goto(base + '/my-bookings/' + bookingId, { waitUntil: 'networkidle' });
   await expect(page.locator('.confirmation-heading .status')).toHaveText('completed');
   await page.goto(base, { waitUntil: 'networkidle' });
   await page.screenshot({

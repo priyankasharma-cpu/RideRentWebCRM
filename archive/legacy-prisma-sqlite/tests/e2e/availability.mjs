@@ -100,7 +100,7 @@ async function checkDates(period) {
 async function fillCustomer() {
   await page.getByLabel('Full name', { exact: true }).fill('Availability Tester');
   await page.getByLabel('Mobile number', { exact: true }).fill('9876500062');
-  await page.getByLabel('Email (optional)').fill('availability@example.com');
+  await page.getByLabel('Email for booking verification').fill('availability@example.com');
   await page.locator('[name=agreement]').check();
 }
 try {
@@ -148,6 +148,7 @@ try {
       endsAt: toUTC(blocked.endsAt),
       name: 'Blocked attempt',
       phone: '9876500069',
+      email: 'blocked-attempt@example.com',
       agreement: true,
       expectedTotal: 0,
       submissionKey: randomUUID(),

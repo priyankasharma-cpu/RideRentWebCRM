@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import './Logo.css';
 export function Logo() {
   return (
-    <Link className="brand" to="/" aria-label="RideRent home">
+    <Link className="brand" to="/rentals" aria-label="RideRent home">
       <svg viewBox="0 0 78 46" fill="none" aria-hidden="true">
         <path
           d="M5 31C23 25 28 6 69 10C45-2 21 8 12 16C34 7 50 10 54 16C30 13 25 29 5 31Z"

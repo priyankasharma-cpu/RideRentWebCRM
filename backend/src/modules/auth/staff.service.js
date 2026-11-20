@@ -12,7 +12,7 @@ import { id, passwordHash, passwordMatches } from '../../utils/crypto.js';
 import { now } from '../../utils/dateTime.js';
 import { audit } from '../audit/audit.service.js';
 import { fail } from '../../utils/ApiError.js';
-import { transaction } from '../../config/database.js';
+import { withTransaction } from '../../config/mongoDatabase.js';
 export async function listStaff(db, _request) {
   return await listUserRecords(db);
 }
@@ -38,7 +38,7 @@ export async function changeStaffAccess(db, request) {
   const v = request.body;
   if (request.params.id === request.user.id) fail(400, 'You cannot disable your own account.');
   if (!(await findUserById(db, request.params.id))) fail(404, 'Staff account not found.');
-  await transaction(db, async () => {
+  await withTransaction(db, async () => {
     await updateUserByActiveAndId(db, v.active ? 1 : 0, request.params.id);
     if (!v.active) await deleteSessionByUserId(db, request.params.id);
     await audit(db, request.user.id, 'staff.status_updated', request.params.id, v);

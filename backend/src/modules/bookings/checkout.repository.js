@@ -1,43 +1,104 @@
-import { all, get, run } from '../../config/database.js';
+import {
+  collection,
+  fromDocument,
+  fromDocuments,
+  mongoOptions,
+  queryGroup,
+} from '../../config/mongoDatabase.js';
 import { listAllocationSnapshots } from '../addons/addOn.repository.js';
 
-export const checkoutInstalled = async (db) =>
-  Boolean(
-    await get(db, "SELECT name FROM sqlite_master WHERE type='table' AND name='checkout_orders'"),
+export const checkoutInstalled = async () => true;
+
+export async function checkoutVehicles(db) {
+  const rows = await collection(db, 'vehicles')
+    .find({}, mongoOptions(db))
+    .sort({ created_at: 1, id: 1 })
+    .toArray();
+  return fromDocuments(rows);
+}
+
+export async function previousCheckout(db, key) {
+  return fromDocument(
+    await collection(db, 'checkout_orders').findOne({ submission_key: key }, mongoOptions(db)),
   );
-export const checkoutVehicles = (db) => all(db, 'SELECT * FROM vehicles ORDER BY created_at,id');
-export const previousCheckout = (db, key) =>
-  get(db, 'SELECT * FROM checkout_orders WHERE submission_key=?', key);
-export const orderBookingIds = (db, orderId) =>
-  all(db, 'SELECT booking_id FROM checkout_items WHERE order_id=? ORDER BY rowid', orderId);
-export const saveCheckout = (db, order) =>
-  run(
-    db,
-    'INSERT INTO checkout_orders(id,submission_key,input_hash,access_hash,created_at) VALUES(?,?,?,?,?)',
-    order.id,
-    order.key,
-    order.inputHash,
-    order.accessHash,
-    order.createdAt,
+}
+
+export async function orderBookingIds(db, orderId) {
+  const rows = await collection(db, 'checkout_items')
+    .find({ order_id: orderId }, mongoOptions(db))
+    .sort({ _migration_order: 1 })
+    .toArray();
+  return rows.map((row) => ({ booking_id: row.booking_id }));
+}
+
+export async function saveCheckout(db, order) {
+  await collection(db, 'checkout_orders').insertOne(
+    {
+      _id: order.id,
+      id: order.id,
+      submission_key: order.key,
+      input_hash: order.inputHash,
+      access_hash: order.accessHash,
+      created_at: order.createdAt,
+    },
+    mongoOptions(db),
   );
-export const saveCheckoutItem = (db, orderId, bookingId) =>
-  run(db, 'INSERT INTO checkout_items(booking_id,order_id) VALUES(?,?)', bookingId, orderId);
+}
+
+export async function saveCheckoutItem(db, orderId, bookingId) {
+  const position = await collection(db, 'checkout_items').countDocuments(
+    { order_id: orderId },
+    mongoOptions(db),
+  );
+  await collection(db, 'checkout_items').insertOne(
+    {
+      _id: bookingId,
+      booking_id: bookingId,
+      order_id: orderId,
+      _migration_order: position,
+    },
+    mongoOptions(db),
+  );
+}
+
 export async function checkoutExtras(db) {
-  if (!(await checkoutInstalled(db))) return { addons: [], members: [] };
+  const [legacyAddons, allocationSnapshots, items] = await queryGroup(db, [
+    () => collection(db, 'booking_addons').find({}, mongoOptions(db)).toArray(),
+    () => listAllocationSnapshots(db),
+    () =>
+      collection(db, 'checkout_items')
+        .find({}, mongoOptions(db))
+        .sort({ order_id: 1, _migration_order: 1 })
+        .toArray(),
+  ]);
+  const members = [];
+  const bookings = items.length
+    ? await collection(db, 'bookings')
+        .find(
+          { id: { $in: items.map((item) => item.booking_id) } },
+          { ...mongoOptions(db), projection: { id: 1 } },
+        )
+        .toArray()
+    : [];
+  const bookingIds = new Set(bookings.map((booking) => booking.id));
+  for (const item of items) {
+    if (!bookingIds.has(item.booking_id)) continue;
+    members.push({
+      order_id: item.order_id,
+      id: item.booking_id,
+    });
+  }
   return {
     addons: [
-      ...(await all(db, 'SELECT * FROM booking_addons')).map((row) => ({
+      ...fromDocuments(legacyAddons).map((row) => ({
         ...row,
-        id: 'legacy-' + row.booking_id,
+        id: `legacy-${row.booking_id}`,
         name: 'Extra helmets',
         code: 'helmet',
         included_quantity: 0,
       })),
-      ...(await listAllocationSnapshots(db)),
+      ...allocationSnapshots,
     ],
-    members: await all(
-      db,
-      'SELECT i.order_id,b.id,b.reference,b.status,b.base,b.tax,b.deposit,b.extra,v.name FROM checkout_items i JOIN bookings b ON b.id=i.booking_id JOIN vehicles v ON v.id=b.vehicle_id ORDER BY i.rowid',
-    ),
+    members,
   };
 }

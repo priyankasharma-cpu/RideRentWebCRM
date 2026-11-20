@@ -1,103 +1,137 @@
-import { findRecord } from '../../config/database.js';
-import { run } from '../../config/database.js';
+import { collection, fromDocument, mongoOptions } from '../../config/mongoDatabase.js';
+
 export async function findBookingByIdVariant2(db, id) {
-  return await findRecord(db, 'booking', 'id', id);
+  return fromDocument(await collection(db, 'bookings').findOne({ id }, mongoOptions(db)));
 }
-export async function findVehicleByIdVariant3(db, vehicle_id) {
-  return await findRecord(db, 'vehicle', 'id', vehicle_id);
+
+export async function findVehicleByIdVariant3(db, id) {
+  return fromDocument(await collection(db, 'vehicles').findOne({ id }, mongoOptions(db)));
 }
+
 export async function insertRental(
   db,
-  key,
-  bookingId,
-  nowValue,
-  value4,
   id,
-  value6,
-  odometer,
-  value8,
-  value9,
-  value10,
+  bookingId,
+  pickupAt,
+  returnAt,
+  pickupStaff,
+  returnStaff,
+  pickupOdometer,
+  returnOdometer,
+  lateMinutes,
+  lateCharge,
 ) {
-  return await run(
-    db,
-    'INSERT INTO rentals VALUES(?,?,?,?,?,?,?,?,?,?)',
-    key,
-    bookingId,
-    nowValue,
-    value4,
-    id,
-    value6,
-    odometer,
-    value8,
-    value9,
-    value10,
+  return collection(db, 'rentals').insertOne(
+    {
+      _id: id,
+      id,
+      booking_id: bookingId,
+      pickup_at: pickupAt,
+      return_at: returnAt,
+      pickup_staff: pickupStaff,
+      return_staff: returnStaff,
+      pickup_odometer: pickupOdometer,
+      return_odometer: returnOdometer,
+      late_minutes: lateMinutes,
+      late_charge: lateCharge,
+    },
+    mongoOptions(db),
   );
 }
+
 export async function insertInspection(
   db,
-  idValue,
-  key,
-  value3,
+  id,
+  rentalId,
+  type,
   fuel,
   condition,
   notes,
-  id,
-  nowValue,
+  staffId,
+  createdAt,
 ) {
-  return await run(
-    db,
-    'INSERT INTO inspections VALUES(?,?,?,?,?,?,?,?)',
-    idValue,
-    key,
-    value3,
-    fuel,
-    condition,
-    notes,
-    id,
-    nowValue,
+  return collection(db, 'inspections').insertOne(
+    {
+      _id: id,
+      id,
+      rental_id: rentalId,
+      type,
+      fuel,
+      condition,
+      notes,
+      staff_id: staffId,
+      created_at: createdAt,
+    },
+    mongoOptions(db),
   );
 }
+
 export async function updateBookingByIdVariant2(db, bookingId) {
-  return await run(db, "UPDATE bookings SET status='active' WHERE id=?", bookingId);
+  return collection(db, 'bookings').updateOne(
+    { id: bookingId },
+    { $set: { status: 'active' } },
+    mongoOptions(db),
+  );
 }
+
 export async function updateVehicleByOdometerAndId(db, odometer, vehicleId) {
-  return await run(db, 'UPDATE vehicles SET odometer=? WHERE id=?', odometer, vehicleId);
+  return collection(db, 'vehicles').updateOne(
+    { id: vehicleId },
+    { $set: { odometer } },
+    mongoOptions(db),
+  );
 }
+
 export async function findRentalByBookingId(db, bookingId) {
-  return await findRecord(db, 'rental', 'bookingId', bookingId);
+  return fromDocument(
+    await collection(db, 'rentals').findOne({ booking_id: bookingId }, mongoOptions(db)),
+  );
 }
+
 export async function updateRentalByReturnAtAndReturnStaffAndReturnOdometer(
   db,
-  nowValue,
-  id,
-  odometer,
-  late,
+  returnAt,
+  returnStaff,
+  returnOdometer,
+  lateMinutes,
   lateCharge,
   rentalId,
 ) {
-  return await run(
-    db,
-    'UPDATE rentals SET return_at=?,return_staff=?,return_odometer=?,late_minutes=?,late_charge=? WHERE id=?',
-    nowValue,
-    id,
-    odometer,
-    late,
-    lateCharge,
-    rentalId,
+  return collection(db, 'rentals').updateOne(
+    { id: rentalId },
+    {
+      $set: {
+        return_at: returnAt,
+        return_staff: returnStaff,
+        return_odometer: returnOdometer,
+        late_minutes: lateMinutes,
+        late_charge: lateCharge,
+      },
+    },
+    mongoOptions(db),
   );
 }
-export async function updateBookingByExtraAndId(db, value1, bookingId) {
-  return await run(
-    db,
-    "UPDATE bookings SET status='inspecting',extra=? WHERE id=?",
-    value1,
-    bookingId,
+
+export async function updateBookingByExtraAndId(db, extra, bookingId) {
+  return collection(db, 'bookings').updateOne(
+    { id: bookingId },
+    { $set: { status: 'inspecting', extra } },
+    mongoOptions(db),
   );
 }
+
 export async function updateBookingByIdVariant3(db, bookingId) {
-  return await run(db, "UPDATE bookings SET status='completed' WHERE id=?", bookingId);
+  return collection(db, 'bookings').updateOne(
+    { id: bookingId },
+    { $set: { status: 'completed' } },
+    mongoOptions(db),
+  );
 }
-export async function updateVehicleById(db, vehicle_id) {
-  return await run(db, "UPDATE vehicles SET status='Maintenance' WHERE id=?", vehicle_id);
+
+export async function updateVehicleById(db, vehicleId) {
+  return collection(db, 'vehicles').updateOne(
+    { id: vehicleId },
+    { $set: { status: 'Maintenance' } },
+    mongoOptions(db),
+  );
 }

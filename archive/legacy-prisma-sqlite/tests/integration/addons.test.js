@@ -17,7 +17,12 @@ import {
   reserveCheckout,
 } from '../../src/modules/bookings/checkout.service.js';
 import { bookingView } from '../../src/modules/bookings/booking.read.service.js';
-import { cancelBooking, createBooking } from '../../src/modules/bookings/booking.service.js';
+import {
+  cancelBooking,
+  createBooking,
+  reserveManualBooking,
+  reserveWebsiteBooking,
+} from '../../src/modules/bookings/booking.service.js';
 import { addOnInput } from '../../src/modules/addons/addOn.validation.js';
 
 let db,
@@ -53,7 +58,7 @@ async function reserve(input) {
     ...input,
     name: 'Add-on Tester',
     phone: '9876500044',
-    email: '',
+    email: 'addon@example.com',
     agreement: true,
     submissionKey: randomUUID(),
     reservationToken: randomBytes(32).toString('hex'),
@@ -144,6 +149,122 @@ test('peak stock counts simultaneous commitments, permits adjacency and conserva
       end,
     ),
     3,
+  );
+});
+
+test('legacy website and staff booking paths share add-on allocation, snapshots, stock guards and cancellation release', async () => {
+  const raincoat = await createAddOn(
+    db,
+    definition('shared-raincoat', {
+      name: 'Raincoat',
+      rate: 500,
+      billing: 'hour',
+      stock: 4,
+      maxQuantity: 4,
+      categories: [
+        { category: 'Bike', includedQuantity: 1 },
+        { category: 'Car', includedQuantity: 1 },
+      ],
+    }),
+    staff,
+  );
+  const nextBike = await get(
+    db,
+    "SELECT id FROM vehicles WHERE category='Bike' AND id<>? AND status='Available' LIMIT 1",
+    bike.id,
+  );
+  const window = period();
+  const input = {
+    ...window,
+    vehicleId: bike.id,
+    name: 'Legacy Website Customer',
+    phone: '9876500048',
+    email: 'legacy-addon@example.com',
+    agreement: true,
+    addOns: [{ addOnId: raincoat.id, quantity: 1 }],
+  };
+  const website = await reserveWebsiteBooking(db, { body: input });
+  const websiteSnapshot = website.booking.addons.find((row) => row.code === raincoat.code);
+  assert.equal(websiteSnapshot.quantity, 2);
+  assert.equal(websiteSnapshot.included_quantity, 1);
+  assert.equal(websiteSnapshot.base, 500 * website.booking.hours);
+
+  const staffBooking = await reserveManualBooking(db, {
+    body: {
+      ...input,
+      vehicleId: nextBike.id,
+      name: 'Staff Booking Customer',
+      phone: '9876500049',
+      email: '',
+      addOns: [],
+      source: 'Phone',
+      verified: true,
+    },
+    user: staff,
+  });
+  assert.equal(
+    staffBooking.booking.addons.find((row) => row.code === raincoat.code).included_quantity,
+    1,
+  );
+  assert.equal(
+    (await checkoutCatalog(db, window)).addOns.find((row) => row.id === raincoat.id).available,
+    1,
+  );
+
+  const before = (await get(db, 'SELECT COUNT(*) n FROM bookings')).n;
+  await assert.rejects(
+    reserveWebsiteBooking(db, {
+      body: {
+        ...input,
+        vehicleId: car.id,
+        name: 'Overstock Attempt',
+        phone: '9876500050',
+      },
+    }),
+    /Not enough Raincoat stock/,
+  );
+  assert.equal((await get(db, 'SELECT COUNT(*) n FROM bookings')).n, before);
+  await cancelBooking(db, { params: { id: website.booking.id }, user: staff });
+  assert.equal(
+    (await checkoutCatalog(db, window)).addOns.find((row) => row.id === raincoat.id).available,
+    3,
+  );
+  await editAddOn(db, raincoat.id, { ...raincoat, enabled: false }, staff);
+});
+
+test('concurrent legacy and staff bookings serialize add-on stock reservations', async () => {
+  const addon = await createAddOn(
+    db,
+    definition('single-stock-legacy', { stock: 1, maxQuantity: 1 }),
+    staff,
+  );
+  const first = {
+    ...period(),
+    vehicleId: bike.id,
+    name: 'Website race',
+    phone: '9876500051',
+    email: 'race@example.com',
+    agreement: true,
+    addOns: [{ addOnId: addon.id, quantity: 1 }],
+  };
+  const second = {
+    ...first,
+    vehicleId: car.id,
+    name: 'Staff race',
+    phone: '9876500052',
+    email: '',
+    addOns: [{ addOnId: addon.id, quantity: 1 }],
+    source: 'Phone',
+  };
+  const outcomes = await Promise.allSettled([
+    createBooking(db, first),
+    createBooking(db, second, staff),
+  ]);
+  assert.equal(outcomes.filter((result) => result.status === 'fulfilled').length, 1);
+  assert.equal(outcomes.filter((result) => result.status === 'rejected').length, 1);
+  assert.equal(
+    (await get(db, 'SELECT COUNT(*) n FROM addon_allocations WHERE addon_id=?', addon.id)).n,
+    1,
   );
 });
 
@@ -310,6 +431,7 @@ test('quote signature catches configuration changes even when the total remains 
   await assert.rejects(
     reserveCheckout(db, {
       ...input,
+      email: 'addon@example.com',
       name: 'Tester',
       phone: '9876500077',
       agreement: true,

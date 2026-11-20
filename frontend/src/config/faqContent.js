@@ -13,7 +13,7 @@ export const faqs = [
   ],
   [
     'Can I change or cancel my booking?',
-    'Use Find My Booking with your reference and phone number. Changes depend on availability. Close to pickup, contact the shop for assistance. Paid cancelled bookings are refunded by staff.',
+    'Use Find My Booking with your reference and the email used when booking, then verify the one-time code. Changes depend on availability. Close to pickup, contact the shop for assistance. Paid cancelled bookings are refunded by staff.',
   ],
   [
     'What happens if I return late?',

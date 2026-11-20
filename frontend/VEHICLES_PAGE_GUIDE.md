@@ -42,7 +42,7 @@ Paths below are relative to the project root.
 - `backend/src/config/databasePath.js`: chooses DATABASE_URL if supplied, otherwise DB_PATH (default `backend/data/riderent.sqlite`).
 - `backend/src/config/paths.js`: absolute project and upload paths.
 - `backend/src/config/database.js`: Prisma SQLite adapter, query helpers, transactions and integer normalization for JSON. Existing repository SQL is executed through these helpers; it is not an all-Prisma-model-query implementation.
-- `backend/prisma/schema.prisma`: relational `Vehicle` model mapped to table `vehicles`; bookings and maintenance relationships. Migrations are in `backend/prisma/migrations/`.
+- `archive/legacy-prisma-sqlite/prisma/schema.prisma`: historical relational `Vehicle` schema. The active API reads vehicle documents through the native MongoDB repositories in `backend/src/modules/vehicles/`.
 - `backend/src/modules/vehicles/vehicle.routes.js`: `createVehiclesRouter()` registers public and admin endpoints.
 - `backend/src/modules/vehicles/vehicle.controller.js`: `listPublicVehiclesController()` and other handlers call services and return JSON.
 - `backend/src/modules/vehicles/vehicle.service.js`: `listPublicVehicles`, `getPublicVehicle`, `listManagedVehicles`, `addVehicle`, `editVehicle`.

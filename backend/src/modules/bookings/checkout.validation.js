@@ -17,6 +17,7 @@ export const checkoutReservationInput = bookingSchema
   .omit({ vehicleId: true, source: true, verified: true, notes: true })
   .extend({
     ...checkoutQuoteInput.shape,
+    email: z.string().trim().email().max(150),
     submissionKey: z.string().uuid(),
     reservationToken: z.string().regex(/^[a-f0-9]{64}$/),
     expectedTotal: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER),

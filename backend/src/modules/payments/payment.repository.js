@@ -1,50 +1,109 @@
-import { findRecord } from '../../config/database.js';
-import { run, all } from '../../config/database.js';
+import {
+  collection,
+  fromDocument,
+  fromDocuments,
+  mongoOptions,
+} from '../../config/mongoDatabase.js';
+
 export async function insertPayment(
   db,
-  idValue,
+  id,
   bookingId,
   amount,
   purpose,
   method,
   note,
-  id,
-  nowValue,
+  staffId,
+  createdAt,
 ) {
-  return await run(
-    db,
-    'INSERT INTO payments VALUES(?,?,?,?,?,?,?,?)',
-    idValue,
-    bookingId,
-    amount,
-    purpose,
-    method,
-    note,
-    id,
-    nowValue,
+  return collection(db, 'payments').insertOne(
+    {
+      _id: id,
+      id,
+      booking_id: bookingId,
+      amount,
+      purpose,
+      method,
+      note,
+      staff_id: staffId,
+      created_at: createdAt,
+    },
+    mongoOptions(db),
   );
 }
+
 export async function findPaymentById(db, id) {
-  return await findRecord(db, 'payment', 'id', id);
+  return fromDocument(await collection(db, 'payments').findOne({ id }, mongoOptions(db)));
 }
-export async function insertRefund(db, idValue, paymentId, amount, reason, id, nowValue) {
-  return await run(
-    db,
-    'INSERT INTO refunds VALUES(?,?,?,?,?,?)',
-    idValue,
-    paymentId,
-    amount,
-    reason,
-    id,
-    nowValue,
+
+export async function insertRefund(db, id, paymentId, amount, reason, staffId, createdAt) {
+  return collection(db, 'refunds').insertOne(
+    {
+      _id: id,
+      id,
+      payment_id: paymentId,
+      amount,
+      reason,
+      staff_id: staffId,
+      created_at: createdAt,
+    },
+    mongoOptions(db),
   );
 }
+
 export async function listRefundRecordsVariant2(db) {
-  return await all(
-    db,
-    'SELECT p.*,b.reference,c.name customer_name,COALESCE((SELECT SUM(amount) FROM refunds WHERE payment_id=p.id),0) refunded FROM payments p JOIN bookings b ON b.id=p.booking_id JOIN customers c ON c.id=b.customer_id ORDER BY p.created_at DESC',
-  );
+  const payments = await collection(db, 'payments')
+    .aggregate(
+      [
+        {
+          $lookup: {
+            from: 'bookings',
+            localField: 'booking_id',
+            foreignField: 'id',
+            as: 'booking',
+          },
+        },
+        { $unwind: '$booking' },
+        {
+          $lookup: {
+            from: 'customers',
+            localField: 'booking.customer_id',
+            foreignField: 'id',
+            as: 'customer',
+          },
+        },
+        { $unwind: '$customer' },
+        {
+          $lookup: {
+            from: 'refunds',
+            localField: 'id',
+            foreignField: 'payment_id',
+            as: 'refunds',
+          },
+        },
+        {
+          $addFields: {
+            reference: '$booking.reference',
+            customer_name: '$customer.name',
+            refunded: { $sum: '$refunds.amount' },
+          },
+        },
+        { $project: { _id: 0, booking: 0, customer: 0, refunds: 0 } },
+        { $sort: { created_at: -1 } },
+      ],
+      mongoOptions(db),
+    )
+    .toArray();
+  return fromDocuments(payments).map((payment) => ({
+    ...payment,
+    refunded: payment.refunded || 0,
+  }));
 }
+
 export async function listRefundRecordsVariant3(db) {
-  return await all(db, 'SELECT * FROM refunds ORDER BY created_at DESC');
+  const refunds = await collection(db, 'refunds')
+    .find({}, mongoOptions(db))
+    .sort({ created_at: -1 })
+    .toArray();
+  return fromDocuments(refunds);
 }

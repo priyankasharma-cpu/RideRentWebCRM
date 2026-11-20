@@ -145,3 +145,7 @@ Execution results:
 - NOT TESTED — physical Android/iOS browsers, deployment load testing, unsupported model-wide/daily/discount workflows and equipment handover reconciliation.
 
 Evidence is generated under ignored `backend/.artifacts/admin-addons`, `backend/.artifacts/availability-fixes` and `backend/.artifacts/screenshots`. Node emitted its existing experimental SQLite warning; no assertion failed in these runs.
+
+# Historical SQLite implementation notes
+
+> This dated plan refers to the earlier Prisma/SQLite backend. Current persistence uses MongoDB; see `backend-guide.md` and `database-schema.md` before changing the active API.

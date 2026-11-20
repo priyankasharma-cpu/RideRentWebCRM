@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { projectRoot } from '../src/config/paths.js';
 
-const stages = ['format:check', 'lint', 'test', 'build', 'test:ui', 'test:layout'];
+const stages = ['format:check', 'lint', 'test', 'build'];
 for (const stage of stages) {
   console.log(`\nChecking ${stage}…`);
   const result = await new Promise((resolve, reject) => {

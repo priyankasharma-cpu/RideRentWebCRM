@@ -1,5 +1,7 @@
 # Folder cleanup — 30 October 2026
 
+> Historical report: this document describes the earlier Prisma/SQLite runtime. The active backend now uses MongoDB; see `architecture.md`, `backend-guide.md` and `sqlite-to-mongodb-migration.md` for current instructions.
+
 ## Inspection and decisions
 
 The previous root node_modules existed because npm workspaces hoisted both applications into one shared installation. It was functional, but did not meet the requested dependency separation. Both applications now have independent package.json, package-lock.json and node_modules. Root package scripts coordinate them with npm --prefix. Root has no runtime or development dependencies.

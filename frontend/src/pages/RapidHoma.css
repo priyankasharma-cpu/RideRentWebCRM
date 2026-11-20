@@ -1,0 +1,173 @@
+.rapid-homa {
+  --rapid-orange: #e7661c;
+  --rapid-orange-dark: #a34110;
+  --rapid-charcoal: #252b30;
+  --rapid-cream: #fff8f3;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  color-scheme: light;
+  background: var(--rapid-cream);
+  color: var(--rapid-charcoal);
+}
+
+.rapid-homa__container {
+  width: min(100% - 2rem, 68rem);
+  margin-inline: auto;
+}
+
+.rapid-homa__header {
+  border-bottom: 1px solid #e9ded2;
+  background: #fffdf9;
+}
+
+.rapid-homa__header-content,
+.rapid-homa__footer-content,
+.rapid-homa__header nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+}
+
+.rapid-homa__header-content,
+.rapid-homa__footer-content {
+  justify-content: space-between;
+  padding-block: 0.9rem;
+}
+
+.rapid-homa__header nav {
+  font-weight: 700;
+}
+
+.rapid-homa__header nav a {
+  padding-block: 0.6rem;
+}
+
+.rapid-homa__header nav a:hover,
+.rapid-homa__header nav a[aria-current='page'],
+.rapid-homa__back {
+  color: var(--rapid-orange-dark);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+.rapid-homa__logo {
+  width: 11rem;
+  height: auto;
+  max-height: 4rem;
+  object-fit: contain;
+}
+
+.rapid-homa__main {
+  flex: 1;
+  padding-block: clamp(2.5rem, 7vw, 5rem);
+}
+
+.rapid-homa__intro {
+  padding-block-end: 2rem;
+}
+
+.rapid-homa h1 {
+  max-width: 16ch;
+  font-size: clamp(2.4rem, 7vw, 4.8rem);
+  line-height: 1.04;
+  letter-spacing: -0.05em;
+  margin: 0 0 1rem;
+}
+
+.rapid-homa h1 span {
+  color: var(--rapid-orange-dark);
+}
+
+.rapid-homa p {
+  color: #52595d;
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
+
+.rapid-homa__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: 1.25rem;
+}
+
+.rapid-homa__card,
+.rapid-homa__detail {
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid #e9ded2;
+  border-radius: 1rem;
+  background: #fffdf9;
+}
+
+.rapid-homa__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.rapid-homa__card h2 {
+  margin: 1rem 0 0.25rem;
+  font-size: 1.5rem;
+}
+
+.rapid-homa__card h2 a:hover {
+  text-decoration: underline;
+}
+
+.rapid-homa__card p {
+  flex: 1;
+}
+
+.rapid-homa__icon {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 0.75rem;
+  background: #fff0e5;
+  color: var(--rapid-orange-dark);
+}
+
+.rapid-homa__call {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 3rem;
+  margin-top: 1.25rem;
+  border-radius: 0.55rem;
+  padding: 0.65rem 1rem;
+  background: var(--rapid-orange);
+  color: #1e1b18;
+  font-weight: 800;
+}
+
+.rapid-homa__call:hover {
+  background: #f29962;
+}
+
+.rapid-homa__detail {
+  max-width: 46rem;
+}
+
+.rapid-homa__detail .rapid-homa__icon {
+  margin-block: 1.5rem 0.85rem;
+}
+
+.rapid-homa__detail li + li {
+  margin-top: 0.5rem;
+}
+
+.rapid-homa__footer {
+  padding-block: 0.5rem;
+  color: #fffdf9;
+  background: var(--rapid-charcoal);
+}
+
+.rapid-homa__footer a:hover {
+  text-decoration: underline;
+}
+
+.rapid-homa a:focus-visible {
+  outline: 3px solid currentColor;
+}

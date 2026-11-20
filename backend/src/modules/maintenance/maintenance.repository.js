@@ -1,49 +1,107 @@
-import { findRecord } from '../../config/database.js';
-import { all, get, run } from '../../config/database.js';
+import {
+  collection,
+  fromDocument,
+  fromDocuments,
+  mongoOptions,
+} from '../../config/mongoDatabase.js';
+
 export async function listMaintenanceRecords(db) {
-  return await all(
-    db,
-    'SELECT m.*,v.name vehicle_name FROM maintenance m JOIN vehicles v ON v.id=m.vehicle_id ORDER BY m.created_at DESC',
+  const records = await collection(db, 'maintenance')
+    .aggregate(
+      [
+        {
+          $lookup: {
+            from: 'vehicles',
+            localField: 'vehicle_id',
+            foreignField: 'id',
+            as: 'vehicle',
+          },
+        },
+        { $unwind: '$vehicle' },
+        { $addFields: { vehicle_name: '$vehicle.name' } },
+        { $project: { _id: 0, vehicle: 0 } },
+        { $sort: { created_at: -1 } },
+      ],
+      mongoOptions(db),
+    )
+    .toArray();
+  return fromDocuments(records);
+}
+
+export async function findVehicleByIdVariant4(db, id) {
+  return fromDocument(
+    await collection(db, 'vehicles').findOne(
+      { id },
+      { ...mongoOptions(db), projection: { _id: 0, id: 1 } },
+    ),
   );
 }
-export async function findVehicleByIdVariant4(db, vehicleId) {
-  return await get(db, 'SELECT id FROM vehicles WHERE id=?', vehicleId);
-}
+
 export async function findBookingByVehicleIdVariant2(db, vehicleId, end, start) {
-  return await get(
-    db,
-    "SELECT id FROM bookings WHERE vehicle_id=? AND (status IN ('active','inspecting') OR status='confirmed' AND starts_at<? AND ends_at>?)",
-    vehicleId,
-    end,
-    start,
+  return fromDocument(
+    await collection(db, 'bookings').findOne(
+      {
+        vehicle_id: vehicleId,
+        $or: [
+          { status: { $in: ['active', 'inspecting'] } },
+          { status: 'confirmed', starts_at: { $lt: end }, ends_at: { $gt: start } },
+        ],
+      },
+      { ...mongoOptions(db), projection: { _id: 0, id: 1 } },
+    ),
   );
 }
-export async function insertMaintenance(db, key, vehicleId, start, end, reason, value6, nowValue) {
-  return await run(
-    db,
-    'INSERT INTO maintenance VALUES(?,?,?,?,?,?,?)',
-    key,
-    vehicleId,
-    start,
-    end,
-    reason,
-    value6,
-    nowValue,
+
+export async function insertMaintenance(
+  db,
+  id,
+  vehicleId,
+  start,
+  end,
+  reason,
+  resolved,
+  createdAt,
+) {
+  return collection(db, 'maintenance').insertOne(
+    {
+      _id: id,
+      id,
+      vehicle_id: vehicleId,
+      starts_at: start,
+      ends_at: end,
+      reason,
+      resolved,
+      created_at: createdAt,
+    },
+    mongoOptions(db),
   );
 }
+
 export async function findMaintenanceById(db, id) {
-  return await findRecord(db, 'maintenanceBlock', 'id', id);
+  return fromDocument(await collection(db, 'maintenance').findOne({ id }, mongoOptions(db)));
 }
-export async function updateMaintenanceById(db, maintenanceId) {
-  return await run(db, 'UPDATE maintenance SET resolved=1 WHERE id=?', maintenanceId);
+
+export async function updateMaintenanceById(db, id) {
+  return collection(db, 'maintenance').updateOne(
+    { id },
+    { $set: { resolved: 1 } },
+    mongoOptions(db),
+  );
 }
-export async function findMaintenanceByVehicleIdVariant2(db, vehicle_id) {
-  return await get(db, 'SELECT id FROM maintenance WHERE vehicle_id=? AND resolved=0', vehicle_id);
+
+export async function findMaintenanceByVehicleIdVariant2(db, vehicleId) {
+  return fromDocument(
+    await collection(db, 'maintenance').findOne(
+      { vehicle_id: vehicleId, resolved: 0 },
+      { ...mongoOptions(db), projection: { _id: 0, id: 1 } },
+    ),
+  );
 }
-export async function updateVehicleByIdVariant2(db, vehicle_id) {
-  return await run(
-    db,
-    "UPDATE vehicles SET status='Available' WHERE id=? AND status='Maintenance'",
-    vehicle_id,
+
+export async function updateVehicleByIdVariant2(db, vehicleId) {
+  return collection(db, 'vehicles').updateOne(
+    { id: vehicleId, status: 'Maintenance' },
+    { $set: { status: 'Available' } },
+    mongoOptions(db),
   );
 }

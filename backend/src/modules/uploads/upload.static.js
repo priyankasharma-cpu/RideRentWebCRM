@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import express from 'express';
-import { uploadDirectory } from '../../config/paths.js';
+import { uploadDirectory } from '../../config/storagePaths.js';
 export const uploadedImages = express.static(uploadDirectory, {
   setHeaders(res, file) {
     const bytes = readFileSync(file);

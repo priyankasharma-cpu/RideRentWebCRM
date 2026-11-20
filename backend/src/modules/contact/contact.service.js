@@ -1,4 +1,4 @@
-import { transaction } from '../../config/database.js';
+import { withTransaction } from '../../config/mongoDatabase.js';
 import { fail } from '../../utils/ApiError.js';
 import { id } from '../../utils/crypto.js';
 import { now } from '../../utils/dateTime.js';
@@ -17,7 +17,7 @@ async function requireStorage(db) {
 }
 export async function submitInquiry(db, input) {
   await requireStorage(db);
-  return transaction(db, async () => {
+  return withTransaction(db, async () => {
     const existing = await findSubmission(db, input.submissionKey);
     if (existing) {
       if (
@@ -44,7 +44,7 @@ export async function getInquiries(db, input) {
 }
 export async function markInquiry(db, record, status, userId) {
   await requireStorage(db);
-  return transaction(db, async () => {
+  return withTransaction(db, async () => {
     if (!(await findInquiry(db, record))) fail(404, 'Inquiry not found.');
     await updateInquiryStatus(db, record, status, now());
     await audit(db, userId, 'contact.status.updated', record, { status });

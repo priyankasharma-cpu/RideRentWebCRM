@@ -1,13 +1,40 @@
-import { get, run } from '../../config/database.js';
-export const findSession = async (db, tokenHash, time) =>
-  await get(db, 'SELECT * FROM sessions WHERE id=? AND expires_at>?', tokenHash, time);
-export const findSessionUser = async (db, userId) =>
-  await get(db, 'SELECT id,name,email,role FROM users WHERE id=? AND active=1', userId);
-export const insertSession = async (db, tokenHash, userId, csrf, expiresAt) =>
-  await run(db, 'INSERT INTO sessions VALUES(?,?,?,?)', tokenHash, userId, csrf, expiresAt);
-export const removeExpiredSessions = async (db, time) =>
-  await run(db, 'DELETE FROM sessions WHERE expires_at<?', time);
-export const removeSession = async (db, tokenHash) =>
-  await run(db, 'DELETE FROM sessions WHERE id=?', tokenHash);
-export const findLoginUser = async (db, email) =>
-  await get(db, 'SELECT * FROM users WHERE email=? AND active=1', email);
+import { collection, fromDocument, mongoOptions } from '../../config/mongoDatabase.js';
+
+export async function findSession(db, tokenHash, time) {
+  return fromDocument(
+    await collection(db, 'sessions').findOne(
+      { id: tokenHash, expires_at: { $gt: time } },
+      mongoOptions(db),
+    ),
+  );
+}
+
+export async function findSessionUser(db, userId) {
+  return fromDocument(
+    await collection(db, 'users').findOne(
+      { id: userId, active: 1 },
+      { ...mongoOptions(db), projection: { _id: 0, id: 1, name: 1, email: 1, role: 1 } },
+    ),
+  );
+}
+
+export async function insertSession(db, tokenHash, userId, csrf, expiresAt) {
+  return collection(db, 'sessions').insertOne(
+    { _id: tokenHash, id: tokenHash, user_id: userId, csrf, expires_at: expiresAt },
+    mongoOptions(db),
+  );
+}
+
+export async function removeExpiredSessions(db, time) {
+  return collection(db, 'sessions').deleteMany({ expires_at: { $lt: time } }, mongoOptions(db));
+}
+
+export async function removeSession(db, tokenHash) {
+  return collection(db, 'sessions').deleteOne({ id: tokenHash }, mongoOptions(db));
+}
+
+export async function findLoginUser(db, email) {
+  return fromDocument(
+    await collection(db, 'users').findOne({ email, active: 1 }, mongoOptions(db)),
+  );
+}

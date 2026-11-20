@@ -16,6 +16,8 @@ export function useFreshQuote(key, input, enabled, request) {
     queryFn: ({ signal }) => request(JSON.parse(debounced), signal),
     staleTime: 0,
     retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
   const ready = enabled && !settling && query.isSuccess && !query.isFetching;
   return {

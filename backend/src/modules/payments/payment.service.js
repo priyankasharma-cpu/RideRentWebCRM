@@ -1,4 +1,4 @@
-import { transaction } from '../../config/database.js';
+import { withTransaction } from '../../config/mongoDatabase.js';
 import { bookingView } from '../bookings/booking.read.service.js';
 import { fail } from '../../utils/ApiError.js';
 import {
@@ -13,7 +13,7 @@ import { now } from '../../utils/dateTime.js';
 import { audit } from '../audit/audit.service.js';
 export async function recordPayment(db, request) {
   const input = request.body;
-  await transaction(db, async () => {
+  await withTransaction(db, async () => {
     const b = await bookingView(db, request.params.id);
     if (b.status === 'cancelled') fail(409, 'Cannot receive payment for a cancelled booking.');
     const due =
@@ -38,7 +38,7 @@ export async function recordPayment(db, request) {
 }
 export async function refundPayment(db, request) {
   const input = request.body;
-  await transaction(db, async () => {
+  await withTransaction(db, async () => {
     const p = await findPaymentById(db, request.params.id);
     if (!p) fail(404, 'Payment not found.');
     const b = await bookingView(db, p.booking_id);

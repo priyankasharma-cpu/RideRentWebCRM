@@ -16,7 +16,7 @@ export function BookingManagement({ mode }) {
     [status, setStatus] = useState('All'),
     [source, setSource] = useState('All'),
     [selected, setSelected] = useState(null);
-  const rows = (data || []).filter(
+  const matches = (data || []).filter(
     (b) =>
       (!mode ||
         (mode === 'active' && b.status === 'active') ||
@@ -30,6 +30,21 @@ export function BookingManagement({ mode }) {
         .toLowerCase()
         .includes(query.toLowerCase()),
   );
+  const matchingCheckoutIds = new Set(
+    matches.map((booking) => booking.checkout?.id).filter(Boolean),
+  );
+  const rows = mode
+    ? matches
+    : (data || []).filter(
+        (booking) =>
+          (booking.checkout?.bookings.length > 1 && matchingCheckoutIds.has(booking.checkout.id)) ||
+          (!booking.checkout?.bookings.length && matches.some((match) => match.id === booking.id)),
+      );
+  const visibleCheckoutCount = new Set(rows.map((booking) => booking.checkout?.id).filter(Boolean))
+    .size;
+  const visibleStandaloneCount = rows.filter(
+    (booking) => !booking.checkout?.bookings.length,
+  ).length;
   return (
     <>
       <PageTitle
@@ -83,13 +98,17 @@ export function BookingManagement({ mode }) {
             <option key={s}>{s}</option>
           ))}
         </select>
-        <span>{rows.length} bookings</span>
+        <span>
+          {mode
+            ? `${rows.length} bookings`
+            : `${visibleCheckoutCount} checkouts · ${visibleStandaloneCount} individual bookings`}
+        </span>
       </Filters>
       {loading ? (
         <Loading />
       ) : (
         <section className="rr-panel table-panel">
-          <BookingTable bookings={rows} onSelect={setSelected} />
+          <BookingTable bookings={rows} onSelect={setSelected} grouped={!mode} />
         </section>
       )}
       {selected && (

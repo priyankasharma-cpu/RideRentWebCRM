@@ -17,7 +17,7 @@ The running API restarted against the configured `backend/data/riderent.sqlite` 
 ## Repeatable operator command
 
 ```text
-node backend/scripts/upgrade-checkout.mjs --database backend/data/riderent.sqlite
+node archive/legacy-prisma-sqlite/scripts/upgrade-checkout.mjs --database backend/data/riderent.sqlite
 ```
 
 The new script requires an explicit existing database path, backs up before applying missing tables, rejects partial installations and rolls back on failed row-hash/foreign-key verification. Running it again after a successful upgrade makes no changes. It never creates a missing database or resets existing data.
@@ -37,8 +37,12 @@ This is a targeted repair, not a reconciliation of the project's pre-existing Pr
 
 ## Files added
 
-- `backend/scripts/upgrade-checkout.mjs`
+- `archive/legacy-prisma-sqlite/scripts/upgrade-checkout.mjs`
 - `backend/tests/integration/checkoutUpgrade.test.js`
 - This document.
 
 Browser evidence: `backend/.artifacts/checkout-upgrade/fixed.png`.
+
+# Historical SQLite upgrade procedure
+
+> This procedure belongs to the archived Prisma/SQLite runtime and must not be run for the active MongoDB application. The old script is preserved under `archive/legacy-prisma-sqlite/scripts/`.

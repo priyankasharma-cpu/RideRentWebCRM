@@ -3,25 +3,25 @@ import assert from 'node:assert/strict';
 import { unlinkSync } from 'node:fs';
 import { openDb, get, all, run } from '../../src/config/database.js';
 import { now } from '../../src/utils/dateTime.js';
-import { uploadDirectory } from '../../src/config/paths.js';
+import { uploadDirectory } from '../../src/config/storagePaths.js';
 import { seed } from '../../prisma/seed.js';
 import { createApp } from '../../src/app.js';
 import { settings } from '../../src/modules/settings/settings.service.js';
 import { createBooking } from '../../src/modules/bookings/booking.service.js';
 import { dashboard } from '../../src/modules/analytics/analytics.service.js';
-let db, server, url, admin, guest, vehicles;
+let db, server, url, admin, guest, vehicles, deliveredOtp;
 const password = 'Test-Admin-Password-2026!';
 async function client() {
   const response = await fetch(url + '/api/session');
   const session = await response.json();
-  let cookie = response.headers.get('set-cookie').split(';')[0],
+  let cookies = [response.headers.get('set-cookie').split(';')[0]],
     csrf = session.csrf;
   return {
-    async request(path, { method = 'GET', body, form, token, origin, csrfOverride } = {}) {
+    async request(path, { method = 'GET', body, form, origin, csrfOverride } = {}) {
       const r = await fetch(url + '/api' + path, {
         method,
         headers: {
-          Cookie: cookie,
+          Cookie: cookies.join('; '),
           ...(form
             ? {}
             : {
@@ -35,11 +35,6 @@ async function client() {
           ...(origin
             ? {
                 Origin: origin,
-              }
-            : {}),
-          ...(token
-            ? {
-                'X-Booking-Token': token,
               }
             : {}),
         },
@@ -56,7 +51,12 @@ async function client() {
       const data = await r.json();
       if (data.csrf) {
         csrf = data.csrf;
-        cookie = r.headers.get('set-cookie')?.split(';')[0] || cookie;
+      }
+      for (const header of r.headers.getSetCookie?.() || []) {
+        const pair = header.split(';')[0];
+        const name = pair.split('=')[0];
+        cookies = cookies.filter((existing) => existing.split('=')[0] !== name);
+        if (!header.includes('Max-Age=0')) cookies.push(pair);
       }
       return {
         status: r.status,
@@ -84,7 +84,11 @@ before(async () => {
   process.env.ADMIN_EMAIL = 'test@riderent.local';
   db = await openDb(':memory:');
   await seed(db);
-  server = createApp(db).listen(0, '127.0.0.1');
+  server = createApp(db, {
+    otpDelivery: async ({ email, code }) => {
+      deliveredOtp = { email, code };
+    },
+  }).listen(0, '127.0.0.1');
   await new Promise((r) => server.once('listening', r));
   url = 'http://127.0.0.1:' + server.address().port;
   admin = await client();
@@ -167,7 +171,7 @@ test('server pricing uses integer minor units and rounds up with disclosed polic
   assert.equal(r.data.total, r.data.base + r.data.tax + r.data.deposit);
   assert.equal(r.data.roundingMinutes, 60);
 });
-test('website booking persists, requires token, and customer lookup is scoped', async () => {
+test('website booking persists, returns a scoped customer session, and lookup requires email OTP', async () => {
   const r = await guest.request('/bookings', {
     method: 'POST',
     body: details(vehicles[0], {
@@ -178,18 +182,12 @@ test('website booking persists, requires token, and customer lookup is scoped', 
   assert.equal(r.data.booking.source, 'Website');
   assert.equal(r.data.booking.status, 'confirmed');
   assert.ok(await get(db, 'SELECT id FROM bookings WHERE id=?', r.data.booking.id));
-  assert.equal((await guest.request('/bookings/' + r.data.booking.id)).status, 403);
+  assert.equal((await guest.request('/bookings/' + r.data.booking.id)).status, 200);
+  const verifier = await client();
+  assert.equal((await verifier.request('/bookings/' + r.data.booking.id)).status, 403);
   assert.equal(
     (
-      await guest.request('/bookings/' + r.data.booking.id, {
-        token: r.data.token,
-      })
-    ).status,
-    200,
-  );
-  assert.equal(
-    (
-      await guest.request('/bookings/lookup', {
+      await verifier.request('/bookings/lookup', {
         method: 'POST',
         body: {
           reference: r.data.booking.reference,
@@ -197,17 +195,29 @@ test('website booking persists, requires token, and customer lookup is scoped', 
         },
       })
     ).status,
-    404,
+    410,
   );
-  const lookup = await guest.request('/bookings/lookup', {
+  const unknown = await verifier.request('/bookings/access/request', {
     method: 'POST',
     body: {
       reference: r.data.booking.reference,
-      phone: '9888800011',
+      email: 'wrong@example.com',
     },
   });
-  assert.equal(lookup.status, 200);
-  assert.equal(lookup.data.booking.id, r.data.booking.id);
+  const requested = await verifier.request('/bookings/access/request', {
+    method: 'POST',
+    body: { reference: r.data.booking.reference, email: 'rider@example.com' },
+  });
+  assert.equal(unknown.status, 202);
+  assert.equal(unknown.data.message, requested.data.message);
+  assert.equal(deliveredOtp.email, 'rider@example.com');
+  const verified = await verifier.request('/bookings/access/verify', {
+    method: 'POST',
+    body: { challengeId: requested.data.challengeId, code: deliveredOtp.code },
+  });
+  assert.equal(verified.status, 200);
+  assert.equal(verified.data.bookingId, r.data.booking.id);
+  assert.equal((await verifier.request('/bookings/' + r.data.booking.id)).status, 200);
 });
 test('simultaneous website/admin reservations cannot double book the same vehicle', async () => {
   const input = details(vehicles[1], {

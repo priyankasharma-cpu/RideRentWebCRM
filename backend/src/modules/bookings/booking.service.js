@@ -1,8 +1,6 @@
 import { rentalWindow } from '../availability/rentalWindow.service.js';
 import {
   findVehicleByIdVariant2,
-  findBookingByReferenceAndPhone,
-  updateBookingByAccessHashAndId,
   findBookingById,
   updateBookingById,
   findCustomerByPhone,
@@ -16,18 +14,16 @@ import { z } from 'zod';
 import { fail } from '../../utils/ApiError.js';
 import { price } from './pricing.service.js';
 import { availability } from '../availability/availability.service.js';
-import { phone } from '../../utils/phone.js';
 import { randomBytes } from 'node:crypto';
 import { hash, id } from '../../utils/crypto.js';
 import { bookingView, listBookingViews } from './booking.read.service.js';
 import { canAccess } from './bookingAccess.service.js';
-import { transaction } from '../../config/database.js';
+import { withTransaction } from '../../config/mongoDatabase.js';
 import { settings } from '../settings/settings.service.js';
 import { audit } from '../audit/audit.service.js';
 import { bookingSchema } from './booking.validation.js';
 import { now } from '../../utils/dateTime.js';
-import { checkoutInstalled, orderBookingIds } from './checkout.repository.js';
-import { get } from '../../config/database.js';
+import { quoteAddOns, reserveAddOnAllocations } from '../addons/addOn.pricing.js';
 export async function quoteBooking(db, request) {
   const w = await rentalWindow(db, request.body),
     v = await findVehicleByIdVariant2(db, z.string().uuid().parse(request.body.vehicleId));
@@ -38,35 +34,13 @@ export async function quoteBooking(db, request) {
   };
 }
 export async function reserveWebsiteBooking(db, request) {
+  if (!request.body.email?.trim())
+    fail(400, 'Email is required so you can securely access your booking later.');
   return await createBooking(db, {
     ...request.body,
     source: 'Website',
     verified: false,
   });
-}
-export async function lookupBooking(db, request) {
-  const input = request.body;
-  const b = await findBookingByReferenceAndPhone(
-    db,
-    input.reference.trim().toUpperCase(),
-    phone(input.phone),
-  );
-  if (!b) fail(404, 'No booking matches those details.');
-  const token = randomBytes(32).toString('hex');
-  await transaction(db, async () => {
-    const membership = (await checkoutInstalled(db))
-      ? await get(db, 'SELECT order_id FROM checkout_items WHERE booking_id=?', b.id)
-      : null;
-    const entries = membership
-      ? await orderBookingIds(db, membership.order_id)
-      : [{ booking_id: b.id }];
-    for (const entry of entries)
-      await updateBookingByAccessHashAndId(db, hash(token), entry.booking_id);
-  });
-  return {
-    booking: await bookingView(db, b),
-    token,
-  };
 }
 export async function getBooking(db, request) {
   const b = await findBookingById(db, request.params.id);
@@ -75,7 +49,7 @@ export async function getBooking(db, request) {
   return await bookingView(db, b);
 }
 export async function cancelBooking(db, request) {
-  await transaction(db, async () => {
+  await withTransaction(db, async () => {
     const b = await findBookingById(db, request.params.id);
     if (!b) fail(404, 'Booking not found.');
     canAccess(request, b);
@@ -109,17 +83,20 @@ export async function listBookings(db, _request) {
 export async function reserveManualBooking(db, request) {
   return await createBooking(db, request.body, request.user);
 }
-export async function createBooking(db, raw, user = null) {
+export async function createBooking(db, raw, user = null, { reserveAddOns = true } = {}) {
   const input = bookingSchema.parse(raw);
   if (!user && input.source !== 'Website')
     fail(403, 'Only staff can create phone or walk-in bookings.');
-  return await transaction(db, async () => {
+  return await withTransaction(db, async () => {
     const w = await rentalWindow(db, input),
       v = await findVehicleByIdVariant2(db, input.vehicleId);
     if (!v) fail(404, 'Vehicle not found.');
     const a = await availability(db, v.id, w.start, w.end);
     if (!a.available) fail(409, a.reason);
     const p = await price(db, v, w);
+    const addOnCharges = reserveAddOns
+      ? await quoteAddOns(db, w, [{ category: v.category, quantity: 1 }], input)
+      : [];
     let customer = await findCustomerByPhone(db, input.phone);
     if (!customer) {
       customer = {
@@ -145,12 +122,12 @@ export async function createBooking(db, raw, user = null) {
     }
     const booking = id(),
       reference = 'RR-' + randomBytes(6).toString('hex').toUpperCase(),
-      token = randomBytes(32).toString('hex');
+      accessSecret = randomBytes(32).toString('hex');
     await insertBooking(
       db,
       booking,
       reference,
-      hash(token),
+      hash(accessSecret),
       customer.id,
       v.id,
       w.start,
@@ -174,17 +151,16 @@ export async function createBooking(db, raw, user = null) {
       input.email,
       user && input.verified ? 1 : 0,
     );
+    if (addOnCharges.length)
+      await reserveAddOnAllocations(db, addOnCharges, [{ id: booking, category: v.category }]);
     await audit(db, user?.id, 'booking.created', booking, {
       source: input.source,
     });
-    return {
-      booking: await bookingView(db, booking),
-      token,
-    };
+    return { booking: await bookingView(db, booking) };
   });
 }
 export async function reschedule(db, booking, input, user) {
-  return await transaction(db, async () => {
+  return await withTransaction(db, async () => {
     const b = await findBookingById(db, booking);
     if (!b) fail(404, 'Booking not found.');
     if (b.status !== 'confirmed') fail(409, 'Only confirmed bookings can be rescheduled.');

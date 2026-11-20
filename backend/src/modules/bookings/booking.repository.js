@@ -1,59 +1,59 @@
-import { findRecord } from '../../config/database.js';
-import { get, run, all } from '../../config/database.js';
-export async function findVehicleByIdVariant2(db, value1) {
-  return await findRecord(db, 'vehicle', 'id', value1);
+import {
+  collection,
+  fromDocument,
+  fromDocuments,
+  mongoOptions,
+} from '../../config/mongoDatabase.js';
+
+export async function findVehicleByIdVariant2(db, id) {
+  return fromDocument(await collection(db, 'vehicles').findOne({ id }, mongoOptions(db)));
 }
-export async function findBookingByReferenceAndPhone(db, value1, phoneValue) {
-  return await get(
-    db,
-    'SELECT b.* FROM bookings b JOIN customers c ON b.customer_id=c.id WHERE b.reference=? AND c.phone=?',
-    value1,
-    phoneValue,
-  );
-}
-export async function updateBookingByAccessHashAndId(db, hashValue, bookingId) {
-  return await run(db, 'UPDATE bookings SET access_hash=? WHERE id=?', hashValue, bookingId);
-}
+
 export async function findBookingById(db, id) {
-  return await findRecord(db, 'booking', 'id', id);
+  return fromDocument(await collection(db, 'bookings').findOne({ id }, mongoOptions(db)));
 }
+
 export async function updateBookingById(db, bookingId) {
-  return await run(db, "UPDATE bookings SET status='cancelled' WHERE id=?", bookingId);
+  return collection(db, 'bookings').updateOne(
+    { id: bookingId },
+    { $set: { status: 'cancelled' } },
+    mongoOptions(db),
+  );
 }
+
 export async function listBookingRecords(db) {
-  return await all(db, 'SELECT * FROM bookings ORDER BY created_at DESC');
+  const bookings = await collection(db, 'bookings')
+    .find({}, mongoOptions(db))
+    .sort({ created_at: -1 })
+    .toArray();
+  return fromDocuments(bookings);
 }
+
 export async function findCustomerByPhone(db, phone) {
-  return await findRecord(db, 'customer', 'phone', phone);
+  return fromDocument(await collection(db, 'customers').findOne({ phone }, mongoOptions(db)));
 }
-export async function insertCustomer(db, id, name, phone, email, value5, nowValue) {
-  return await run(
-    db,
-    'INSERT INTO customers VALUES(?,?,?,?,?,?)',
-    id,
-    name,
-    phone,
-    email,
-    value5,
-    nowValue,
+
+export async function insertCustomer(db, id, name, phone, email, verified, createdAt) {
+  return collection(db, 'customers').insertOne(
+    { _id: id, id, name, phone, email, verified, created_at: createdAt },
+    mongoOptions(db),
   );
 }
+
 export async function updateCustomerByNameAndEmailAndVerified(db, name, email, verified, id) {
-  return await run(
-    db,
-    'UPDATE customers SET name=?,email=?,verified=? WHERE id=?',
-    name,
-    email,
-    verified,
-    id,
+  return collection(db, 'customers').updateOne(
+    { id },
+    { $set: { name, email, verified } },
+    mongoOptions(db),
   );
 }
+
 export async function insertBooking(
   db,
-  booking,
+  bookingId,
   reference,
-  hashValue,
-  id,
+  accessHash,
+  customerId,
   vehicleId,
   start,
   end,
@@ -62,45 +62,44 @@ export async function insertBooking(
   base,
   tax,
   deposit,
-  value13,
-  value14,
-  user,
+  extra,
+  status,
+  source,
   notes,
-  nowValue,
+  createdAt,
 ) {
-  return await run(
-    db,
-    'INSERT INTO bookings VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-    booking,
-    reference,
-    hashValue,
-    id,
-    vehicleId,
-    start,
-    end,
-    hours,
-    rate,
-    base,
-    tax,
-    deposit,
-    value13,
-    value14,
-    user,
-    notes,
-    nowValue,
+  return collection(db, 'bookings').insertOne(
+    {
+      _id: bookingId,
+      id: bookingId,
+      reference,
+      access_hash: accessHash,
+      customer_id: customerId,
+      vehicle_id: vehicleId,
+      starts_at: start,
+      ends_at: end,
+      hours,
+      rate,
+      base,
+      tax,
+      deposit,
+      extra,
+      status,
+      source,
+      notes,
+      created_at: createdAt,
+    },
+    mongoOptions(db),
   );
 }
-export async function insertBookingContact(db, booking, name, phone, email, value5) {
-  return await run(
-    db,
-    'INSERT INTO booking_contacts VALUES(?,?,?,?,?)',
-    booking,
-    name,
-    phone,
-    email,
-    value5,
+
+export async function insertBookingContact(db, bookingId, name, phone, email, verified) {
+  return collection(db, 'booking_contacts').insertOne(
+    { _id: bookingId, booking_id: bookingId, name, phone, email, verified },
+    mongoOptions(db),
   );
 }
+
 export async function updateBookingByStartsAtAndEndsAtAndHours(
   db,
   start,
@@ -110,37 +109,62 @@ export async function updateBookingByStartsAtAndEndsAtAndHours(
   tax,
   bookingId,
 ) {
-  return await run(
-    db,
-    'UPDATE bookings SET starts_at=?,ends_at=?,hours=?,base=?,tax=? WHERE id=?',
-    start,
-    end,
-    hours,
-    base,
-    tax,
-    bookingId,
+  return collection(db, 'bookings').updateOne(
+    { id: bookingId },
+    { $set: { starts_at: start, ends_at: end, hours, base, tax } },
+    mongoOptions(db),
   );
 }
-export async function findCustomerByIdVariant2(db, customer_id) {
-  return await findRecord(db, 'customer', 'id', customer_id);
+
+export async function findCustomerByIdVariant2(db, id) {
+  return fromDocument(await collection(db, 'customers').findOne({ id }, mongoOptions(db)));
 }
+
 export async function findRentalByBookingIdVariant2(db, bookingId) {
-  return await findRecord(db, 'rental', 'bookingId', bookingId);
+  return fromDocument(
+    await collection(db, 'rentals').findOne({ booking_id: bookingId }, mongoOptions(db)),
+  );
 }
+
 export async function listRefundRecordsByBookingId(db, bookingId) {
-  return await all(
-    db,
-    'SELECT p.*,COALESCE((SELECT SUM(amount) FROM refunds WHERE payment_id=p.id),0) refunded FROM payments p WHERE booking_id=? ORDER BY created_at DESC',
-    bookingId,
-  );
+  const payments = await collection(db, 'payments')
+    .aggregate(
+      [
+        { $match: { booking_id: bookingId } },
+        {
+          $lookup: {
+            from: 'refunds',
+            localField: 'id',
+            foreignField: 'payment_id',
+            as: 'refunds',
+          },
+        },
+        { $addFields: { refunded: { $sum: '$refunds.amount' } } },
+        { $project: { _id: 0, refunds: 0 } },
+        { $sort: { created_at: -1 } },
+      ],
+      mongoOptions(db),
+    )
+    .toArray();
+  return fromDocuments(payments).map((payment) => ({
+    ...payment,
+    refunded: payment.refunded || 0,
+  }));
 }
+
 export async function findBookingContactByBookingId(db, bookingId) {
-  return await get(
-    db,
-    'SELECT name,phone,email,verified FROM booking_contacts WHERE booking_id=?',
-    bookingId,
+  return fromDocument(
+    await collection(db, 'booking_contacts').findOne(
+      { booking_id: bookingId },
+      { ...mongoOptions(db), projection: { _id: 0, name: 1, phone: 1, email: 1, verified: 1 } },
+    ),
   );
 }
+
 export async function listInspectionRecordsByRentalId(db, rentalId) {
-  return await all(db, 'SELECT * FROM inspections WHERE rental_id=? ORDER BY created_at', rentalId);
+  const inspections = await collection(db, 'inspections')
+    .find({ rental_id: rentalId }, mongoOptions(db))
+    .sort({ created_at: 1 })
+    .toArray();
+  return fromDocuments(inspections);
 }

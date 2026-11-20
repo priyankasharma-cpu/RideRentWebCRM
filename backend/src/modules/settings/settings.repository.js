@@ -1,7 +1,9 @@
-import { run, get } from '../../config/database.js';
-export async function updateShopSettingsByData(db, value1) {
-  return await run(db, 'UPDATE settings SET data=? WHERE id=1', value1);
+import { collection, fromDocument, mongoOptions } from '../../config/mongoDatabase.js';
+
+export async function updateShopSettingsByData(db, data) {
+  return collection(db, 'settings').updateOne({ id: 1 }, { $set: { data } }, mongoOptions(db));
 }
+
 export async function findShopSettings(db) {
-  return await get(db, 'SELECT data FROM settings WHERE id=1');
+  return fromDocument(await collection(db, 'settings').findOne({ id: 1 }, mongoOptions(db)));
 }
