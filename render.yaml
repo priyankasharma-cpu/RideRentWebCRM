@@ -5,8 +5,9 @@ services:
     plan: free
     region: singapore
     autoDeployTrigger: off
-    buildCommand: npm --prefix backend ci --omit=dev && npm --prefix frontend ci && npm run build
-    startCommand: npm start
+    rootDir: backend
+    buildCommand: npm ci --omit=dev
+    startCommand: npm run start
     healthCheckPath: /readyz
     envVars:
       - key: NODE_ENV
@@ -18,7 +19,7 @@ services:
       - key: MONGODB_URI
         sync: false
       - key: MONGODB_DB_NAME
-        sync: false
+        value: riderent
       - key: TRUST_PROXY_HOPS
         value: '1'
       - key: APP_ORIGIN
