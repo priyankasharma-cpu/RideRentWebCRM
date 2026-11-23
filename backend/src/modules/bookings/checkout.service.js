@@ -5,7 +5,11 @@ import { hash, id } from '../../utils/crypto.js';
 import { now } from '../../utils/dateTime.js';
 import { integerMoney } from '../../utils/money.js';
 import { rentalWindow } from '../availability/rentalWindow.service.js';
-import { availability } from '../availability/availability.service.js';
+import {
+  listFleetReservations,
+  listFleetServiceBlocks,
+} from '../availability/availability.repository.js';
+import { assessAvailability } from '../availability/availability.rules.js';
 import { publicAddOns } from '../addons/addOn.service.js';
 import { quoteAddOns, reserveAddOnAllocations } from '../addons/addOn.pricing.js';
 import { price } from './pricing.service.js';
@@ -46,13 +50,40 @@ async function requireInstallation(db) {
     );
 }
 async function inventory(db, period) {
+  const vehicles = await checkoutVehicles(db);
+  const vehicleIds = vehicles.map((vehicle) => vehicle.id);
+  const [reservations, maintenance] = await queryGroup(db, [
+    () => listFleetReservations(db, vehicleIds),
+    () => listFleetServiceBlocks(db, vehicleIds),
+  ]);
+  const reservationsByVehicle = new Map();
+  const maintenanceByVehicle = new Map();
+  for (const booking of reservations) {
+    const records = reservationsByVehicle.get(booking.vehicle_id) || [];
+    records.push(booking);
+    reservationsByVehicle.set(booking.vehicle_id, records);
+  }
+  for (const block of maintenance) {
+    const records = maintenanceByVehicle.get(block.vehicle_id) || [];
+    records.push(block);
+    maintenanceByVehicle.set(block.vehicle_id, records);
+  }
+
   const groups = new Map();
-  for (const vehicle of await checkoutVehicles(db)) {
+  for (const vehicle of vehicles) {
     const key = modelKey(vehicle);
     if (!groups.has(key)) groups.set(key, { key, vehicle, units: [], available: [] });
     const group = groups.get(key);
     group.units.push(vehicle);
-    if ((await availability(db, vehicle.id, period.start, period.end)).available)
+    if (
+      assessAvailability(
+        vehicle,
+        reservationsByVehicle.get(vehicle.id) || [],
+        maintenanceByVehicle.get(vehicle.id) || [],
+        period.start,
+        period.end,
+      ).available
+    )
       group.available.push(vehicle);
   }
   return [...groups.values()];
@@ -96,6 +127,7 @@ async function calculate(db, input) {
   const groups = await inventory(db, period);
   const used = new Set();
   const lines = [];
+  const unitPrices = [];
   for (const item of input.items) {
     const group = groups.find((g) => g.units.some((v) => v.id === item.vehicleId));
     if (!group) fail(404, 'Selected vehicle no longer exists.');
@@ -108,7 +140,11 @@ async function calculate(db, input) {
       .sort((a, b) => Number(b.id === item.vehicleId) - Number(a.id === item.vehicleId))
       .slice(0, item.quantity);
     const quotes = [];
-    for (const unit of units) quotes.push(await price(db, unit, period));
+    for (const unit of units) {
+      const unitPrice = await price(db, unit, period);
+      quotes.push(unitPrice);
+      unitPrices.push({ vehicleId: unit.id, price: unitPrice });
+    }
     lines.push({
       vehicleId: item.vehicleId,
       name: group.vehicle.name,
@@ -142,10 +178,18 @@ async function calculate(db, input) {
     deposit,
     total: integerMoney(base + addOns.reduce((sum, line) => sum + line.base, 0) + tax + deposit),
   };
-  return { ...quoted, signature: hash(JSON.stringify(quoted)) };
+  return {
+    ...quoted,
+    signature: hash(JSON.stringify(quoted)),
+    _verified: { period, unitPrices },
+  };
 }
 export const quoteCheckout = (db, raw) =>
-  withTransaction(db, () => calculate(db, checkoutQuoteInput.parse(raw)));
+  withTransaction(db, async () => {
+    const quote = await calculate(db, checkoutQuoteInput.parse(raw));
+    delete quote._verified;
+    return quote;
+  });
 export async function reserveCheckout(db, raw) {
   const input = checkoutReservationInput.parse(raw);
   const fingerprint = hash(
@@ -184,6 +228,9 @@ export async function reserveCheckout(db, raw) {
     const allocations = [];
     for (const line of quote.lines) {
       for (const vehicleId of line.unitIds) {
+        const verifiedPrice = quote._verified.unitPrices.find(
+          (item) => item.vehicleId === vehicleId,
+        );
         const result = await createBooking(
           db,
           {
@@ -193,7 +240,13 @@ export async function reserveCheckout(db, raw) {
             verified: false,
           },
           null,
-          { reserveAddOns: false },
+          {
+            reserveAddOns: false,
+            verifiedReservation: {
+              period: quote._verified.period,
+              price: verifiedPrice.price,
+            },
+          },
         );
         await saveCheckoutItem(db, orderId, result.booking.id);
         ids.push(result.booking.id);

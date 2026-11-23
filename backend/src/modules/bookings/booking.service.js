@@ -83,17 +83,24 @@ export async function listBookings(db, _request) {
 export async function reserveManualBooking(db, request) {
   return await createBooking(db, request.body, request.user);
 }
-export async function createBooking(db, raw, user = null, { reserveAddOns = true } = {}) {
+export async function createBooking(
+  db,
+  raw,
+  user = null,
+  { reserveAddOns = true, verifiedReservation } = {},
+) {
   const input = bookingSchema.parse(raw);
   if (!user && input.source !== 'Website')
     fail(403, 'Only staff can create phone or walk-in bookings.');
   return await withTransaction(db, async () => {
-    const w = await rentalWindow(db, input),
+    const w = verifiedReservation?.period || (await rentalWindow(db, input)),
       v = await findVehicleByIdVariant2(db, input.vehicleId);
     if (!v) fail(404, 'Vehicle not found.');
-    const a = await availability(db, v.id, w.start, w.end);
-    if (!a.available) fail(409, a.reason);
-    const p = await price(db, v, w);
+    if (!verifiedReservation) {
+      const a = await availability(db, v.id, w.start, w.end);
+      if (!a.available) fail(409, a.reason);
+    }
+    const p = verifiedReservation?.price || (await price(db, v, w));
     const addOnCharges = reserveAddOns
       ? await quoteAddOns(db, w, [{ category: v.category, quantity: 1 }], input)
       : [];

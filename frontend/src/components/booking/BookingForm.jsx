@@ -3,7 +3,16 @@ import { Link } from 'react-router-dom';
 import { ShieldCheck, ArrowRight } from 'lucide-react';
 import { ErrorBox } from '../common/ErrorBox.jsx';
 import './BookingForm.css';
-export function BookingForm({ submit, period, setPeriod, error, quote, busy, selection }) {
+export function BookingForm({
+  submit,
+  period,
+  setPeriod,
+  error,
+  quote,
+  busy,
+  showReservationWait,
+  selection,
+}) {
   return (
     <form className="rr-panel checkout-form" onSubmit={submit}>
       <h3>01 · Your rental time</h3>
@@ -63,6 +72,12 @@ export function BookingForm({ submit, period, setPeriod, error, quote, busy, sel
       <ErrorBox>{error}</ErrorBox>
       {quote && !quote.available && (
         <ErrorBox>{quote.reason}. Please choose another period or vehicle.</ErrorBox>
+      )}
+      {busy && showReservationWait && (
+        <p className="reservation-wait-note" role="status">
+          Still verifying and saving your reservation. Please keep this page open and do not submit
+          again.
+        </p>
       )}
       <button disabled={busy || !quote?.available} className="rr-button search-button">
         {busy ? 'Reserving your ride…' : 'Confirm Booking · Pay at Shop'} <ArrowRight size={16} />

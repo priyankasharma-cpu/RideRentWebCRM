@@ -28,3 +28,25 @@ export async function listVehicleServiceBlocks(database, vehicleId) {
     .toArray();
   return fromDocuments(records);
 }
+
+export async function listFleetReservations(database, vehicleIds) {
+  if (!vehicleIds.length) return [];
+  const records = await collection(database, 'bookings')
+    .find(
+      {
+        vehicle_id: { $in: vehicleIds },
+        status: { $in: ['confirmed', 'active', 'inspecting'] },
+      },
+      mongoOptions(database),
+    )
+    .toArray();
+  return fromDocuments(records);
+}
+
+export async function listFleetServiceBlocks(database, vehicleIds) {
+  if (!vehicleIds.length) return [];
+  const records = await collection(database, 'maintenance')
+    .find({ vehicle_id: { $in: vehicleIds }, resolved: 0 }, mongoOptions(database))
+    .toArray();
+  return fromDocuments(records);
+}

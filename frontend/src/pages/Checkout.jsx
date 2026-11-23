@@ -28,6 +28,7 @@ function CheckoutContent({ params }) {
   const [addOnQuantities, setAddOnQuantities] = useState({});
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [showReservationWait, setShowReservationWait] = useState(false);
   const [attempt, setAttempt] = useState(null);
   const checkout = useCheckout(period, items, addOnQuantities);
   const effectiveAddOns = JSON.stringify(
@@ -37,6 +38,14 @@ function CheckoutContent({ params }) {
     if (checkout.verified && JSON.stringify(addOnQuantities) !== effectiveAddOns)
       setAddOnQuantities(JSON.parse(effectiveAddOns));
   }, [checkout.verified, effectiveAddOns, addOnQuantities]);
+  useEffect(() => {
+    if (!busy) {
+      setShowReservationWait(false);
+      return;
+    }
+    const timer = setTimeout(() => setShowReservationWait(true), 8000);
+    return () => clearTimeout(timer);
+  }, [busy]);
   const primary = checkout.catalog?.models.find((model) =>
     model.unitIds.includes(items[0]?.vehicleId),
   );
@@ -115,6 +124,7 @@ function CheckoutContent({ params }) {
           error={error}
           quote={checkout.quote}
           busy={busy}
+          showReservationWait={showReservationWait}
           selection={
             <>
               <CheckoutVehicles

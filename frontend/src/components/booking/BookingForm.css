@@ -21,6 +21,12 @@
   .checkout-form .checkbox-label {
     font-size: 11px;
   }
+  .checkout-form .reservation-wait-note {
+    margin: 12px 0;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.5;
+  }
 }
 @layer rr-enhancements {
   @media (max-width: 750px) {
