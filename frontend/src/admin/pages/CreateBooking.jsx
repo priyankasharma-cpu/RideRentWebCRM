@@ -149,9 +149,10 @@ export function CreateBooking() {
             <label>
               Booking source
               <select name="source">
-                <option>Phone</option>
-                <option>Walk-in</option>
-                <option>Website</option>
+                <option value="unknown">Other / unknown source</option>
+                <option value="Phone">Phone</option>
+                <option value="walk_in">Walk-in at the shop</option>
+                <option value="website">Website booking entered manually</option>
               </select>
             </label>
             <label>

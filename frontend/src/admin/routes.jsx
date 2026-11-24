@@ -1,8 +1,19 @@
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import { useApp } from '../hooks/useApp.js';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AdminLayout } from './layouts/AdminLayout.jsx';
 import { Loading } from '../components/common/Loader.jsx';
+const FinancePage = lazy(() => import('./finance/FinancePage.jsx'));
+const financeRoutes = [
+  '',
+  'revenue',
+  'website',
+  'walk-in',
+  'transactions',
+  'expenses',
+  'profit-loss',
+  'reports',
+];
 const Inquiries = lazy(() => import('./pages/Inquiries.jsx'));
 const AddOnManagement = lazy(() => import('./pages/AddOnManagement.jsx'));
 const ActiveRentals = lazy(() => import('./pages/ActiveRentals'));
@@ -108,6 +119,21 @@ export default function AdminRoutes() {
             element={user?.role === 'admin' ? <Maintenance /> : <Navigate to="/admin" />}
           />
           <Route path="analytics" element={<Analytics />} />
+          {financeRoutes.map((page) => (
+            <Route
+              key={page}
+              path={page ? 'finance/' + page : 'finance'}
+              element={
+                user?.role === 'admin' ? (
+                  <Suspense fallback={<Loading />}>
+                    <FinancePage key={page} page={page || 'overview'} />
+                  </Suspense>
+                ) : (
+                  <Navigate to="/admin" replace />
+                )
+              }
+            />
+          ))}
           <Route
             path="staff"
             element={user?.role === 'admin' ? <Staff /> : <Navigate to="/admin" />}

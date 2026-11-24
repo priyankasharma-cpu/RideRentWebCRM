@@ -1,0 +1,39 @@
+.finance-form,
+.finance-form-accounting {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 0.8rem;
+}
+.finance-form-accounting {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  grid-column: 1 / -1;
+}
+.finance-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  grid-column: 1 / -1;
+}
+.finance-audit,
+.finance-booking-match {
+  display: grid;
+  gap: 0.45rem;
+}
+.finance-booking-reference {
+  display: grid;
+  align-content: center;
+  min-height: 40px;
+}
+.finance-audit pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 0.6rem;
+  background: var(--color-surface-muted);
+}
+.finance-form textarea {
+  resize: vertical;
+}

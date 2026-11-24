@@ -99,9 +99,8 @@ function FooterNavigation({ phone }) {
             {item.type === 'phone' ? (
               <a
                 href={`tel:${phone.tel}`}
-                aria-label={`${item.label} ${phone.display}${
-                  phone.placeholder ? ` — ${siteConfig.footer.demoLabel}` : ''
-                }`}
+                aria-label={`${item.label} ${phone.display}${phone.placeholder ? ` — ${siteConfig.footer.demoLabel}` : ''
+                  }`}
               >
                 {item.label}
                 <ArrowUpRight size={14} aria-hidden="true" />

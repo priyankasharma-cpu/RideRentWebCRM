@@ -67,6 +67,7 @@ export async function insertBooking(
   source,
   notes,
   createdAt,
+  financeSource,
 ) {
   return collection(db, 'bookings').insertOne(
     {
@@ -86,6 +87,7 @@ export async function insertBooking(
       extra,
       status,
       source,
+      finance_source: financeSource,
       notes,
       created_at: createdAt,
     },

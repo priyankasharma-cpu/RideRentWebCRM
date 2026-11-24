@@ -89,7 +89,15 @@ export async function createBooking(
   user = null,
   { reserveAddOns = true, verifiedReservation } = {},
 ) {
-  const input = bookingSchema.parse(raw);
+  const input = bookingSchema.parse(
+    user && raw?.source === undefined ? { ...raw, source: 'Other' } : raw,
+  );
+  const financeSource =
+    !user || input.source === 'Website'
+      ? 'website'
+      : input.source === 'Walk-in'
+        ? 'walk_in'
+        : 'unknown';
   if (!user && input.source !== 'Website')
     fail(403, 'Only staff can create phone or walk-in bookings.');
   return await withTransaction(db, async () => {
@@ -149,6 +157,7 @@ export async function createBooking(
       user ? input.source : 'Website',
       input.notes,
       now(),
+      financeSource,
     );
     await insertBookingContact(
       db,

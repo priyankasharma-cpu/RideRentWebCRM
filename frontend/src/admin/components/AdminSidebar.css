@@ -82,3 +82,25 @@
     margin: 14px 10px 0;
   }
 }
+
+.admin-sidebar .sidebar-section-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.admin-sidebar .sidebar-section-chevron {
+  margin-left: auto;
+}
+.admin-sidebar .sidebar-section-toggle[aria-expanded='true'] .sidebar-section-chevron {
+  transform: rotate(180deg);
+}
+.admin-app.collapsed .sidebar-section-chevron {
+  display: none;
+}

@@ -1,10 +1,11 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../services/apiClient';
-export function useResource(path, interval = 0) {
+export function useResource(path, interval = 0, enabled = true) {
   const client = useQueryClient();
   const queryKey = ['api', path];
   const query = useQuery({
     queryKey,
+    enabled,
     queryFn: ({ signal }) =>
       api(path, {
         signal,

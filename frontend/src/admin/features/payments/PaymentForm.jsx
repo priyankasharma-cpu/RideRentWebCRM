@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { money } from '../../../utils/formatters.js';
+import { paise } from '../../finance/financeModel.js';
 import './PaymentForm.css';
 export function PaymentForm({ booking: b, busy, onSubmit }) {
   const [purpose, setPurpose] = useState('rental');
+  const receipt = useRef(null);
   const due =
     purpose === 'rental'
       ? b.rentalTotal - b.rentalPaid
@@ -13,10 +15,18 @@ export function PaymentForm({ booking: b, busy, onSubmit }) {
       onSubmit={(e) => {
         e.preventDefault();
         const values = Object.fromEntries(new FormData(e.currentTarget));
-        onSubmit({
-          ...values,
-          amount: Math.round(Number(values.amount) * 100),
-        });
+        const input = e.currentTarget.elements.amount;
+        try {
+          const amount = paise(values.amount);
+          const fingerprint = JSON.stringify({ bookingId: b.id, ...values, amount });
+          if (receipt.current?.fingerprint !== fingerprint) {
+            receipt.current = { fingerprint, submissionKey: crypto.randomUUID() };
+          }
+          onSubmit({ ...values, amount, submissionKey: receipt.current.submissionKey });
+        } catch (error) {
+          input.setCustomValidity(error.message);
+          input.reportValidity();
+        }
       }}
     >
       <h3>Record a shop receipt</h3>
@@ -37,6 +47,9 @@ export function PaymentForm({ booking: b, busy, onSubmit }) {
             <option>Cash</option>
             <option>UPI</option>
             <option>Card</option>
+            <option>Online</option>
+            <option>Bank transfer</option>
+            <option>Other</option>
           </select>
         </label>
         <label>
@@ -44,6 +57,7 @@ export function PaymentForm({ booking: b, busy, onSubmit }) {
           <input
             key={purpose + due}
             name="amount"
+            onInput={(e) => e.currentTarget.setCustomValidity('')}
             type="number"
             min="0.01"
             max={Math.max(0, due) / 100}
@@ -51,6 +65,10 @@ export function PaymentForm({ booking: b, busy, onSubmit }) {
             defaultValue={Math.max(0, due) / 100}
             required
           />
+        </label>
+        <label>
+          Receipt reference
+          <input name="reference" maxLength="120" placeholder="Optional transaction reference" />
         </label>
         <label>
           Receipt notes

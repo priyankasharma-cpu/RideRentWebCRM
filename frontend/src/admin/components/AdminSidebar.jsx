@@ -1,9 +1,14 @@
 import { Logo } from '../../components/common/Logo.jsx';
 import { navigationGroups, canAccessAdminLink } from '../../config/adminNavigation.js';
-import { NavLink, Link } from 'react-router-dom';
-import { Plus, ShieldCheck, ArrowUpRight, LogOut } from 'lucide-react';
+import { useState } from 'react';
+import { NavLink, Link, useLocation } from 'react-router-dom';
+import { Plus, ShieldCheck, ArrowUpRight, LogOut, ChevronDown, Wallet } from 'lucide-react';
 import './AdminSidebar.css';
 export function AdminSidebar({ open, user, logout }) {
+  const { pathname } = useLocation();
+  const financeActive = /^\/admin\/finance(?:\/|$)/.test(pathname);
+  const [financePreference, setFinancePreference] = useState(null);
+  const financeExpanded = financePreference ?? financeActive;
   return (
     <aside className={'admin-sidebar ' + (open ? 'open' : '')}>
       <Logo />
@@ -20,20 +25,40 @@ export function AdminSidebar({ open, user, logout }) {
           if (!visible.length) return null;
           return (
             <section key={group.label} aria-label={group.label}>
-              <div className="sidebar-caption">{group.label}</div>
-              {visible.map(([name, path, Icon]) => (
-                <NavLink
-                  key={path}
-                  to={'/admin' + (path ? '/' + path : '')}
-                  aria-label={name}
-                  title={name}
-                  end
+              {group.expandable ? (
+                <button
+                  className="sidebar-caption sidebar-section-toggle"
+                  aria-label={group.label}
+                  title={group.label}
+                  aria-controls="admin-finance-links"
+                  aria-expanded={financeExpanded}
+                  onClick={() => setFinancePreference(!financeExpanded)}
                 >
-                  <Icon size={20} />
-                  <span className="nav-label">{name}</span>
-                  {path === 'create-booking' && <Plus size={13} />}
-                </NavLink>
-              ))}
+                  <Wallet size={17} />
+                  <span className="nav-label">{group.label}</span>
+                  <ChevronDown size={14} className="sidebar-section-chevron" />
+                </button>
+              ) : (
+                <div className="sidebar-caption">{group.label}</div>
+              )}
+              <div
+                id={group.expandable ? 'admin-finance-links' : undefined}
+                hidden={group.expandable && !financeExpanded}
+              >
+                {visible.map(([name, path, Icon]) => (
+                  <NavLink
+                    key={path}
+                    to={'/admin' + (path ? '/' + path : '')}
+                    aria-label={name}
+                    title={name}
+                    end
+                  >
+                    <Icon size={20} />
+                    <span className="nav-label">{name}</span>
+                    {path === 'create-booking' && <Plus size={13} />}
+                  </NavLink>
+                ))}
+              </div>
             </section>
           );
         })}

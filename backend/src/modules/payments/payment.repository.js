@@ -15,6 +15,7 @@ export async function insertPayment(
   note,
   staffId,
   createdAt,
+  metadata = {},
 ) {
   return collection(db, 'payments').insertOne(
     {
@@ -27,6 +28,7 @@ export async function insertPayment(
       note,
       staff_id: staffId,
       created_at: createdAt,
+      ...metadata,
     },
     mongoOptions(db),
   );
@@ -36,7 +38,16 @@ export async function findPaymentById(db, id) {
   return fromDocument(await collection(db, 'payments').findOne({ id }, mongoOptions(db)));
 }
 
-export async function insertRefund(db, id, paymentId, amount, reason, staffId, createdAt) {
+export async function insertRefund(
+  db,
+  id,
+  paymentId,
+  amount,
+  reason,
+  staffId,
+  createdAt,
+  metadata = {},
+) {
   return collection(db, 'refunds').insertOne(
     {
       _id: id,
@@ -46,6 +57,7 @@ export async function insertRefund(db, id, paymentId, amount, reason, staffId, c
       reason,
       staff_id: staffId,
       created_at: createdAt,
+      ...metadata,
     },
     mongoOptions(db),
   );
@@ -88,7 +100,17 @@ export async function listRefundRecordsVariant2(db) {
             refunded: { $sum: '$refunds.amount' },
           },
         },
-        { $project: { _id: 0, booking: 0, customer: 0, refunds: 0 } },
+        {
+          $project: {
+            _id: 0,
+            booking: 0,
+            customer: 0,
+            refunds: 0,
+            submission_payload: 0,
+            submission_key: 0,
+            reference_key: 0,
+          },
+        },
         { $sort: { created_at: -1 } },
       ],
       mongoOptions(db),
@@ -102,7 +124,12 @@ export async function listRefundRecordsVariant2(db) {
 
 export async function listRefundRecordsVariant3(db) {
   const refunds = await collection(db, 'refunds')
-    .find({}, mongoOptions(db))
+    .find(
+      {},
+      mongoOptions(db, {
+        projection: { submission_payload: 0, submission_key: 0, reference_key: 0 },
+      }),
+    )
     .sort({ created_at: -1 })
     .toArray();
   return fromDocuments(refunds);

@@ -1,0 +1,11 @@
+.finance-pnl th small {
+  display: block;
+  font-weight: 400;
+  margin-top: 0.25rem;
+}
+.finance-pnl-total {
+  background: var(--color-surface-muted);
+}
+.finance-pnl .finance-number {
+  text-align: right;
+}

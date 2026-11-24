@@ -1,3 +1,5 @@
+import { queryClient } from './queryClient.js';
+
 let csrf = '';
 let sessionPromise;
 export async function loadSession() {
@@ -66,6 +68,12 @@ export async function api(path, { method = 'GET', body, ...rest } = {}) {
   }
   if (!res.ok) throw Error(data.error || 'Request failed.');
   if (data.csrf) csrf = data.csrf;
+  if (
+    method !== 'GET' &&
+    /^\/(?:bookings|checkout|admin\/(?:bookings|payments|rentals|settings))(?:\/|$)/.test(path)
+  ) {
+    void queryClient.invalidateQueries({ queryKey: ['api', '/admin/finance'] });
+  }
   return data;
 }
 export function updateSessionCache(result) {

@@ -1,0 +1,86 @@
+.finance {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  padding-bottom: 1rem;
+  color: var(--color-text);
+}
+.finance h1 {
+  font-size: clamp(1.5rem, 3vw, 2.15rem);
+  letter-spacing: -0.028em;
+}
+.finance h2 {
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  margin: 0 0 0.55rem;
+}
+.finance h3 {
+  margin-top: 0;
+}
+.finance-card {
+  min-width: 0;
+  padding: clamp(0.75rem, 1.7vw, 1.15rem);
+  border: 1px solid var(--color-border);
+  border-radius: 13px;
+  background: var(--color-surface);
+  box-shadow: 0 2px 6px rgb(20 36 65 / 5%);
+}
+.finance-section-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  margin-bottom: 0.7rem;
+}
+.finance-section-heading h2 {
+  margin: 0;
+}
+.finance-scope {
+  padding: 0.75rem;
+  margin: 0;
+  background: var(--color-surface-muted);
+  border-radius: 8px;
+}
+.finance :is(p, small) {
+  overflow-wrap: anywhere;
+}
+.finance button:focus-visible,
+.finance input:focus-visible,
+.finance select:focus-visible,
+.finance [tabindex]:focus-visible {
+  outline: 2px solid var(--color-primary, #3879cf);
+  outline-offset: 2px;
+}
+@media (max-width: 480px) {
+  .finance :is(.finance-controls, .finance-table-filters) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+  .finance :is(.finance-export, .finance-table-filters label:has(input[type='search'])) {
+    grid-column: 1 / -1;
+  }
+  .finance :is(.finance-controls, .finance-table-filters) :is(input, select) {
+    width: 100%;
+    min-width: 0;
+    font-size: 0.875rem;
+  }
+  .finance .finance-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+  .finance .finance-metric h3 {
+    font-size: 0.77rem;
+  }
+  .finance .finance-metric strong {
+    font-size: clamp(1rem, 4.4vw, 1.25rem);
+  }
+  .finance .finance-metric header > svg {
+    display: none;
+  }
+}
+@media (max-width: 360px) {
+  .finance-controls > label:first-child {
+    grid-column: 1 / -1;
+  }
+}

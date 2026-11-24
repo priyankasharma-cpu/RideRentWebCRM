@@ -94,7 +94,7 @@ export function BookingManagement({ mode }) {
           value={source}
           onChange={(e) => setSource(e.target.value)}
         >
-          {['All', 'Website', 'Phone', 'Walk-in'].map((s) => (
+          {['All', 'Website', 'Phone', 'Walk-in', 'Other'].map((s) => (
             <option key={s}>{s}</option>
           ))}
         </select>

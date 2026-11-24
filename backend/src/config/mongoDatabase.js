@@ -138,6 +138,12 @@ async function ensureIndexes(db) {
       },
       { key: { customer_id: 1, created_at: -1 }, options: { name: 'bookings_customer_created' } },
       { key: { created_at: -1 }, options: { name: 'bookings_created' } },
+      { key: { starts_at: 1, status: 1 }, options: { name: 'bookings_finance_start_status' } },
+      {
+        key: { finance_source: 1, starts_at: 1 },
+        options: { name: 'bookings_finance_source_start' },
+      },
+      { key: { status: 1, ends_at: 1 }, options: { name: 'bookings_finance_status_end' } },
     ],
     booking_contacts: [
       {
@@ -149,6 +155,7 @@ async function ensureIndexes(db) {
       { key: { submission_key: 1 }, options: { unique: true, name: 'checkout_submission_unique' } },
     ],
     checkout_items: [
+      { key: { booking_id: 1 }, options: { name: 'checkout_items_booking' } },
       {
         key: { order_id: 1, _migration_order: 1 },
         options: { name: 'checkout_items_order_position' },
@@ -184,19 +191,56 @@ async function ensureIndexes(db) {
     refunds: [
       { key: { id: 1 }, options: { unique: true, name: 'refunds_id_unique' } },
       { key: { payment_id: 1 }, options: { name: 'refunds_payment' } },
+      { key: { created_at: 1 }, options: { name: 'refunds_finance_date' } },
+      {
+        key: { submission_key: 1 },
+        options: { unique: true, sparse: true, name: 'refunds_submission' },
+      },
+      {
+        key: { reference_key: 1 },
+        options: { unique: true, sparse: true, name: 'refunds_finance_reference' },
+      },
     ],
     inspections: [
       { key: { id: 1 }, options: { unique: true, name: 'inspections_id_unique' } },
       { key: { rental_id: 1, created_at: 1 }, options: { name: 'inspections_rental_created' } },
     ],
-    audit: [{ key: { created_at: 1 }, options: { name: 'audit_created' } }],
+    audit: [
+      { key: { created_at: 1 }, options: { name: 'audit_created' } },
+      {
+        key: { entity_id: 1, action: 1, created_at: -1 },
+        options: { name: 'audit_finance_entity_action' },
+      },
+    ],
+    expenses: [
+      { key: { date: 1 }, options: { name: 'expenses_date' } },
+      { key: { status: 1, date: 1 }, options: { name: 'expenses_status_date' } },
+      { key: { category: 1, date: 1 }, options: { name: 'expenses_category_date' } },
+    ],
+    finance_adjustments: [
+      { key: { date: 1 }, options: { name: 'finance_adjustments_date' } },
+      { key: { kind: 1, date: 1 }, options: { name: 'finance_adjustments_kind_date' } },
+      { key: { bookingId: 1, kind: 1 }, options: { name: 'finance_adjustments_booking_kind' } },
+    ],
     rentals: [
       { key: { id: 1 }, options: { unique: true, name: 'rentals_id_unique' } },
       { key: { booking_id: 1 }, options: { unique: true, name: 'rentals_booking_unique' } },
+      { key: { return_at: 1 }, options: { name: 'rentals_finance_return' } },
     ],
     payments: [
       { key: { id: 1 }, options: { unique: true, name: 'payments_id_unique' } },
       { key: { booking_id: 1, created_at: -1 }, options: { name: 'payments_booking_created' } },
+      { key: { created_at: 1 }, options: { name: 'payments_finance_date' } },
+      { key: { status: 1, created_at: 1 }, options: { name: 'payments_finance_status_date' } },
+      { key: { purpose: 1, created_at: 1 }, options: { name: 'payments_finance_purpose_date' } },
+      {
+        key: { submission_key: 1 },
+        options: { unique: true, sparse: true, name: 'payments_submission' },
+      },
+      {
+        key: { reference_key: 1 },
+        options: { unique: true, sparse: true, name: 'payments_finance_reference' },
+      },
     ],
     booking_addons: [
       { key: { booking_id: 1 }, options: { unique: true, name: 'booking_addons_booking_unique' } },

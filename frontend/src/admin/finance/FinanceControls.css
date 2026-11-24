@@ -1,0 +1,53 @@
+.finance-header,
+.finance-heading > div {
+  display: grid;
+  gap: 0.45rem;
+}
+.finance-heading,
+.finance-controls,
+.finance-export {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.finance-heading {
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.finance-heading p,
+.finance-heading h1 {
+  margin: 0;
+}
+.finance-heading small {
+  color: var(--color-muted, var(--color-text));
+}
+.finance-controls,
+.finance-export {
+  align-items: end;
+}
+.finance-controls label,
+.finance-export label,
+.finance-form label,
+.finance-table-filters label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.83rem;
+  font-weight: 600;
+}
+.finance-controls :is(select, input),
+.finance-export select,
+.finance-form :is(select, input, textarea),
+.finance-table-filters :is(select, input) {
+  min-height: 40px;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+.finance .rr-button,
+.finance .rr-button--outline {
+  display: inline-flex;
+  gap: 0.45rem;
+  align-items: center;
+}

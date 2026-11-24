@@ -12,12 +12,33 @@ import {
   Wrench,
   BarChart3,
   ShieldCheck,
+  ChartNoAxesCombined,
+  Globe,
+  Store,
+  ReceiptText,
+  Banknote,
+  Scale,
+  FileSpreadsheet,
   Settings as SettingsIcon,
 } from 'lucide-react';
 // Permissions are route-based so changing a label never changes access.
 const adminOnly = ['vehicles', 'addons', 'maintenance', 'inquiries', 'staff'];
 export const navigationGroups = [
   { label: 'Overview', links: [['Dashboard', '', LayoutDashboard]] },
+  {
+    label: 'Finance Management',
+    expandable: true,
+    links: [
+      ['Finance Overview', 'finance', Wallet],
+      ['Revenue Analytics', 'finance/revenue', ChartNoAxesCombined],
+      ['Website Revenue', 'finance/website', Globe],
+      ['Walk-in Revenue', 'finance/walk-in', Store],
+      ['Transactions', 'finance/transactions', ReceiptText],
+      ['Expenses', 'finance/expenses', Banknote],
+      ['Profit & Loss', 'finance/profit-loss', Scale],
+      ['Financial Reports', 'finance/reports', FileSpreadsheet],
+    ],
+  },
   {
     label: 'Fleet Management',
     links: [
@@ -49,4 +70,5 @@ export const navigationGroups = [
   },
 ];
 export const links = navigationGroups.flatMap((group) => group.links);
-export const canAccessAdminLink = (path, role) => role === 'admin' || !adminOnly.includes(path);
+export const canAccessAdminLink = (path, role) =>
+  role === 'admin' || (!adminOnly.includes(path) && !/^finance(?:\/|$)/.test(path));

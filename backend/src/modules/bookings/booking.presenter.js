@@ -1,5 +1,8 @@
 import { bookingStates } from './booking.status.js';
 
+const isSettled = ({ status }) =>
+  status == null || ['completed', 'succeeded', 'paid', 'success'].includes(status);
+
 export function presentBooking(graph, { privateData = true } = {}) {
   const {
     vehicle,
@@ -11,18 +14,22 @@ export function presentBooking(graph, { privateData = true } = {}) {
   } = graph;
   const payments = paymentGraphs.map(({ refunds, ...payment }) => ({
     ...payment,
-    refunded: refunds.reduce((sum, refund) => sum + refund.amount, 0),
+    submission_payload: undefined,
+    submission_key: undefined,
+    reference_key: undefined,
+    refunded: refunds.filter(isSettled).reduce((sum, refund) => sum + refund.amount, 0),
   }));
   const netPaid = (purpose) =>
     payments
-      .filter((payment) => payment.purpose === purpose)
+      .filter((payment) => payment.purpose === purpose && isSettled(payment))
       .reduce((sum, payment) => sum + payment.amount - payment.refunded, 0);
   const rentalTotal =
     booking.status === 'cancelled'
       ? 0
       : booking.base +
         booking.tax +
-        booking.extra +
+        booking.extra -
+        (booking.discount || 0) +
         (booking.addons || []).reduce((sum, addon) => sum + addon.base + addon.tax, 0);
   const closed = ['cancelled', 'completed'].includes(booking.status);
   const depositDue = closed ? 0 : booking.deposit;

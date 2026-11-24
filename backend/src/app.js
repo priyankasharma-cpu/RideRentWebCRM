@@ -3,6 +3,7 @@ import { createCheckoutRouter } from './modules/bookings/checkout.routes.js';
 import { createAddOnsRouter } from './modules/addons/addOn.routes.js';
 import { requestId } from './middleware/requestId.js';
 import express from 'express';
+import { createFinanceRouter } from './modules/finance/finance.routes.js';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { frontendDist } from './config/paths.js';
@@ -90,6 +91,7 @@ export function createApp(db, { origins, otpDelivery } = {}) {
   app.use(moduleRouter8(db));
   app.use(moduleRouter9(db));
   app.use(moduleRouter10(db));
+  app.use(createFinanceRouter(db));
   app.use('/api', (_req, res) =>
     res.status(404).json({
       error: 'API route not found.',

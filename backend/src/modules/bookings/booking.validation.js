@@ -18,7 +18,12 @@ export const bookingSchema = windowSchema.extend({
     .pipe(z.string().regex(/^\d{10,15}$/)),
   email: z.union([z.literal(''), z.string().email().max(150)]).default(''),
   agreement: z.literal(true),
-  source: z.enum(['Website', 'Phone', 'Walk-in']).default('Website'),
+  source: z
+    .enum(['Website', 'Phone', 'Walk-in', 'Other', 'website', 'walk_in', 'unknown'])
+    .default('Website')
+    .transform(
+      (source) => ({ website: 'Website', walk_in: 'Walk-in', unknown: 'Other' })[source] || source,
+    ),
   verified: z.boolean().default(false),
   notes: z.string().max(2000).default(''),
   helmets: z.number().int().min(0).max(10000).default(0),
